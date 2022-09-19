@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+}
+
+.map-test-sidebar {
+    width: 400px;
+    margin: 10px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
