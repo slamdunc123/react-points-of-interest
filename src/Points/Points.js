@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {Link} from 'react-router-dom'
+
 import {
 	GoogleMap,
 	LoadScript,
@@ -10,6 +11,10 @@ import {
 import points from '../points';
 import Sidebar from '../Sidebar/Sidebar';
 import styles from './points.module.css';
+
+const MAP_API = process.env.REACT_APP_MAP_API
+
+console.log(MAP_API)
 
 const containerStyle = {
 	width: '100vw',
@@ -38,7 +43,7 @@ const Points = () => {
 				activePoint={activePoint}
 				handlePointOnChange={handlePointOnChange}
 			/>
-			<LoadScript googleMapsApiKey=''>
+			<LoadScript googleMapsApiKey={MAP_API}>
 				<GoogleMap
 					mapContainerStyle={containerStyle}
 					center={center}
