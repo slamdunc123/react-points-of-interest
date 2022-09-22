@@ -14,8 +14,6 @@ import styles from './points.module.css';
 
 const MAP_API = process.env.REACT_APP_MAP_API
 
-console.log(MAP_API)
-
 const containerStyle = {
 	width: '100vw',
 	height: '100vh',
