@@ -38,7 +38,7 @@ const Points = () => {
 				activePoint={activePoint}
 				handlePointOnChange={handlePointOnChange}
 			/>
-			<LoadScript googleMapsApiKey='AIzaSyA2yuFtSncKelZ8muTYi-z7EDU8wCO6by0'>
+			<LoadScript googleMapsApiKey=''>
 				<GoogleMap
 					mapContainerStyle={containerStyle}
 					center={center}
