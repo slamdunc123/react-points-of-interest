@@ -46,7 +46,7 @@ const Map = ({ points, activePoint, handlePointOnClick }) => {
 								lat: activePoint.lat,
 								lng: activePoint.lng,
 							}}
-							onCloseClick={() => handlePointOnClick(null)}
+							onCloseClick={() => handlePointOnClick('')}
 						>
 							<div className='info-container'>
 								<h4>{activePoint.name}</h4>

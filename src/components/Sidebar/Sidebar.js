@@ -1,31 +1,24 @@
-import React from 'react';
-import styles from './sidebar.module.css';
-import { FormControl, Select, InputLabel, MenuItem } from '@mui/material';
+import PointsFilters from "../PointsFilter/PointsFilter";
+import PointsSelector from "../PointsSelector/PointsSelector";
+import styles from "./sidebar.module.css";
 
-const Sidebar = ({ points, activePoint, handlePointOnChange }) => {
-	return (
-		<div className={styles.container}>
-			<FormControl fullWidth>
-				<InputLabel id='demo-simple-select-label'>Points Of Interest</InputLabel>
-				{
-					<Select
-						labelId='demo-simple-select-label'
-						id='demo-simple-select'
-						value={activePoint}
-						label='Points Of Interest'
-						onChange={handlePointOnChange}
-                        sx={{textAlign: 'left'}}
-					>
-						{points.map((point) => (
-							<MenuItem key={point.id} value={point}>
-								{point.name}
-							</MenuItem>
-						))}
-					</Select>
-				}
-			</FormControl>
-		</div>
-	);
+const Sidebar = ({
+  points,
+  activePoint,
+  handlePointOnChange,
+  handleFilterOnChange,
+  isCheckedFilter
+}) => {
+  return (
+    <div className={styles.container}>
+      <PointsFilters handleFilterOnChange={handleFilterOnChange} isCheckedFilter={isCheckedFilter}/>
+      <PointsSelector
+        points={points}
+        activePoint={activePoint}
+        handlePointOnChange={handlePointOnChange}
+      />
+    </div>
+  );
 };
 
 export default Sidebar;

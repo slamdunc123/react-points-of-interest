@@ -1,45 +1,59 @@
 import { useState } from 'react';
 
-import points from '../../points';
-import Sidebar from '../Sidebar/Sidebar';
-import Sidebar2 from '../Sidebar/Sidebar2';
 import Map from '../Map/Map';
+import Sidebar from '../Sidebar/Sidebar';
+
+import points from '../../points';
+import { ALL_POINTS } from '../../constants/PointTypes';
+
 import styles from './points.module.css';
 
 const Points = () => {
-	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
+  const [filteredSetOfPoints, setFilteredSetOfPoints] = useState(points);
+  const [isCheckedFilter, setIsCheckedFilter] = useState('all');
+  const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 
-	const handlePointOnClick = (point) => {
-		console.log("🚀 ~ handlePointOnClick ~ point", point)
-		setActivePoint(point);
-	};
+  const handlePointOnClick = (point) => {
+    setActivePoint(point);
+  };
 
-	const handlePointOnChange = (e) => {
-		console.log(e.target.value)
-		const activePointObj = points.find(point => point.id === e.target.value)
-		
-		setActivePoint(activePointObj);
-	};
+  const handlePointOnChange = (e) => {
+    const activePointObj = points.find((point) => point.id === e.target.value);
 
-	return (
-		<div className={styles.container}>
-			<Sidebar
-				points={points}
-				activePoint={activePoint}
-				handlePointOnChange={handlePointOnChange}
-			/>
-			<Sidebar2
-				points={points}
-				activePoint={activePoint}
-				handlePointOnChange={handlePointOnChange}
-			/>
-			<Map
-				points={points}
-				activePoint={activePoint}
-				handlePointOnClick={handlePointOnClick}
-			/>
-		</div>
-	);
+    setActivePoint(activePointObj);
+  };
+
+  const handleFilterOnChange = (e) => {
+    const value = e.target.value;
+    setIsCheckedFilter(value);
+    setActivePoint('');
+    if (value === ALL_POINTS) {
+      setFilteredSetOfPoints(points);
+    } else {
+      const filteredSetOfPoints = points.filter(
+        (point) => point.type === value
+      );
+      setFilteredSetOfPoints(filteredSetOfPoints);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <Sidebar
+        handleFilterOnChange={handleFilterOnChange}
+        points={filteredSetOfPoints}
+        activePoint={activePoint}
+        handlePointOnChange={handlePointOnChange}
+        isCheckedFilter={isCheckedFilter}
+      />
+
+      <Map
+        points={filteredSetOfPoints}
+        activePoint={activePoint}
+        handlePointOnClick={handlePointOnClick}
+      />
+    </div>
+  );
 };
 
 export default Points;
