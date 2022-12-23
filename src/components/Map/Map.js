@@ -19,13 +19,15 @@ const center = {
 	lng: -1.695365906570867,
 };
 
+const zoom = 17;
+
 const Map = ({ points, activePoint, handlePointOnClick }) => {
 	return (
 		<LoadScript googleMapsApiKey={MAP_API}>
 			<GoogleMap
 				mapContainerStyle={containerStyle}
 				center={center}
-				zoom={18}
+				zoom={zoom}
 				mapTypeId='satellite'
 				onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
 			>
