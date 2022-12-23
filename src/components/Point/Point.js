@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import points from '../points';
+import points from '../../points';
 
 const Point = () => {
 	const { id } = useParams();

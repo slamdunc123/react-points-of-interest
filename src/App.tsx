@@ -1,5 +1,5 @@
 import './App.css';
-import Points from './Points/Points';
+import Points from './components/Points/Points';
 
 function App() {
 	return (

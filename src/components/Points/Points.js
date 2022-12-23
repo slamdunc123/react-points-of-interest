@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import points from '../points';
+import points from '../../points';
 import Sidebar from '../Sidebar/Sidebar';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import Map from '../Map/Map';
