@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EditPoint from "./components/EditPoint/EditPoint";
 
 const rootElement = document.getElementById("root");
+
 ReactDOM.render(
   <Router>
     <Routes>
