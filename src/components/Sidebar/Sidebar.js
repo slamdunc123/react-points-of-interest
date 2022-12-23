@@ -1,6 +1,7 @@
 import PointsFilters from "../PointsFilter/PointsFilter";
 import PointsSelector from "../PointsSelector/PointsSelector";
 import styles from "./sidebar.module.css";
+import {Link} from 'react-router-dom'
 
 const Sidebar = ({
   points,
@@ -11,6 +12,7 @@ const Sidebar = ({
 }) => {
   return (
     <div className={styles.container}>
+		<Link to='/add-point'>Add Point</Link>
       <PointsFilters handleFilterOnChange={handleFilterOnChange} isCheckedFilter={isCheckedFilter}/>
       <PointsSelector
         points={points}
