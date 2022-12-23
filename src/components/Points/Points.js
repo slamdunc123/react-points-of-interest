@@ -19,7 +19,6 @@ const Points = () => {
 
   const handlePointOnChange = (e) => {
     const activePointObj = points.find((point) => point.id === e.target.value);
-
     setActivePoint(activePointObj);
   };
 
@@ -30,10 +29,11 @@ const Points = () => {
     if (value === ALL_POINTS) {
       setFilteredSetOfPoints(points);
     } else {
-      const filteredSetOfPoints = points.filter(
+      const filteredPoints = points.filter(
         (point) => point.type === value
       );
-      setFilteredSetOfPoints(filteredSetOfPoints);
+      setFilteredSetOfPoints(filteredPoints);
+	  filteredPoints.length === 1 && setActivePoint(filteredPoints[0])
     }
   };
 
