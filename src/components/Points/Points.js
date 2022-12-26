@@ -10,7 +10,7 @@ import styles from './points.module.css';
 
 const Points = () => {
   const [filteredSetOfPoints, setFilteredSetOfPoints] = useState(points);
-  const [isCheckedFilter, setIsCheckedFilter] = useState('all');
+  const [isCheckedFilter, setIsCheckedFilter] = useState(ALL_POINTS);
   const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 
   const handlePointOnClick = (point) => {
@@ -19,7 +19,7 @@ const Points = () => {
 
   const handlePointOnChange = (e) => {
     const activePointObj = points.find((point) => point.id === e.target.value);
-    setActivePoint(activePointObj);
+    activePointObj && setActivePoint(activePointObj);
   };
 
   const handleFilterOnChange = (e) => {
@@ -33,7 +33,6 @@ const Points = () => {
         (point) => point.type === value
       );
       setFilteredSetOfPoints(filteredPoints);
-	  filteredPoints.length === 1 && setActivePoint(filteredPoints[0])
     }
   };
 
