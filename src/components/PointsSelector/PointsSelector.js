@@ -1,23 +1,25 @@
-import styles from "./pointsSelector.module.css";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const PointsSelector = ({ points, activePoint, handlePointOnChange }) => {
-  console.log("🚀 ~ PointsSelector ~ points", points)
-  return (
-    <div className={styles.container}>
-      <select
-        id="demo-simple-select-label"
-        onChange={handlePointOnChange}
-        value={activePoint.id}
-      >
-        <option>Select</option>
-        {points.map((point) => (
-          <option key={point.id} value={point.id}>
-            {point.name}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
+	return (
+		<FormControl fullWidth>
+			<InputLabel id='demo-simple-select-label'>Points</InputLabel>
+			<Select
+				labelId='demo-simple-select-label'
+				id='demo-simple-select'
+				value={activePoint}
+				label='Points'
+				onChange={handlePointOnChange}
+			>
+				{points.map((point) => (
+					<MenuItem value={point}>{point.name}</MenuItem>
+				))}
+			</Select>
+		</FormControl>
+	);
 };
 
 export default PointsSelector;

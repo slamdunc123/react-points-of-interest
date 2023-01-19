@@ -2,15 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 200px;
+    min-width: 250px;
     height: 400px;
     margin: 10px;
 }
 .container-closed {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 25px;
-    height: 400px;
-    margin: 10px;
+    display: none;
 }
