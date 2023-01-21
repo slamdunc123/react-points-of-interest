@@ -8,7 +8,7 @@ const PointsFilters = ({ handleFilterOnChange, isCheckedFilter }) => {
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>
-				Category
+				Categories
 			</FormLabel>
 			<RadioGroup
 				aria-labelledby='demo-controlled-radio-buttons-group'

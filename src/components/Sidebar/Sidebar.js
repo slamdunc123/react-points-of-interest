@@ -21,7 +21,7 @@ const Sidebar = ({
 		>
 			{isSidebarOpen && (
 				<>
-					<List>
+					<List sx={{ width: 1 }}>
 						<ListItem>
 							<Button
 								variant='outlined'

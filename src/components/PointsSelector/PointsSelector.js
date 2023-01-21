@@ -6,16 +6,16 @@ import Select from '@mui/material/Select';
 const PointsSelector = ({ points, activePoint, handlePointOnChange }) => {
 	return (
 		<FormControl fullWidth>
-			<InputLabel id='demo-simple-select-label'>Points</InputLabel>
+			<InputLabel id='demo-simple-select-label'>Places</InputLabel>
 			<Select
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
 				value={activePoint}
-				label='Points'
+				label='Places'
 				onChange={handlePointOnChange}
 			>
 				{points.map((point) => (
-					<MenuItem value={point}>{point.name}</MenuItem>
+					<MenuItem value={point} key={point.id}>{point.name}</MenuItem>
 				))}
 			</Select>
 		</FormControl>

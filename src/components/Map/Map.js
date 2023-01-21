@@ -10,9 +10,14 @@ import {
 
 const MAP_API = process.env.REACT_APP_MAP_API;
 
-const containerStyle = {
+const containerStyleSidebarOpen = {
+	width: 'calc(100vw - 270px)',
+	height: 'calc(100vh - 64px)',
+};
+
+const containerStyleSidebarClosed = {
 	width: '100vw',
-	height: '100vh',
+	height: 'calc(100vh - 64px)',
 };
 
 const center = {
@@ -37,7 +42,7 @@ const Map = ({
 			/>
 			<LoadScript googleMapsApiKey={MAP_API}>
 				<GoogleMap
-					mapContainerStyle={containerStyle}
+					mapContainerStyle={isSidebarOpen ? containerStyleSidebarOpen : containerStyleSidebarClosed}
 					center={center}
 					zoom={zoom}
 					mapTypeId='satellite'
