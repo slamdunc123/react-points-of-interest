@@ -6,18 +6,18 @@ import styles from './point.module.css'
 const Point = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [point, setPoint] = useState(null);
+  const [point, setPoint] = useState<any>({});
 
   const getPoint = () => {
-    const p = points.find((point) => point.id === id);
-    if (!p) {
+    const point = points.find((point) => point.id === id);
+    if (!point) {
       navigate('/');
-    } else setPoint(p);
+    } else setPoint(point);
   };
 
   useEffect(() => {
     getPoint();
-  }, []);
+  });
 
   return (
     <div className={styles.container}>
