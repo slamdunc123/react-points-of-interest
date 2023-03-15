@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom/client';
 import "./index.css";
 import App from "./App";
 import Point from "./components/Point/Point";
@@ -7,9 +7,11 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EditPoint from "./components/EditPoint/EditPoint";
 
-const rootElement = document.getElementById("root");
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 
-ReactDOM.render(
+root.render(
   <Router>
     <Routes>
       <Route path="/" element={<App />} />
@@ -18,8 +20,7 @@ ReactDOM.render(
       <Route path="/add-point" element={<AddPoint />} />
       <Route path="/edit-point/:id" element={<EditPoint />} />
     </Routes>
-  </Router>,
-  rootElement
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

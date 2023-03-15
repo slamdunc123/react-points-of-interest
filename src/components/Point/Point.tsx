@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import points from '../../points';
+import styles from './point.module.css'
 
 const Point = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const Point = () => {
   });
 
   return (
-    <div>
+    <div className={styles.container}>
       <Link to="/">Home</Link>
       <Link to={`/edit-point/${id}`}>Edit</Link>
       {point ? (
