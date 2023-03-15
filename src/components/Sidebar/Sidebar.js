@@ -1,8 +1,12 @@
+import React from 'react';
 import PointsFilters from '../PointsFilter/PointsFilter';
 import PointsSelector from '../PointsSelector/PointsSelector';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
-import { Button, Divider, List, ListItem } from '@mui/material';
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const Sidebar = ({

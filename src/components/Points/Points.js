@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState } from 'react';
 
 import Map from '../Map/Map';
@@ -19,8 +21,9 @@ const Points = () => {
 	};
 
 	const handlePointOnChange = (e) => {
-    console.log(e.target.value)
-		const activePointObj = points.find((point) => point.id === e.target.value);
+    console.log(e.target.value.id)
+		const activePointObj = points.find((point) => point.id === e.target.value.id);
+		console.log("slamdunc ~ file: Points.js:24 ~ handlePointOnChange ~ activePointObj:", activePointObj)
 		// const activePointObj = e.target.value;
 		activePointObj && setActivePoint(activePointObj);
 	};

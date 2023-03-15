@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import points from '../../points';
-import styles from './point.module.css'
 
 const Point = () => {
   const { id } = useParams();
@@ -20,7 +19,7 @@ const Point = () => {
   });
 
   return (
-    <div className={styles.container}>
+    <div>
       <Link to="/">Home</Link>
       <Link to={`/edit-point/${id}`}>Edit</Link>
       {point ? (
@@ -29,7 +28,7 @@ const Point = () => {
           <p>{`Built: ${point.yearBuilt}`}</p>
           <p>
             Website:{' '}
-            <a href={`${point.url}`} target="_blank">
+            <a href={`${point.url}`}>
               visit
             </a>
           </p>
