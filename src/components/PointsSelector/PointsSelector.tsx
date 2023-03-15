@@ -3,7 +3,23 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const PointsSelector = ({ points, activePoint, handlePointOnChange }) => {
+interface Point {
+  id: any;
+  lat: number;
+  lng: number;
+  name: string;
+  type: string;
+  yearBuilt: string;
+  url: string;
+}
+
+interface PointsSelectorProps {
+  points: Point[];
+  activePoint: any;
+  handlePointOnChange: any;
+}
+
+const PointsSelector = ({ points, activePoint, handlePointOnChange }: PointsSelectorProps) => {
 	return (
 		<FormControl fullWidth>
 			<InputLabel id='demo-simple-select-label'>Places</InputLabel>
@@ -14,7 +30,7 @@ const PointsSelector = ({ points, activePoint, handlePointOnChange }) => {
 				label='Places'
 				onChange={handlePointOnChange}
 			>
-				{points.map((point) => (
+				{points.map((point: any) => (
 					<MenuItem value={point} key={point.id}>{point.name}</MenuItem>
 				))}
 			</Select>

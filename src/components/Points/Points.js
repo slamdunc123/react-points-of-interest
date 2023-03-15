@@ -19,8 +19,9 @@ const Points = () => {
 	};
 
 	const handlePointOnChange = (e) => {
-		// const activePointObj = points.find((point) => point.id === e.target.value);
-		const activePointObj = e.target.value;
+    console.log(e.target.value)
+		const activePointObj = points.find((point) => point.id === e.target.value);
+		// const activePointObj = e.target.value;
 		activePointObj && setActivePoint(activePointObj);
 	};
 
