@@ -6,6 +6,9 @@ import AddPoint from "./components/AddPoint/AddPoint";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EditPoint from "./components/EditPoint/EditPoint";
+import { Amplify } from 'aws-amplify';
+import config from './aws-exports';
+Amplify.configure(config);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
