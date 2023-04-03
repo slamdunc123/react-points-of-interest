@@ -6,7 +6,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import { Button } from '@mui/material';
 
 const Point = ({ points }: any) => {
 	const { id } = useParams();
