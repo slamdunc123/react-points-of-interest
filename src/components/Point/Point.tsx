@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
-import points from '../../points';
 import styles from './point.module.css';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { Button } from '@mui/material';
 
-const Point = () => {
+const Point = ({ points }: any) => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [point, setPoint] = useState<any>({});
 
 	const getPoint = () => {
-		const point = points.find((point) => point.id === id);
+		const point = points.find((point: any) => point.id === id);
 		if (!point) {
 			navigate('/');
 		} else setPoint(point);
@@ -47,6 +47,16 @@ const Point = () => {
 								>
 									{`Built: ${point.yearBuilt}`}
 								</Typography>
+								{point.url && (
+									<Link href={`${point.url}`}>
+										<Typography
+											variant='body2'
+											color='text.secondary'
+										>
+											Website
+										</Typography>
+									</Link>
+								)}
 							</CardContent>
 							<CardActions
 								sx={{
@@ -60,9 +70,6 @@ const Point = () => {
 									underline='none'
 								>
 									Edit
-								</Link>
-								<Link href={`${point.url}`} underline='none'>
-									More
 								</Link>
 							</CardActions>
 						</Card>

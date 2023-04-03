@@ -1,17 +1,13 @@
-import React from 'react';
-
 import { useState } from 'react';
 
 import Map from '../Map/Map';
 import Sidebar from '../Sidebar/Sidebar';
 
-import points from '../../points';
 import { ALL_POINTS } from '../../constants/PointTypes';
 
 import styles from './points.module.css';
 
-const Points = () => {
-	const [filteredSetOfPoints, setFilteredSetOfPoints] = useState(points);
+const Points = ({ points, setPoints }) => {
 	const [isCheckedFilter, setIsCheckedFilter] = useState(ALL_POINTS);
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,7 +17,9 @@ const Points = () => {
 	};
 
 	const handlePointOnChange = (e) => {
-		const activePointObj = points.find((point) => point.id === e.target.value.id);
+		const activePointObj = points.find(
+			(point) => point.id === e.target.value.id
+		);
 		activePointObj && setActivePoint(activePointObj);
 	};
 
@@ -30,12 +28,12 @@ const Points = () => {
 		setIsCheckedFilter(value);
 		setActivePoint('');
 		if (value === ALL_POINTS) {
-			setFilteredSetOfPoints(points);
+			setPoints(points);
 		} else {
 			const filteredPoints = points.filter(
 				(point) => point.type === value
 			);
-			setFilteredSetOfPoints(filteredPoints);
+			setPoints(filteredPoints);
 		}
 	};
 
@@ -47,7 +45,7 @@ const Points = () => {
 		<div className={styles.container}>
 			<Sidebar
 				handleFilterOnChange={handleFilterOnChange}
-				points={filteredSetOfPoints}
+				points={points}
 				activePoint={activePoint}
 				handlePointOnChange={handlePointOnChange}
 				isCheckedFilter={isCheckedFilter}
@@ -55,12 +53,11 @@ const Points = () => {
 			/>
 
 			<Map
-				points={filteredSetOfPoints}
+				points={points}
 				activePoint={activePoint}
 				handlePointOnClick={handlePointOnClick}
-        handleSidebarOnClick={handleSidebarOnClick}
+				handleSidebarOnClick={handleSidebarOnClick}
 				isSidebarOpen={isSidebarOpen}
-
 			/>
 		</div>
 	);
