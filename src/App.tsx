@@ -6,15 +6,10 @@ import Points from './components/Points/Points';
 import { listPoints } from './graphql/queries';
 import { API } from 'aws-amplify';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
 import { ALL_POINTS } from './constants/PointTypes';
-import {
-	createPoint as createPointMutation,
-	deletePoint as deletePointMutation,
-} from './graphql/mutations';
 import {
 	createPoint as createPointMutation,
 	deletePoint as deletePointMutation,

@@ -1,6 +1,6 @@
 // @ts-nocheck
-
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -10,6 +10,19 @@ import styles from './point.module.css';
 
 const Point = ({ points, handleDeletePoint }: any) => {
 	const { id } = useParams();
+	const navigate = useNavigate();
+	const [point, setPoint] = useState<any>({});
+
+	const getPoint = () => {
+		const point = points.find((point: any) => point.id === id);
+		if (!point) {
+			navigate('/');
+		} else setPoint(point);
+	};
+
+	useEffect(() => {
+		getPoint();
+	});
 
 	return (
 		<>
@@ -17,7 +30,7 @@ const Point = ({ points, handleDeletePoint }: any) => {
 				Home
 			</Link>
 			<div className={styles.container}>
-				{activePoint ? (
+				{point ? (
 					<>
 						<Card sx={{ maxWidth: 345 }}>
 							<CardContent>
@@ -26,16 +39,16 @@ const Point = ({ points, handleDeletePoint }: any) => {
 									variant='h5'
 									component='div'
 								>
-									{activePoint.name}
+									{point.name}
 								</Typography>
 								<Typography
 									variant='body2'
 									color='text.secondary'
 								>
-									{`Built: ${activePoint.yearBuilt}`}
+									{`Built: ${point.yearBuilt}`}
 								</Typography>
-								{activePoint.url && (
-									<Link href={`${activePoint.url}`}>
+								{point.url && (
+									<Link href={`${point.url}`}>
 										<Typography
 											variant='body2'
 											color='text.secondary'
@@ -55,13 +68,13 @@ const Point = ({ points, handleDeletePoint }: any) => {
 									component={RouterLink}
 									to={`/edit-point/${id}`}
 									underline='none'
-                  sx={{
+									sx={{
 										margin: 1,
 									}}
 								>
 									Edit
 								</Link>
-                <Link
+								<Link
 									component='button'
 									// variant='body2'
 									underline='none'
