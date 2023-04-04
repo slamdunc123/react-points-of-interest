@@ -7,9 +7,8 @@ import { ALL_POINTS } from '../../constants/PointTypes';
 
 import styles from './points.module.css';
 
-const Points = ({ points, updatePoints }) => {
+const Points = ({ points, updatePoints, activePoint, setActivePoint }) => {
 	const [isCheckedFilter, setIsCheckedFilter] = useState(ALL_POINTS);
-	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	const handlePointOnClick = (point) => {
@@ -27,7 +26,7 @@ const Points = ({ points, updatePoints }) => {
 		const value = e.target.value;
 		setIsCheckedFilter(value);
 		setActivePoint('');
-	updatePoints(value)
+		updatePoints(value);
 	};
 
 	const handleSidebarOnClick = (isOpen) => {

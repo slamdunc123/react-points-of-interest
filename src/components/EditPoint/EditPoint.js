@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import styles from "./editPoint.module.css";
 
-const EditPoint = () => {
+const EditPoint = ({activePoint}) => {
   return (
     <div className={styles.container}>
       <Link to="/">Home</Link>
