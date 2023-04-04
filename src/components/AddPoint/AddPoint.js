@@ -22,7 +22,6 @@ const AddPoint = ({handleAddPoint}) => {
 
 
 	const handleOnChange = (e) => {
-		console.log(e.target.value);
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
   
@@ -37,7 +36,6 @@ const AddPoint = ({handleAddPoint}) => {
 						<div>Add Point Contents</div>
 						<form
 							onSubmit={handleAddPoint}
-							onSubmit={handleAddPoint}
 							className={styles.form}
 						>
 							<TextField
@@ -46,8 +44,6 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='name'
-								// value={formData.name}
-								// onChange={handleOnChange}
 								// value={formData.name}
 								// onChange={handleOnChange}
 								size='small'
@@ -60,8 +56,6 @@ const AddPoint = ({handleAddPoint}) => {
 								name='lat'
 								// value={formData.lat}
 								// onChange={handleOnChange}
-								// value={formData.lat}
-								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -70,8 +64,6 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='lng'
-								// value={formData.lng}
-								// onChange={handleOnChange}
 								// value={formData.lng}
 								// onChange={handleOnChange}
 								size='small'
@@ -94,8 +86,6 @@ const AddPoint = ({handleAddPoint}) => {
 								name='yearBuilt'
 								// value={formData.yearBuilt}
 								// onChange={handleOnChange}
-								// value={formData.yearBuilt}
-								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -104,8 +94,6 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='url'
-								// value={formData.url}
-								// onChange={handleOnChange}
 								// value={formData.url}
 								// onChange={handleOnChange}
 								size='small'

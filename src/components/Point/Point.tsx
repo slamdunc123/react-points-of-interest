@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link as RouterLink } from 'react-router-dom';
+
+import { useEffect } from 'react';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,20 +9,11 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import styles from './point.module.css';
 
-const Point = ({ points, handleDeletePoint }: any) => {
+const Point = ({ handleDeletePoint, point, getActivePoint }: any) => {
 	const { id } = useParams();
-	const navigate = useNavigate();
-	const [point, setPoint] = useState<any>({});
-
-	const getPoint = () => {
-		const point = points.find((point: any) => point.id === id);
-		if (!point) {
-			navigate('/');
-		} else setPoint(point);
-	};
 
 	useEffect(() => {
-		getPoint();
+		getActivePoint(id);
 	});
 
 	return (
@@ -76,7 +68,6 @@ const Point = ({ points, handleDeletePoint }: any) => {
 								</Link>
 								<Link
 									component='button'
-									// variant='body2'
 									underline='none'
 									onClick={() => {
 										handleDeletePoint(id);

@@ -18,13 +18,20 @@ import {
 function App() {
 	const [points, setPoints] = useState([]);
 	const [filteredPoints, setFilteredPoints] = useState([]);
+	const [activePoint, setActivePoint] = useState<any>({});
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetchPoints();
 	}, []);
+	const getActivePoint = (id) => {
+		const point = points.find((point: any) => point.id === id);
+		if (!point) {
+			navigate('/');
+		} else setActivePoint(point);
+	};
 
-	async function fetchPoints() {
+	const fetchPoints = async () => {
 		try {
 			const apiData = await API.graphql({ query: listPoints });
 			const pointsFromAPI = apiData.data.listPoints.items;
@@ -33,7 +40,7 @@ function App() {
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 
 	const filterPoints = (value) => {
 		if (value === ALL_POINTS) {
@@ -98,8 +105,9 @@ function App() {
 				path='/:id'
 				element={
 					<Point
-						points={points}
+						point={activePoint}
 						handleDeletePoint={handleDeletePoint}
+						getActivePoint={getActivePoint}
 					/>
 				}
 			/>
