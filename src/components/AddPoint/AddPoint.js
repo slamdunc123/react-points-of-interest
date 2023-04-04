@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import styles from './addPoint.module.css';
-import { API } from 'aws-amplify';
-import { createPoint as createPointMutation } from '../../graphql/mutations';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-const AddPoint = () => {
+const AddPoint = ({handleAddPoint}) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -21,29 +19,14 @@ const AddPoint = () => {
 
 	const [formData, setFormData] = useState(initialFormData);
 
+
 	const handleOnChange = (e) => {
 		console.log(e.target.value);
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+  
 
-	const handleOnSubmitAddPoint = async (event) => {
-		event.preventDefault();
-		console.log('formData', formData);
-		const form = new FormData(event.target);
-		const data = {
-			name: form.get('name'),
-			lat: form.get('lat'),
-			lng: form.get('lng'),
-			type: form.get('type'),
-			yearBuilt: form.get('yearBuilt'),
-			url: form.get('url'),
-		};
-		await API.graphql({
-			query: createPointMutation,
-			variables: { input: data },
-		});
-		setFormData(initialFormData);
-	};
+
 	return (
 		<>
 			<Link to='/'>Home</Link>
@@ -52,7 +35,7 @@ const AddPoint = () => {
 					<CardContent>
 						<div>Add Point Contents</div>
 						<form
-							onSubmit={handleOnSubmitAddPoint}
+							onSubmit={handleAddPoint}
 							className={styles.form}
 						>
 							<TextField
@@ -61,8 +44,8 @@ const AddPoint = () => {
 								variant='outlined'
 								type='text'
 								name='name'
-								value={formData.name}
-								onChange={handleOnChange}
+								// value={formData.name}
+								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -71,8 +54,8 @@ const AddPoint = () => {
 								variant='outlined'
 								type='text'
 								name='lat'
-								value={formData.lat}
-								onChange={handleOnChange}
+								// value={formData.lat}
+								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -81,8 +64,8 @@ const AddPoint = () => {
 								variant='outlined'
 								type='text'
 								name='lng'
-								value={formData.lng}
-								onChange={handleOnChange}
+								// value={formData.lng}
+								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -101,8 +84,8 @@ const AddPoint = () => {
 								variant='outlined'
 								type='text'
 								name='yearBuilt'
-								value={formData.yearBuilt}
-								onChange={handleOnChange}
+								// value={formData.yearBuilt}
+								// onChange={handleOnChange}
 								size='small'
 							/>
 							<TextField
@@ -111,8 +94,8 @@ const AddPoint = () => {
 								variant='outlined'
 								type='text'
 								name='url'
-								value={formData.url}
-								onChange={handleOnChange}
+								// value={formData.url}
+								// onChange={handleOnChange}
 								size='small'
 							/>
 							<Button

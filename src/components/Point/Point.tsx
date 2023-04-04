@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-const Point = ({ points }: any) => {
+const Point = ({ points, handleDeletePoint }: any) => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [point, setPoint] = useState<any>({});
@@ -67,8 +67,21 @@ const Point = ({ points }: any) => {
 									component={RouterLink}
 									to={`/edit-point/${id}`}
 									underline='none'
+                  sx={{
+										margin: 1,
+									}}
 								>
 									Edit
+								</Link>
+                <Link
+									component='button'
+									// variant='body2'
+									underline='none'
+									onClick={() => {
+										handleDeletePoint(id);
+									}}
+								>
+									Delete
 								</Link>
 							</CardActions>
 						</Card>
