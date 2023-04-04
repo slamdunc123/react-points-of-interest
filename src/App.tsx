@@ -6,10 +6,15 @@ import Points from './components/Points/Points';
 import { listPoints } from './graphql/queries';
 import { API } from 'aws-amplify';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
 import { ALL_POINTS } from './constants/PointTypes';
+import {
+	createPoint as createPointMutation,
+	deletePoint as deletePointMutation,
+} from './graphql/mutations';
 import {
 	createPoint as createPointMutation,
 	deletePoint as deletePointMutation,
@@ -25,10 +30,14 @@ function App() {
 	}, []);
 
 	async function fetchPoints() {
-		const apiData = await API.graphql({ query: listPoints });
-		const pointsFromAPI = apiData.data.listPoints.items;
-		setPoints(pointsFromAPI);
-		setFilteredPoints(pointsFromAPI);
+		try {
+			const apiData = await API.graphql({ query: listPoints });
+			const pointsFromAPI = apiData.data.listPoints.items;
+			setPoints(pointsFromAPI);
+			setFilteredPoints(pointsFromAPI);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	const filterPoints = (value) => {
