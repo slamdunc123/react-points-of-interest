@@ -14,7 +14,7 @@ const Sidebar = ({
 	activePoint,
 	handlePointOnChange,
 	handleFilterOnChange,
-	isCheckedFilter,
+	checkedFilter,
 	isSidebarOpen,
 }) => {
 	return (
@@ -42,7 +42,7 @@ const Sidebar = ({
 						<ListItem>
 							<PointsFilters
 								handleFilterOnChange={handleFilterOnChange}
-								isCheckedFilter={isCheckedFilter}
+								checkedFilter={checkedFilter}
 							/>
 						</ListItem>
 						<Divider />

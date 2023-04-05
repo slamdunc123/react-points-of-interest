@@ -18,7 +18,10 @@ import {
 function App() {
 	const [points, setPoints] = useState([]);
 	const [filteredPoints, setFilteredPoints] = useState([]);
+	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
+	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [activePoint, setActivePoint] = useState<any>({});
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -45,17 +48,19 @@ function App() {
 	const filterPoints = (value) => {
 		if (value === ALL_POINTS) {
 			setFilteredPoints(points);
+			setCheckedFilter(ALL_POINTS);
 		} else {
 			const filteredPoints = points.filter(
 				(point) => point.type === value
 			);
 			setFilteredPoints(filteredPoints);
+			setCheckedFilter(value);
 		}
 	};
 
-	const handleAddPoint = async (event) => {
-		event.preventDefault();
-		const form = new FormData(event.target);
+	const handleAddPoint = async (e) => {
+		e.preventDefault();
+		const form = new FormData(e.target);
 		const data = {
 			name: form.get('name'),
 			lat: form.get('lat'),
@@ -97,6 +102,9 @@ function App() {
 					<Points
 						points={filteredPoints}
 						filterPoints={filterPoints}
+						checkedFilter={checkedFilter}
+						isFilteringActive={isFilteringActive}
+						setIsFilteringActive={setIsFilteringActive}
 					/>
 				}
 			/>

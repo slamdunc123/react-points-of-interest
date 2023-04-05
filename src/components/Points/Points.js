@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Map from '../Map/Map';
 import Sidebar from '../Sidebar/Sidebar';
 
-import { ALL_POINTS } from '../../constants/PointTypes';
-
 import styles from './points.module.css';
 
-const Points = ({ points, filterPoints }) => {
-	const [isCheckedFilter, setIsCheckedFilter] = useState(ALL_POINTS);
+const Points = ({
+	points,
+	filterPoints,
+	checkedFilter,
+	isFilteringActive,
+	setIsFilteringActive,
+}) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+	useEffect(() => {
+		isFilteringActive && setIsSidebarOpen(true);
+	}, [isFilteringActive]);
 
 	const handlePointOnClick = (point) => {
 		setActivePoint(point);
@@ -25,9 +32,9 @@ const Points = ({ points, filterPoints }) => {
 
 	const handleFilterOnChange = (e) => {
 		const value = e.target.value;
-		setIsCheckedFilter(value);
 		setActivePoint('');
-	filterPoints(value)
+		filterPoints(value);
+		setIsFilteringActive(true);
 	};
 
 	const handleSidebarOnClick = (isOpen) => {
@@ -41,7 +48,7 @@ const Points = ({ points, filterPoints }) => {
 				points={points}
 				activePoint={activePoint}
 				handlePointOnChange={handlePointOnChange}
-				isCheckedFilter={isCheckedFilter}
+				checkedFilter={checkedFilter}
 				isSidebarOpen={isSidebarOpen}
 			/>
 

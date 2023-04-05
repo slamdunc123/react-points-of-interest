@@ -7,9 +7,9 @@ import FormLabel from '@mui/material/FormLabel';
 
 interface PointsFilterProps {
   handleFilterOnChange(): any;
-  isCheckedFilter: boolean;
+  checkedFilter: string;
 }
-const PointsFilters = ({ handleFilterOnChange, isCheckedFilter }: PointsFilterProps) => {
+const PointsFilters = ({ handleFilterOnChange, checkedFilter }: PointsFilterProps) => {
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>
@@ -18,7 +18,7 @@ const PointsFilters = ({ handleFilterOnChange, isCheckedFilter }: PointsFilterPr
 			<RadioGroup
 				aria-labelledby='demo-controlled-radio-buttons-group'
 				name='controlled-radio-buttons-group'
-				value={isCheckedFilter}
+				value={checkedFilter}
 				onChange={handleFilterOnChange}
 			>
 				<FormControlLabel value='all' control={<Radio />} label='All' />
