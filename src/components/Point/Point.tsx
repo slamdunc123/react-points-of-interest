@@ -1,7 +1,6 @@
 // @ts-nocheck
 
-import { useEffect } from 'react';
-import { useParams, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,13 +8,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import styles from './point.module.css';
 
-const Point = ({ handleDeletePoint, point, getActivePoint }: any) => {
-	const { id } = useParams();
-
-	useEffect(() => {
-		getActivePoint(id);
-	});
-
+const Point = ({ handleDeletePoint, point }: any) => {
 	return (
 		<>
 			<Link component={RouterLink} to='/' underline='none'>
@@ -58,7 +51,7 @@ const Point = ({ handleDeletePoint, point, getActivePoint }: any) => {
 							>
 								<Link
 									component={RouterLink}
-									to={`/edit-point/${id}`}
+									to={`/edit-point/${point.id}`}
 									underline='none'
 									sx={{
 										margin: 1,

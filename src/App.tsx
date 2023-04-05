@@ -5,7 +5,7 @@ import './App.css';
 import Points from './components/Points/Points';
 import { listPoints } from './graphql/queries';
 import { API } from 'aws-amplify';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useMatch } from 'react-router-dom';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
@@ -20,19 +20,17 @@ function App() {
 	const [filteredPoints, setFilteredPoints] = useState([]);
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
-	const [activePoint, setActivePoint] = useState<any>({});
 
 	const navigate = useNavigate();
+  const match = useMatch('/:id')  
+  
+  const point = match
+  ? points.find(point => point.id === match.params.id)    
+  : null
 
 	useEffect(() => {
 		fetchPoints();
 	}, []);
-	const getActivePoint = (id) => {
-		const point = points.find((point: any) => point.id === id);
-		if (!point) {
-			navigate('/');
-		} else setActivePoint(point);
-	};
 
 	const fetchPoints = async () => {
 		try {
@@ -113,9 +111,8 @@ function App() {
 				path='/:id'
 				element={
 					<Point
-						point={activePoint}
+            point={point}
 						handleDeletePoint={handleDeletePoint}
-						getActivePoint={getActivePoint}
 					/>
 				}
 			/>

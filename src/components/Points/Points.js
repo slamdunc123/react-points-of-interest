@@ -24,10 +24,8 @@ const Points = ({
 	};
 
 	const handlePointOnChange = (e) => {
-		const activePointObj = points.find(
-			(point) => point.id === e.target.value.id
-		);
-		activePointObj && setActivePoint(activePointObj);
+		const { value } = e.target;
+		setActivePoint(value);
 	};
 
 	const handleFilterOnChange = (e) => {
