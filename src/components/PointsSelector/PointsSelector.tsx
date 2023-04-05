@@ -24,12 +24,12 @@ interface PointsSelectorProps {
 const PointsSelector = ({ points, activePoint, handlePointOnChange }: PointsSelectorProps) => {
 	return (
 		<FormControl fullWidth>
-			<InputLabel id='demo-simple-select-label'>Places</InputLabel>
+			<InputLabel id='demo-simple-select-label'>Points</InputLabel>
 			<Select
 				labelId='demo-simple-select-label'
 				id='demo-simple-select'
 				value={activePoint}
-				label='Places'
+				label='Points'
 				onChange={handlePointOnChange}
 			>
 				{points.map((point: any) => (

@@ -63,7 +63,7 @@ const Point = ({ handleDeletePoint, point }: any) => {
 									component='button'
 									underline='none'
 									onClick={() => {
-										handleDeletePoint(id);
+										handleDeletePoint(point.id);
 									}}
 								>
 									Delete
