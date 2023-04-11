@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './editPoint.module.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -9,12 +9,19 @@ import CardContent from '@mui/material/CardContent';
 import { Box } from '@mui/material';
 
 const EditPoint = ({ handleEditPoint, editPoint }) => {
-	console.log("slamdunc ~ file: EditPoint.js:12 ~ EditPoint ~ editPoint:", editPoint)
 	const [formData, setFormData] = useState(editPoint);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!editPoint) navigate(-1);
+	}, [editPoint, navigate]);
 
 	const handleOnChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+
+	if (!editPoint) return null;
 
 	return (
 		<>
