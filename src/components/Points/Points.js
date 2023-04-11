@@ -5,13 +5,7 @@ import Sidebar from '../Sidebar/Sidebar';
 
 import styles from './points.module.css';
 
-const Points = ({
-	points,
-	filterPoints,
-	checkedFilter,
-	isFilteringActive,
-	setIsFilteringActive,
-}) => {
+const Points = ({ points, filterPoints, checkedFilter, isFilteringActive }) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -32,7 +26,6 @@ const Points = ({
 		const value = e.target.value;
 		setActivePoint('');
 		filterPoints(value);
-		setIsFilteringActive(true);
 	};
 
 	const handleSidebarOnClick = (isOpen) => {

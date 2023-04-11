@@ -13,13 +13,14 @@ import { ALL_POINTS } from './constants/PointTypes';
 import {
 	createPoint as createPointMutation,
 	deletePoint as deletePointMutation,
+	updatePoint as updatePointMutation,
 } from './graphql/mutations';
 
 function App() {
-
-  // TODO: check if both points and filteredPoints are needed
+	// TODO: check if both points and filteredPoints are needed
 	const [points, setPoints] = useState([]);
 	const [filteredPoints, setFilteredPoints] = useState([]);
+
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
@@ -50,6 +51,7 @@ function App() {
 	};
 
 	const filterPoints = (value) => {
+		setIsFilteringActive(true);
 		if (value === ALL_POINTS) {
 			setFilteredPoints(points);
 			setCheckedFilter(ALL_POINTS);
@@ -62,23 +64,35 @@ function App() {
 		}
 	};
 
-	const handleAddPoint = async (e) => {
+	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
-		const form = new FormData(e.target);
-		const data = {
-			name: form.get('name'),
-			lat: form.get('lat'),
-			lng: form.get('lng'),
-			type: form.get('type'),
-			yearBuilt: form.get('yearBuilt'),
-			url: form.get('url'),
-		};
 		try {
 			const res = await API.graphql({
 				query: createPointMutation,
 				variables: { input: data },
 			});
 			setFilteredPoints([...filteredPoints, res.data.createPoint]);
+			navigate('/');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleEditPoint = async (e, data) => {
+		e.preventDefault();
+
+		delete data.createdAt;
+		delete data.updatedAt;
+		try {
+			await API.graphql({
+				query: updatePointMutation,
+				variables: { input: data },
+			});
+
+			const newFilteredPoints = filteredPoints.map((point) =>
+				point.id === data.id ? { ...point, ...data } : point
+			);
+
+			setFilteredPoints(newFilteredPoints);
 			navigate('/');
 		} catch (error) {
 			console.log(error);
@@ -91,11 +105,11 @@ function App() {
 				query: deletePointMutation,
 				variables: { input: { id } },
 			});
-			navigate('/');
 			const newFilteredPoints = filteredPoints.filter(
 				(point) => point.id !== id
 			);
 			setFilteredPoints(newFilteredPoints);
+			navigate('/');
 		} catch (error) {
 			console.log(error);
 		}
@@ -111,7 +125,6 @@ function App() {
 						filterPoints={filterPoints}
 						checkedFilter={checkedFilter}
 						isFilteringActive={isFilteringActive}
-						setIsFilteringActive={setIsFilteringActive}
 					/>
 				}
 			/>
@@ -128,7 +141,15 @@ function App() {
 				path='/add-point'
 				element={<AddPoint handleAddPoint={handleAddPoint} />}
 			/>
-			<Route path='/edit-point/:id' element={<EditPoint editPoint={editPoint}/>} />
+			<Route
+				path='/edit-point/:id'
+				element={
+					<EditPoint
+						editPoint={editPoint}
+						handleEditPoint={handleEditPoint}
+					/>
+				}
+			/>
 		</Routes>
 	);
 }

@@ -6,8 +6,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { Box } from '@mui/material';
 
-const AddPoint = ({handleAddPoint}) => {
+const AddPoint = ({ handleAddPoint }) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -19,13 +20,9 @@ const AddPoint = ({handleAddPoint}) => {
 
 	const [formData, setFormData] = useState(initialFormData);
 
-
-
 	const handleOnChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
-  
-
 
 	return (
 		<>
@@ -35,7 +32,7 @@ const AddPoint = ({handleAddPoint}) => {
 					<CardContent>
 						<div>Add Point Contents</div>
 						<form
-							onSubmit={handleAddPoint}
+							onSubmit={(e) => handleAddPoint(e, formData)}
 							className={styles.form}
 						>
 							<TextField
@@ -44,9 +41,10 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='name'
-								// value={formData.name}
-								// onChange={handleOnChange}
+								value={formData.name}
+								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
 							<TextField
 								id='outlined-basic'
@@ -54,9 +52,10 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='lat'
-								// value={formData.lat}
-								// onChange={handleOnChange}
+								value={formData.lat}
+								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
 							<TextField
 								id='outlined-basic'
@@ -64,9 +63,10 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='lng'
-								// value={formData.lng}
-								// onChange={handleOnChange}
+								value={formData.lng}
+								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
 							<TextField
 								id='outlined-basic'
@@ -77,6 +77,7 @@ const AddPoint = ({handleAddPoint}) => {
 								value={formData.type}
 								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
 							<TextField
 								id='outlined-basic'
@@ -84,9 +85,10 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='yearBuilt'
-								// value={formData.yearBuilt}
-								// onChange={handleOnChange}
+								value={formData.yearBuilt}
+								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
 							<TextField
 								id='outlined-basic'
@@ -94,17 +96,20 @@ const AddPoint = ({handleAddPoint}) => {
 								variant='outlined'
 								type='text'
 								name='url'
-								// value={formData.url}
-								// onChange={handleOnChange}
+								value={formData.url}
+								onChange={handleOnChange}
 								size='small'
+								margin='normal'
 							/>
-							<Button
-								variant='contained'
-								type='submit'
-								value='Submit'
-							>
-								Submit
-							</Button>
+							<Box mt={2}>
+								<Button
+									variant='contained'
+									type='submit'
+									value='Submit'
+								>
+									Submit
+								</Button>
+							</Box>
 						</form>
 					</CardContent>
 				</Card>
