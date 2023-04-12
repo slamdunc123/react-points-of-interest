@@ -22,7 +22,7 @@ const containerStyleSidebarClosed = {
 };
 
 const center = {
-	lat: 53.19495626366442,
+	lat: 53.19455626366442,
 	lng: -1.695365906570867,
 };
 
