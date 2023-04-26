@@ -18,8 +18,8 @@ import {
 
 function App() {
 	// TODO: check if both points and filteredPoints are needed
-	const [points, setPoints] = useState([]);
-	const [filteredPoints, setFilteredPoints] = useState([]);
+	const [points, setPoints] = useState([]); // these can change on add, edit, delete point
+	const [filteredPoints, setFilteredPoints] = useState([]); // these can change on changing filters
 
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
@@ -56,10 +56,10 @@ function App() {
 			setFilteredPoints(points);
 			setCheckedFilter(ALL_POINTS);
 		} else {
-			const filteredPoints = points.filter(
+			const pointsFilteredByValue = points.filter(
 				(point) => point.type === value
 			);
-			setFilteredPoints(filteredPoints);
+			setFilteredPoints(pointsFilteredByValue);
 			setCheckedFilter(value);
 		}
 	};
@@ -88,11 +88,11 @@ function App() {
 				variables: { input: data },
 			});
 
-			const newFilteredPoints = filteredPoints.map((point) =>
+			const pointsIncludingPointUpdate = points.map((point) =>
 				point.id === data.id ? { ...point, ...data } : point
 			);
 
-			setFilteredPoints(newFilteredPoints);
+			setPoints(pointsIncludingPointUpdate);
 			navigate('/');
 		} catch (error) {
 			console.log(error);
@@ -105,10 +105,10 @@ function App() {
 				query: deletePointMutation,
 				variables: { input: { id } },
 			});
-			const newFilteredPoints = filteredPoints.filter(
+			const pointsWithPointDeleted = filteredPoints.filter(
 				(point) => point.id !== id
 			);
-			setFilteredPoints(newFilteredPoints);
+			setFilteredPoints(pointsWithPointDeleted);
 			navigate('/');
 		} catch (error) {
 			console.log(error);
