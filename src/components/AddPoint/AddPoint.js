@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
-import styles from './addPoint.module.css';
+import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Box } from '@mui/material';
+import { Box, ButtonGroup, Container } from '@mui/material';
 
 const AddPoint = ({ handleAddPoint }) => {
 	const initialFormData = {
@@ -20,20 +19,37 @@ const AddPoint = ({ handleAddPoint }) => {
 
 	const [formData, setFormData] = useState(initialFormData);
 
+	const navigate = useNavigate();
+
 	const handleOnChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
+	const handleCancelButtonOnClick = () => {
+		navigate(-1);
+	};
+
 	return (
-		<>
-			<Link to='/'>Home</Link>
-			<div className={styles.container}>
-				<Card>
-					<CardContent>
-						<div>Add Point Contents</div>
-						<form
-							onSubmit={(e) => handleAddPoint(e, formData)}
-							className={styles.form}
+		<Container fixed>
+				<Button
+					variant='outlined'
+					type='button'
+					value='Home'
+					size='small'
+          component={Link} to='/'
+				>
+					Home
+				</Button>
+			<Card sx={{ marginTop: 2 }} variant='outlined'>
+				<CardContent>
+					<div>Add Point Contents</div>
+					<form onSubmit={(e) => handleAddPoint(e, formData)}>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'flex-start',
+							}}
 						>
 							<TextField
 								id='outlined-basic'
@@ -101,20 +117,32 @@ const AddPoint = ({ handleAddPoint }) => {
 								size='small'
 								margin='normal'
 							/>
-							<Box mt={2}>
-								<Button
-									variant='contained'
-									type='submit'
-									value='Submit'
-								>
-									Submit
-								</Button>
-							</Box>
-						</form>
-					</CardContent>
-				</Card>
-			</div>
-		</>
+							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+								<Box mr={2}>
+									<Button
+										variant='contained'
+										type='submit'
+										value='Submit'
+									>
+										Submit
+									</Button>
+								</Box>
+								<Box>
+									<Button
+										variant='contained'
+										type='button'
+										value='Cancel'
+										onClick={handleCancelButtonOnClick}
+									>
+										Cancel
+									</Button>
+								</Box>
+							</ButtonGroup>
+						</Box>
+					</form>
+				</CardContent>
+			</Card>
+		</Container>
 	);
 };
 export default AddPoint;

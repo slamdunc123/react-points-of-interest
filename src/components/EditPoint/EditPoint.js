@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './editPoint.module.css';
+import { Link,  useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Box } from '@mui/material';
+import { Box, ButtonGroup, Container } from '@mui/material';
 
 const EditPoint = ({ handleEditPoint, editPoint }) => {
 	const [formData, setFormData] = useState(editPoint);
@@ -21,18 +20,34 @@ const EditPoint = ({ handleEditPoint, editPoint }) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
+	const handleCancelButtonOnClick = () => {
+		navigate(-1);
+	};
+
 	if (!editPoint) return null;
 
 	return (
-		<>
-			<Link to='/'>Home</Link>
-			<div className={styles.container}>
-				<Card>
-					<CardContent>
-						<div>Edit Point Contents</div>
-						<form
-							onSubmit={(e) => handleEditPoint(e, formData)}
-							className={styles.form}
+		<Container fixed>
+				<Button
+					variant='outlined'
+					type='button'
+					value='Home'
+					size='small'
+          component={Link} to='/'
+				>
+					Home
+				</Button>
+			<Card sx={{ marginTop: 2 }} variant='outlined'>
+				<CardContent>
+					<div>Edit Point Contents</div>
+
+					<form onSubmit={(e) => handleEditPoint(e, formData)}>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'flex-start',
+							}}
 						>
 							<TextField
 								id='outlined-basic'
@@ -100,21 +115,32 @@ const EditPoint = ({ handleEditPoint, editPoint }) => {
 								size='small'
 								margin='normal'
 							/>
-							<Box mt={2}>
-								<Button
-									variant='contained'
-									type='submit'
-									value='Submit'
-									mt={2}
-								>
-									Submit
-								</Button>
-							</Box>
-						</form>
-					</CardContent>
-				</Card>
-			</div>
-		</>
+							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+								<Box mr={2}>
+									<Button
+										variant='contained'
+										type='submit'
+										value='Submit'
+									>
+										Submit
+									</Button>
+								</Box>
+								<Box>
+									<Button
+										variant='contained'
+										type='button'
+										value='Cancel'
+										onClick={handleCancelButtonOnClick}
+									>
+										Cancel
+									</Button>
+								</Box>
+							</ButtonGroup>
+						</Box>
+					</form>
+				</CardContent>
+			</Card>
+		</Container>
 	);
 };
 export default EditPoint;

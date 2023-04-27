@@ -1,81 +1,95 @@
-// @ts-nocheck
+//@ts-nocheck
 
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import styles from './point.module.css';
+import {
+	Box,
+	Button,
+	ButtonGroup,
+	CircularProgress,
+	Container,
+	IconButton,
+} from '@mui/material';
+import LinkIcon from '@mui/icons-material/Link';
 
 const Point = ({ handleDeletePoint, point }: any) => {
 	return (
-		<>
-			<Link component={RouterLink} to='/' underline='none'>
+		<Container fixed>
+			<Button
+				variant='outlined'
+				type='button'
+				value='Home'
+				size='small'
+				component={Link}
+				to='/'
+			>
 				Home
-			</Link>
-			<div className={styles.container}>
-				{point ? (
-					<>
-						<Card sx={{ maxWidth: 345 }}>
-							<CardContent>
-								<Typography
-									gutterBottom
-									variant='h5'
-									component='div'
-								>
-									{point.name}
-								</Typography>
-								<Typography
-									variant='body2'
-									color='text.secondary'
-								>
-									{`Built: ${point.yearBuilt}`}
-								</Typography>
-								{point.url && (
-									<Link href={`${point.url}`}>
-										<Typography
-											variant='body2'
-											color='text.secondary'
-										>
-											Website
-										</Typography>
-									</Link>
-								)}
-							</CardContent>
-							<CardActions
-								sx={{
-									display: 'flex',
-									justifyContent: 'flex-end',
-								}}
+			</Button>
+
+			<>
+				<Card sx={{ marginTop: 2 }} variant='outlined'>
+					{point ? (
+						<CardContent
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'flex-start',
+							}}
+						>
+							<Typography
+								gutterBottom
+								variant='h5'
+								component='div'
 							>
-								<Link
-									component={RouterLink}
-									to={`/edit-point/${point.id}`}
-									underline='none'
-									sx={{
-										margin: 1,
-									}}
+								{point.name}
+							</Typography>
+							<Typography variant='body2' color='text.secondary'>
+								{`Built: ${point.yearBuilt}`}
+							</Typography>
+							{point.url && (
+								<IconButton
+									href={`${point.url}`}
+									target='_blank'
+									size='small'
+									color='primary'
 								>
-									Edit
-								</Link>
-								<Link
-									component='button'
-									underline='none'
-									onClick={() => {
-										handleDeletePoint(point.id);
-									}}
-								>
-									Delete
-								</Link>
-							</CardActions>
-						</Card>
-					</>
-				) : (
-					'loading...'
-				)}
-			</div>
-		</>
+									<LinkIcon />
+								</IconButton>
+							)}
+							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+								<Box mr={2}>
+									<Button
+										variant='contained'
+										type='button'
+										value='Edit'
+										component={Link}
+										to={`/edit-point/${point.id}`}
+									>
+										Edit
+									</Button>
+								</Box>
+								<Box>
+									<Button
+										variant='contained'
+										type='button'
+										value='Delete'
+										onClick={() => {
+											handleDeletePoint(point.id);
+										}}
+									>
+										Delete
+									</Button>
+								</Box>
+							</ButtonGroup>
+						</CardContent>
+					) : (
+						<CircularProgress />
+					)}
+				</Card>
+			</>
+		</Container>
 	);
 };
 

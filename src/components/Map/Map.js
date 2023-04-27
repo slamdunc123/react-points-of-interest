@@ -8,6 +8,8 @@ import {
 	Marker,
 	InfoWindow,
 } from '@react-google-maps/api';
+import { IconButton } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 const MAP_API = process.env.REACT_APP_MAP_API;
 
@@ -43,7 +45,11 @@ const Map = ({
 			/>
 			<LoadScript googleMapsApiKey={MAP_API}>
 				<GoogleMap
-					mapContainerStyle={isSidebarOpen ? containerStyleSidebarOpen : containerStyleSidebarClosed}
+					mapContainerStyle={
+						isSidebarOpen
+							? containerStyleSidebarOpen
+							: containerStyleSidebarClosed
+					}
 					center={center}
 					zoom={zoom}
 					mapTypeId='satellite'
@@ -72,9 +78,14 @@ const Map = ({
 									<h4>{activePoint.name}</h4>
 									<p>{`Built: ${activePoint.yearBuilt}`}</p>
 
-									<Link to={`/${activePoint.id}`}>
-										read more...
-									</Link>
+									<IconButton
+										component={Link}
+										to={`/${activePoint.id}`}
+										color='primary'
+										size='small'
+									>
+										<InfoIcon />
+									</IconButton>
 								</div>
 							</InfoWindow>
 						) : (

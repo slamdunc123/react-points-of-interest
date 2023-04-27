@@ -7,7 +7,6 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const Sidebar = ({
 	points,
@@ -28,12 +27,10 @@ const Sidebar = ({
 					<List sx={{ width: 1 }}>
 						<ListItem>
 							<Button
-								variant='outlined'
-								startIcon={
-									<AddCircleOutlineIcon color='primary' />
-								}
+								variant='contained'
 								component={Link}
 								to={'/add-point'}
+                fullWidth
 							>
 								Add
 							</Button>
