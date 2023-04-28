@@ -45,6 +45,13 @@ const Point = ({ handleDeletePoint, point }: any) => {
 							>
 								{point.name}
 							</Typography>
+							<Typography
+								gutterBottom
+								variant='body1'
+								component='div'
+							>
+								{point.description}
+							</Typography>
 							<Typography variant='body2' color='text.secondary'>
 								{`Built: ${point.yearBuilt}`}
 							</Typography>

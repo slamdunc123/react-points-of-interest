@@ -14,6 +14,7 @@ export const createPoint = /* GraphQL */ `
       type
       yearBuilt
       url
+      description
       createdAt
       updatedAt
     }
@@ -32,6 +33,7 @@ export const updatePoint = /* GraphQL */ `
       type
       yearBuilt
       url
+      description
       createdAt
       updatedAt
     }
@@ -50,6 +52,7 @@ export const deletePoint = /* GraphQL */ `
       type
       yearBuilt
       url
+      description
       createdAt
       updatedAt
     }

@@ -11,6 +11,7 @@ export const getPoint = /* GraphQL */ `
       type
       yearBuilt
       url
+      description
       createdAt
       updatedAt
     }
@@ -31,6 +32,7 @@ export const listPoints = /* GraphQL */ `
         type
         yearBuilt
         url
+        description
         createdAt
         updatedAt
       }

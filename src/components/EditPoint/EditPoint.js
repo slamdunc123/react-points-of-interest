@@ -62,6 +62,18 @@ const EditPoint = ({ handleEditPoint, editPoint }) => {
 							/>
 							<TextField
 								id='outlined-basic'
+								label='Description'
+								variant='outlined'
+								type='text'
+								name='description'
+								value={formData.description}
+								onChange={handleOnChange}
+								size='small'
+								margin='normal'
+                multiline
+							/>
+							<TextField
+								id='outlined-basic'
 								label='Latitute'
 								variant='outlined'
 								type='text'

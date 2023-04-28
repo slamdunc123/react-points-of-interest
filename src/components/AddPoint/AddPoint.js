@@ -12,6 +12,7 @@ const AddPoint = ({ handleAddPoint }) => {
 		lat: '',
 		lng: '',
 		name: '',
+    description: '',
 		type: '',
 		yearBuilt: '',
 		url: '',
@@ -61,6 +62,18 @@ const AddPoint = ({ handleAddPoint }) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+							/>
+							<TextField
+								id='outlined-basic'
+								label='Description'
+								variant='outlined'
+								type='text'
+								name='description'
+								value={formData.description}
+								onChange={handleOnChange}
+								size='small'
+								margin='normal'
+                multiline
 							/>
 							<TextField
 								id='outlined-basic'
