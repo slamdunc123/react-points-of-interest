@@ -3,11 +3,13 @@ import { listPoints } from '../../graphql/queries';
 import { API } from 'aws-amplify';
 import {
 	deletePoint as deletePointMutation,
+	createPoint as createPointMutation,
+	updatePoint as updatePointMutation,
 } from '../../graphql/mutations';
 
 const initialState = {
 	pointsData: [],
-	status: 'idle'
+	status: 'idle',
 };
 
 const pointsSlice = createSlice({
@@ -31,6 +33,17 @@ const pointsSlice = createSlice({
 				state.pointsData = state.pointsData.filter(
 					(point) => point.id !== action.payload
 				);
+			})
+			.addCase(addPoint.fulfilled, (state, action) => {
+				const point = action.payload.createPoint;
+				state.pointsData.push(point);
+			})
+			.addCase(updatePoint.fulfilled, (state, action) => {
+				state.pointsData = state.pointsData.map((point) =>
+					point.id === action.payload.id
+						? { ...point, ...action.payload }
+						: point
+				);
 			});
 	},
 });
@@ -45,17 +58,46 @@ export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
 	}
 });
 
-export const deletePoint = createAsyncThunk('points/deletePoint', async (id) => {
+export const deletePoint = createAsyncThunk(
+	'points/deletePoint',
+	async (id) => {
+		try {
+			await API.graphql({
+				query: deletePointMutation,
+				variables: { input: { id } },
+			});
+			return id;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+);
+export const addPoint = createAsyncThunk('points/addPoint', async (data) => {
 	try {
-		await API.graphql({
-			query: deletePointMutation,
-			variables: { input: { id } },
+		const res = await API.graphql({
+			query: createPointMutation,
+			variables: { input: data },
 		});
-		return id;
+		return res.data;
 	} catch (error) {
 		console.log(error);
 	}
 });
+
+export const updatePoint = createAsyncThunk(
+	'points/updatePoint',
+	async (data) => {
+		try {
+			await API.graphql({
+				query: updatePointMutation,
+				variables: { input: data },
+			});
+			return data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+);
 
 export const allPoints = (state) => state.points.pointsData;
 

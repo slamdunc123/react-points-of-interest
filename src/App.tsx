@@ -1,24 +1,21 @@
 // @ts-nocheck
 
 import { useEffect, useState } from 'react';
-import './App.css';
-import Points from './components/Points/Points';
-import { API } from 'aws-amplify';
-import { Route, Routes, useNavigate, useMatch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import Points from './components/Points/Points';
+import { Route, Routes, useNavigate, useMatch } from 'react-router-dom';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
 import { ALL_POINTS } from './constants/PointTypes';
 import {
-	createPoint as createPointMutation,
-	updatePoint as updatePointMutation,
-} from './graphql/mutations';
-import {
-	deletePoint,
+  deletePoint,
 	fetchPoints,
 	allPoints,
+	addPoint,
+	updatePoint,
 } from './features/point/pointSlice';
+import './App.css';
 
 function App() {
 	const dispatch = useDispatch();
@@ -63,11 +60,9 @@ function App() {
 	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
 		try {
-			const res = await API.graphql({
-				query: createPointMutation,
-				variables: { input: data },
-			});
-			setFilteredPoints([...filteredPoints, res.data.createPoint]);
+			setCheckedFilter(ALL_POINTS);
+			setIsFilteringActive(false);
+			dispatch(addPoint(data));
 			navigate('/');
 		} catch (error) {
 			console.log(error);
@@ -79,16 +74,9 @@ function App() {
 		delete data.createdAt;
 		delete data.updatedAt;
 		try {
-			await API.graphql({
-				query: updatePointMutation,
-				variables: { input: data },
-			});
-
-			const pointsIncludingPointUpdate = points.map((point) =>
-				point.id === data.id ? { ...point, ...data } : point
-			);
-
-			setPoints(pointsIncludingPointUpdate);
+			setCheckedFilter(ALL_POINTS);
+			setIsFilteringActive(false);
+			dispatch(updatePoint(data));
 			navigate('/');
 		} catch (error) {
 			console.log(error);
@@ -97,6 +85,7 @@ function App() {
 
 	const handleDeletePoint = async (id) => {
 		try {
+			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(deletePoint(id));
 			navigate('/');
