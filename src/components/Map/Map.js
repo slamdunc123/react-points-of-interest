@@ -56,7 +56,7 @@ const Map = ({
 					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
 				>
 					<>
-						{points.map((point) => (
+						{points ? points.map((point) => (
 							<Marker
 								position={{
 									lat: point.lat,
@@ -65,7 +65,7 @@ const Map = ({
 								onClick={() => handlePointOnClick(point)}
 								key={point.id}
 							/>
-						))}
+						)) : 'Loading...'}
 						{activePoint ? (
 							<InfoWindow
 								position={{

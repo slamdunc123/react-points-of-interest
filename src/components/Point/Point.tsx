@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 
-const Point = ({ handleDeletePoint, point }: any) => {
+const Point = ({ point, handleDeletePoint }: any) => {
 	return (
 		<Container fixed>
 			<Button

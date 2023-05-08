@@ -3,24 +3,29 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Points from './components/Points/Points';
-import { listPoints } from './graphql/queries';
 import { API } from 'aws-amplify';
 import { Route, Routes, useNavigate, useMatch } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
 import { ALL_POINTS } from './constants/PointTypes';
 import {
 	createPoint as createPointMutation,
-	deletePoint as deletePointMutation,
 	updatePoint as updatePointMutation,
 } from './graphql/mutations';
+import {
+	deletePoint,
+	fetchPoints,
+	allPoints,
+} from './features/point/pointSlice';
 
 function App() {
-	// TODO: check if both points and filteredPoints are needed
-	const [points, setPoints] = useState([]); // these can change on add, edit, delete point
-	const [filteredPoints, setFilteredPoints] = useState([]); // these can change on changing filters
+	const dispatch = useDispatch();
+	const points = useSelector(allPoints);
+	const pointStatus = useSelector((state) => state.points.status);
 
+	const [filteredPoints, setFilteredPoints] = useState(points); // these can change on changing filters
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
@@ -29,26 +34,17 @@ function App() {
 	const matchEditPoint = useMatch('/edit-point/:id');
 
 	const point = matchPoint
-		? filteredPoints.find((point) => point.id === matchPoint.params.id)
+		? points.find((point) => point.id === matchPoint.params.id)
 		: null;
 	const editPoint = matchEditPoint
-		? filteredPoints.find((point) => point.id === matchEditPoint.params.id)
+		? points.find((point) => point.id === matchEditPoint.params.id)
 		: null;
 
 	useEffect(() => {
-		fetchPoints();
-	}, []);
-
-	const fetchPoints = async () => {
-		try {
-			const apiData = await API.graphql({ query: listPoints });
-			const pointsFromAPI = apiData.data.listPoints.items;
-			setPoints(pointsFromAPI);
-			setFilteredPoints(pointsFromAPI);
-		} catch (error) {
-			console.log(error);
+		if (pointStatus === 'idle') {
+			dispatch(fetchPoints());
 		}
-	};
+	}, [pointStatus, dispatch]);
 
 	const filterPoints = (value) => {
 		setIsFilteringActive(true);
@@ -101,14 +97,8 @@ function App() {
 
 	const handleDeletePoint = async (id) => {
 		try {
-			await API.graphql({
-				query: deletePointMutation,
-				variables: { input: { id } },
-			});
-			const pointsWithPointDeleted = filteredPoints.filter(
-				(point) => point.id !== id
-			);
-			setFilteredPoints(pointsWithPointDeleted);
+			setIsFilteringActive(false);
+			dispatch(deletePoint(id));
 			navigate('/');
 		} catch (error) {
 			console.log(error);
@@ -121,7 +111,7 @@ function App() {
 				path='/'
 				element={
 					<Points
-						points={filteredPoints}
+						points={isFilteringActive ? filteredPoints : points}
 						filterPoints={filterPoints}
 						checkedFilter={checkedFilter}
 						isFilteringActive={isFilteringActive}

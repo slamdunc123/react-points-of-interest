@@ -29,6 +29,7 @@ export default function PointCreateForm(props) {
     type: "",
     yearBuilt: "",
     url: "",
+    description: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [lat, setLat] = React.useState(initialValues.lat);
@@ -36,6 +37,9 @@ export default function PointCreateForm(props) {
   const [type, setType] = React.useState(initialValues.type);
   const [yearBuilt, setYearBuilt] = React.useState(initialValues.yearBuilt);
   const [url, setUrl] = React.useState(initialValues.url);
+  const [description, setDescription] = React.useState(
+    initialValues.description
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
@@ -44,6 +48,7 @@ export default function PointCreateForm(props) {
     setType(initialValues.type);
     setYearBuilt(initialValues.yearBuilt);
     setUrl(initialValues.url);
+    setDescription(initialValues.description);
     setErrors({});
   };
   const validations = {
@@ -53,6 +58,7 @@ export default function PointCreateForm(props) {
     type: [],
     yearBuilt: [],
     url: [],
+    description: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -86,6 +92,7 @@ export default function PointCreateForm(props) {
           type,
           yearBuilt,
           url,
+          description,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -146,6 +153,7 @@ export default function PointCreateForm(props) {
               type,
               yearBuilt,
               url,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -179,6 +187,7 @@ export default function PointCreateForm(props) {
               type,
               yearBuilt,
               url,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.lat ?? value;
@@ -212,6 +221,7 @@ export default function PointCreateForm(props) {
               type,
               yearBuilt,
               url,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.lng ?? value;
@@ -241,6 +251,7 @@ export default function PointCreateForm(props) {
               type: value,
               yearBuilt,
               url,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -270,6 +281,7 @@ export default function PointCreateForm(props) {
               type,
               yearBuilt: value,
               url,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.yearBuilt ?? value;
@@ -299,6 +311,7 @@ export default function PointCreateForm(props) {
               type,
               yearBuilt,
               url: value,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.url ?? value;
@@ -312,6 +325,36 @@ export default function PointCreateForm(props) {
         errorMessage={errors.url?.errorMessage}
         hasError={errors.url?.hasError}
         {...getOverrideProps(overrides, "url")}
+      ></TextField>
+      <TextField
+        label="Description"
+        isRequired={false}
+        isReadOnly={false}
+        value={description}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              lat,
+              lng,
+              type,
+              yearBuilt,
+              url,
+              description: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.description ?? value;
+          }
+          if (errors.description?.hasError) {
+            runValidationTasks("description", value);
+          }
+          setDescription(value);
+        }}
+        onBlur={() => runValidationTasks("description", description)}
+        errorMessage={errors.description?.errorMessage}
+        hasError={errors.description?.hasError}
+        {...getOverrideProps(overrides, "description")}
       ></TextField>
       <Flex
         justifyContent="space-between"
