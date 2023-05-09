@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	CircularProgress,
-	Container,
-	IconButton,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 
 const Point = ({ point, handleDeletePoint }: any) => {

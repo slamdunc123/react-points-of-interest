@@ -5,7 +5,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Box, ButtonGroup, Container } from '@mui/material';
+import Box from '@mui/material/Box';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Container from '@mui/material/Container';
 
 const EditPoint = ({ handleEditPoint, editPoint }) => {
 	const [formData, setFormData] = useState(editPoint);

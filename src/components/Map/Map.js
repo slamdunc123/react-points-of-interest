@@ -8,7 +8,7 @@ import {
 	Marker,
 	InfoWindow,
 } from '@react-google-maps/api';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 
 const MAP_API = process.env.REACT_APP_MAP_API;
@@ -56,16 +56,20 @@ const Map = ({
 					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
 				>
 					<>
-						{points ? points.map((point) => (
-							<Marker
-								position={{
-									lat: point.lat,
-									lng: point.lng,
-								}}
-								onClick={() => handlePointOnClick(point)}
-								key={point.id}
-							/>
-						)) : 'Loading...'}
+						{points
+							? points.map((point) => (
+									<Marker
+										position={{
+											lat: point.lat,
+											lng: point.lng,
+										}}
+										onClick={() =>
+											handlePointOnClick(point)
+										}
+										key={point.id}
+									/>
+							  ))
+							: 'Loading...'}
 						{activePoint ? (
 							<InfoWindow
 								position={{
