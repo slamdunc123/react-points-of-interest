@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -12,13 +10,28 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 
-const Point = ({ point, handleDeletePoint }: any) => {
+interface PointPropsInt {
+  point: PointInt,
+  handleDeletePoint: (id: string) => void
+}
+
+interface PointInt {
+	id: string;
+	name: string;
+	lat: number;
+	lng: number;
+	type: string;
+	yearBuilt: string;
+	url: string;
+	description: string;
+}
+
+const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 	return (
 		<Container fixed>
 			<Button
 				variant='outlined'
 				type='button'
-				value='Home'
 				size='small'
 				component={Link}
 				to='/'
@@ -68,7 +81,6 @@ const Point = ({ point, handleDeletePoint }: any) => {
 									<Button
 										variant='contained'
 										type='button'
-										value='Edit'
 										component={Link}
 										to={`/edit-point/${point.id}`}
 									>
