@@ -1,11 +1,34 @@
-import { useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 
 import Map from '../Map/Map';
 import Sidebar from '../Sidebar/Sidebar';
 
 import styles from './points.module.css';
 
-const Points = ({ points, filterPoints, checkedFilter, isFilteringActive }) => {
+interface PointsPropsInt {
+	points: PointInt[];
+	filterPoints: (value: string) => void;
+	checkedFilter: boolean;
+	isFilteringActive: boolean;
+}
+
+export interface PointInt {
+	id: string;
+	name: string;
+	lat: string;
+	lng: string;
+	type: string;
+	yearBuilt: string;
+	url: string;
+	description: string;
+}
+
+const Points = ({
+	points,
+	filterPoints,
+	checkedFilter,
+	isFilteringActive,
+}: PointsPropsInt) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -13,22 +36,22 @@ const Points = ({ points, filterPoints, checkedFilter, isFilteringActive }) => {
 		isFilteringActive && setIsSidebarOpen(true);
 	}, [isFilteringActive]);
 
-	const handlePointOnClick = (point) => {
+	const handlePointOnClick = (point: string) => {
 		setActivePoint(point);
 	};
 
-	const handlePointOnChange = (e) => {
+	const handlePointOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		const { value } = e.target;
 		setActivePoint(value);
 	};
 
-	const handleFilterOnChange = (e) => {
+	const handleFilterOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		const value = e.target.value;
 		setActivePoint('');
 		filterPoints(value);
 	};
 
-	const handleSidebarOnClick = (isOpen) => {
+	const handleSidebarOnClick = (isOpen: boolean) => {
 		setIsSidebarOpen(isOpen);
 	};
 

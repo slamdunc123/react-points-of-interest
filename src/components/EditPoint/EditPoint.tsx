@@ -1,6 +1,11 @@
-import React, { useState, useEffect, FormEvent, ChangeEventHandler } from 'react';
+import React, {
+	useState,
+	useEffect,
+	FormEvent,
+	ChangeEventHandler,
+} from 'react';
 
-import { Link,  useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -8,26 +13,18 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
+import { PointInt } from '../Points/Points';
 
 interface EditPointPropsInt {
-  editPoint: Point;
-  handleEditPoint: (e: FormEvent<HTMLFormElement>, formData: Point) => void
+	editPoint: PointInt;
+	handleEditPoint: (
+		e: FormEvent<HTMLFormElement>,
+		formData: PointInt
+	) => void;
 }
 
-interface Point {
-  id: string;
-	name: string;
-	lat: string;
-	lng: string;
-	type: string;
-	yearBuilt: string;
-	url: string;
-	description: string;
-}
-
-const EditPoint = ({ editPoint, handleEditPoint }:EditPointPropsInt) => {
+const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 	const [formData, setFormData] = useState(editPoint);
-
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -46,14 +43,15 @@ const EditPoint = ({ editPoint, handleEditPoint }:EditPointPropsInt) => {
 
 	return (
 		<Container fixed>
-				<Button
-					variant='outlined'
-					type='button'
-					size='small'
-          component={Link} to='/'
-				>
-					Home
-				</Button>
+			<Button
+				variant='outlined'
+				type='button'
+				size='small'
+				component={Link}
+				to='/'
+			>
+				Home
+			</Button>
 			<Card sx={{ marginTop: 2 }} variant='outlined'>
 				<CardContent>
 					<div>Edit Point Contents</div>
@@ -87,7 +85,7 @@ const EditPoint = ({ editPoint, handleEditPoint }:EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                multiline
+								multiline
 							/>
 							<TextField
 								id='outlined-basic'

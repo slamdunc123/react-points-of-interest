@@ -9,7 +9,7 @@ import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
 import { ALL_POINTS } from './constants/PointTypes';
 import {
-  deletePoint,
+	deletePoint,
 	fetchPoints,
 	allPoints,
 	addPoint,
@@ -73,6 +73,8 @@ function App() {
 
 		delete data.createdAt;
 		delete data.updatedAt;
+		data.lat = Number(data.lat);
+		data.lng = Number(data.lng);
 		try {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);

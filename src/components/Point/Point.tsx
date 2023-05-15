@@ -9,21 +9,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
+import { PointInt } from '../Points/Points';
 
 interface PointPropsInt {
-  point: PointInt,
-  handleDeletePoint: (id: string) => void
-}
-
-interface PointInt {
-	id: string;
-	name: string;
-	lat: number;
-	lng: number;
-	type: string;
-	yearBuilt: string;
-	url: string;
-	description: string;
+	point: PointInt;
+	handleDeletePoint: (id: string) => void;
 }
 
 const Point = ({ point, handleDeletePoint }: PointPropsInt) => {

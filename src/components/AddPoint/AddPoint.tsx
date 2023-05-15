@@ -8,19 +8,13 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
+import { PointInt } from '../Points/Points';
 
 interface AddPointPropsInt {
-  handleAddPoint: (e: FormEvent<HTMLFormElement>, formData: Point) => void
-}
-
-interface Point {
-	name: string;
-	lat: string;
-	lng: string;
-	type: string;
-	yearBuilt: string;
-	url: string;
-	description: string;
+	handleAddPoint: (
+		e: FormEvent<HTMLFormElement>,
+		formData: Omit<PointInt, 'id'>
+	) => void;
 }
 
 const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
