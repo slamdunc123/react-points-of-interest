@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import PointsFilters from '../PointsFilter/PointsFilter';
 import PointsSelector from '../PointsSelector/PointsSelector';
 import styles from './sidebar.module.css';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import { PointInt } from '../Points/Points';
+import { SelectChangeEvent } from '@mui/material/Select';
+
+interface SidebarPropsInt {
+	points: PointInt[];
+	activePoint: string;
+	checkedFilter: string;
+	isSidebarOpen: boolean;
+	handlePointOnChange: (e: SelectChangeEvent) => void;
+	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
 
 const Sidebar = ({
 	points,
@@ -15,7 +26,7 @@ const Sidebar = ({
 	handleFilterOnChange,
 	checkedFilter,
 	isSidebarOpen,
-}) => {
+}: SidebarPropsInt) => {
 	return (
 		<div
 			className={
@@ -30,7 +41,7 @@ const Sidebar = ({
 								variant='contained'
 								component={Link}
 								to={'/add-point'}
-                fullWidth
+								fullWidth
 							>
 								Add
 							</Button>

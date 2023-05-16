@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -6,10 +6,13 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 interface PointsFilterProps {
-  checkedFilter: string;
-  handleFilterOnChange: () => void;
+	checkedFilter: string;
+	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
-const PointsFilters = ({ checkedFilter, handleFilterOnChange  }: PointsFilterProps) => {
+const PointsFilters = ({
+	checkedFilter,
+	handleFilterOnChange,
+}: PointsFilterProps) => {
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>

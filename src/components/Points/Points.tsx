@@ -1,14 +1,15 @@
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import Map from '../Map/Map';
 import Sidebar from '../Sidebar/Sidebar';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 import styles from './points.module.css';
 
 interface PointsPropsInt {
 	points: PointInt[];
 	filterPoints: (value: string) => void;
-	checkedFilter: boolean;
+	checkedFilter: string;
 	isFilteringActive: boolean;
 }
 
@@ -40,12 +41,12 @@ const Points = ({
 		setActivePoint(point);
 	};
 
-	const handlePointOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const handlePointOnChange = (e: SelectChangeEvent) => {
 		const { value } = e.target;
 		setActivePoint(value);
 	};
 
-	const handleFilterOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+	const handleFilterOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setActivePoint('');
 		filterPoints(value);
