@@ -81,7 +81,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								variant='outlined'
 								type='text'
 								name='description'
-								value={formData.description}
+								value={formData.description || ''}
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
