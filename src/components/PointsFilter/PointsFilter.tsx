@@ -6,10 +6,10 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 interface PointsFilterProps {
-  handleFilterOnChange(): any;
   checkedFilter: string;
+  handleFilterOnChange: () => void;
 }
-const PointsFilters = ({ handleFilterOnChange, checkedFilter }: PointsFilterProps) => {
+const PointsFilters = ({ checkedFilter, handleFilterOnChange  }: PointsFilterProps) => {
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>

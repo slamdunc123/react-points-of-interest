@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 interface NavbarProps {
 	isSidebarOpen: boolean;
-	handleSidebarOnClick(isSidebarOpen: boolean):  any;
+	handleSidebarOnClick: (isSidebarOpen: boolean) => void;
 }
 
 export default function Navbar({

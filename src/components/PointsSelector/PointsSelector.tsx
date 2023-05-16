@@ -4,19 +4,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-interface Point {
-  id: any;
-  lat: number;
-  lng: number;
-  name: string;
-  type: string;
-  yearBuilt: string;
-  url: string;
-}
+import { PointInt } from '../Points/Points';
 
 interface PointsSelectorProps {
-  points: Point[];
+  points: PointInt[];
   activePoint: any;
   handlePointOnChange: any;
 }
