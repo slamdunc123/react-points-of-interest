@@ -12,6 +12,7 @@ export const getPoint = /* GraphQL */ `
       yearBuilt
       url
       description
+      image
       createdAt
       updatedAt
     }
@@ -33,6 +34,7 @@ export const listPoints = /* GraphQL */ `
         yearBuilt
         url
         description
+        image
         createdAt
         updatedAt
       }

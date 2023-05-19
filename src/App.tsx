@@ -16,6 +16,7 @@ import {
 	updatePoint,
 } from './features/point/pointSlice';
 import './App.css';
+import { Storage } from 'aws-amplify';
 
 function App() {
 	const dispatch = useDispatch();
@@ -59,7 +60,16 @@ function App() {
 
 	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
+		const form = new FormData(e.target);
+		const image = form.get('image');
+		const dataForStorage = {
+			name: form.get('name'),
+			image: image.name,
+		};
+
+    data.image = image.name
 		try {
+			if (!!dataForStorage.image) await Storage.put(dataForStorage.name, image);
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(addPoint(data));

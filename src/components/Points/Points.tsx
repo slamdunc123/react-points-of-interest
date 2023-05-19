@@ -22,6 +22,7 @@ export interface PointInt {
 	yearBuilt: string;
 	url: string;
 	description: string;
+  image: any;
 }
 
 const Points = ({

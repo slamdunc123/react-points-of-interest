@@ -12,4 +12,5 @@ type Point @model @auth(rules: [{ allow: public }]) {
 	yearBuilt: String
 	url: String
   description: String
+  image: String
 }

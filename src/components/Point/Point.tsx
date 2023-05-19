@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 import { PointInt } from '../Points/Points';
+import { Image } from 'mui-image';
 
 interface PointPropsInt {
 	point: PointInt;
@@ -65,6 +66,14 @@ const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 								>
 									<LinkIcon />
 								</IconButton>
+							)}
+							{point.image && (
+								<Image
+									src={point.image}
+									alt={`visual aid for ${point.name}`}
+									style={{ width: '100%' }}
+                  duration={0}
+								/>
 							)}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>

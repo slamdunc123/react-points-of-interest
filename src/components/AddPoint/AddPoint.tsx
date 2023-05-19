@@ -26,6 +26,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 		type: '',
 		yearBuilt: '',
 		url: '',
+		image: '',
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
@@ -72,6 +73,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -84,6 +86,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								multiline
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -95,6 +98,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -106,6 +110,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -117,6 +122,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -128,6 +134,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -139,6 +146,14 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+                fullWidth
+							/>
+							<TextField
+								name='image'
+								type='file'
+								margin='normal'
+                size='small'
+                fullWidth
 							/>
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>

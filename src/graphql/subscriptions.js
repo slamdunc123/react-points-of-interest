@@ -12,6 +12,7 @@ export const onCreatePoint = /* GraphQL */ `
       yearBuilt
       url
       description
+      image
       createdAt
       updatedAt
     }
@@ -28,6 +29,7 @@ export const onUpdatePoint = /* GraphQL */ `
       yearBuilt
       url
       description
+      image
       createdAt
       updatedAt
     }
@@ -44,6 +46,7 @@ export const onDeletePoint = /* GraphQL */ `
       yearBuilt
       url
       description
+      image
       createdAt
       updatedAt
     }

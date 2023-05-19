@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { listPoints } from '../../graphql/queries';
-import { API } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import {
 	deletePoint as deletePointMutation,
 	createPoint as createPointMutation,
@@ -37,6 +37,7 @@ const pointsSlice = createSlice({
 			.addCase(addPoint.fulfilled, (state, action) => {
 				const point = action.payload.createPoint;
 				state.pointsData.push(point);
+        state.status = 'idle';
 			})
 			.addCase(updatePoint.fulfilled, (state, action) => {
 				state.pointsData = state.pointsData.map((point) =>
@@ -52,6 +53,15 @@ export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
 	try {
 		const apiData = await API.graphql({ query: listPoints });
 		const pointsFromAPI = apiData.data.listPoints.items;
+    await Promise.all(
+      pointsFromAPI.map(async (point) => {
+        if (point.image) {
+          const url = await Storage.get(point.name);
+          point.image = url;
+        }
+        return point;
+      })
+    );
 		return pointsFromAPI;
 	} catch (error) {
 		console.log(error);

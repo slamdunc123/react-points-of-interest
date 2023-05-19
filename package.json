@@ -19,6 +19,7 @@
     "@types/react-dom": "^18.0.6",
     "aws-amplify": "^5.0.23",
     "dotenv": "^16.0.2",
+    "mui-image": "^1.0.7",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.5",
@@ -50,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/mui-image": "^1.0.1"
   }
 }
