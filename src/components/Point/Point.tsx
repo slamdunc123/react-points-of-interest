@@ -14,7 +14,7 @@ import { Image } from 'mui-image';
 
 interface PointPropsInt {
 	point: PointInt;
-	handleDeletePoint: (id: string) => void;
+	handleDeletePoint: (point: PointInt) => void;
 }
 
 const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
@@ -92,7 +92,7 @@ const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 										type='button'
 										value='Delete'
 										onClick={() => {
-											handleDeletePoint(point.id);
+											handleDeletePoint(point);
 										}}
 									>
 										Delete

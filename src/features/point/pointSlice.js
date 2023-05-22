@@ -34,6 +34,9 @@ const pointsSlice = createSlice({
 					(point) => point.id !== action.payload
 				);
 			})
+      .addCase(addPoint.pending, (state, action) => {
+				state.status = 'loading';
+			})
 			.addCase(addPoint.fulfilled, (state, action) => {
 				const point = action.payload.createPoint;
 				state.pointsData.push(point);
@@ -45,6 +48,7 @@ const pointsSlice = createSlice({
 						? { ...point, ...action.payload }
 						: point
 				);
+        state.status = 'idle';
 			});
 	},
 });
@@ -70,8 +74,9 @@ export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
 
 export const deletePoint = createAsyncThunk(
 	'points/deletePoint',
-	async (id) => {
+	async ({id, name}) => {
 		try {
+      await Storage.remove(name);
 			await API.graphql({
 				query: deletePointMutation,
 				variables: { input: { id } },

@@ -142,6 +142,13 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								size='small'
 								margin='normal'
 							/>
+							<TextField
+								name='image'
+								type='file'
+								margin='normal'
+								size='small'
+								fullWidth
+							/>
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

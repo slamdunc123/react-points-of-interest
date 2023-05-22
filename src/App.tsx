@@ -67,9 +67,10 @@ function App() {
 			image: image.name,
 		};
 
-    data.image = image.name
+		data.image = image.name;
 		try {
-			if (!!dataForStorage.image) await Storage.put(dataForStorage.name, image);
+			if (!!dataForStorage.image)
+				await Storage.put(dataForStorage.name, image);
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(addPoint(data));
@@ -80,26 +81,39 @@ function App() {
 	};
 	const handleEditPoint = async (e, data) => {
 		e.preventDefault();
+		const form = new FormData(e.target);
+		const image = form.get('image');
+		const dataForStorage = {
+			id: data.id,
+			name: form.get('name'),
+			image: image.name,
+		};
 
-		delete data.createdAt;
-		delete data.updatedAt;
-		data.lat = Number(data.lat);
-		data.lng = Number(data.lng);
+		const updatedData = { ...data };
+
+		delete updatedData.createdAt;
+		delete updatedData.updatedAt;
+		updatedData.image = image.name;
+		updatedData.lat = Number(updatedData.lat);
+		updatedData.lng = Number(updatedData.lng);
 		try {
+			if (!!dataForStorage.image)
+				await Storage.put(dataForStorage.name, image);
+
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
-			dispatch(updatePoint(data));
+			dispatch(updatePoint(updatedData));
 			navigate('/');
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const handleDeletePoint = async (id) => {
+	const handleDeletePoint = async (point) => {
 		try {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
-			dispatch(deletePoint(id));
+			dispatch(deletePoint(point));
 			navigate('/');
 		} catch (error) {
 			console.log(error);
