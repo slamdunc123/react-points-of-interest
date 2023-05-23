@@ -20,6 +20,7 @@ export declare type PointCreateFormInputValues = {
     yearBuilt?: string;
     url?: string;
     description?: string;
+    image?: string;
 };
 export declare type PointCreateFormValidationValues = {
     name?: ValidationFunction<string>;
@@ -29,6 +30,7 @@ export declare type PointCreateFormValidationValues = {
     yearBuilt?: ValidationFunction<string>;
     url?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    image?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PointCreateFormOverridesProps = {
@@ -40,6 +42,7 @@ export declare type PointCreateFormOverridesProps = {
     yearBuilt?: PrimitiveOverrideProps<TextFieldProps>;
     url?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    image?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PointCreateFormProps = React.PropsWithChildren<{
     overrides?: PointCreateFormOverridesProps | undefined | null;

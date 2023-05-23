@@ -84,7 +84,7 @@ const Map = ({
 
 									<IconButton
 										component={Link}
-										to={`/${activePoint.id}`}
+										to={`/points/${activePoint.id}`}
 										color='primary'
 										size='small'
 									>

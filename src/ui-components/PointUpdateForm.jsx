@@ -31,6 +31,7 @@ export default function PointUpdateForm(props) {
     yearBuilt: "",
     url: "",
     description: "",
+    image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [lat, setLat] = React.useState(initialValues.lat);
@@ -41,6 +42,7 @@ export default function PointUpdateForm(props) {
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = pointRecord
@@ -53,6 +55,7 @@ export default function PointUpdateForm(props) {
     setYearBuilt(cleanValues.yearBuilt);
     setUrl(cleanValues.url);
     setDescription(cleanValues.description);
+    setImage(cleanValues.image);
     setErrors({});
   };
   const [pointRecord, setPointRecord] = React.useState(point);
@@ -72,6 +75,7 @@ export default function PointUpdateForm(props) {
     yearBuilt: [],
     url: [],
     description: [],
+    image: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -106,6 +110,7 @@ export default function PointUpdateForm(props) {
           yearBuilt,
           url,
           description,
+          image,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -168,6 +173,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -202,6 +208,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.lat ?? value;
@@ -236,6 +243,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.lng ?? value;
@@ -266,6 +274,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -296,6 +305,7 @@ export default function PointUpdateForm(props) {
               yearBuilt: value,
               url,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.yearBuilt ?? value;
@@ -326,6 +336,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url: value,
               description,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.url ?? value;
@@ -356,6 +367,7 @@ export default function PointUpdateForm(props) {
               yearBuilt,
               url,
               description: value,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -369,6 +381,37 @@ export default function PointUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Image"
+        isRequired={false}
+        isReadOnly={false}
+        value={image}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              lat,
+              lng,
+              type,
+              yearBuilt,
+              url,
+              description,
+              image: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.image ?? value;
+          }
+          if (errors.image?.hasError) {
+            runValidationTasks("image", value);
+          }
+          setImage(value);
+        }}
+        onBlur={() => runValidationTasks("image", image)}
+        errorMessage={errors.image?.errorMessage}
+        hasError={errors.image?.hasError}
+        {...getOverrideProps(overrides, "image")}
       ></TextField>
       <Flex
         justifyContent="space-between"

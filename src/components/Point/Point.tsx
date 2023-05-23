@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -11,13 +12,21 @@ import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 import { PointInt } from '../Points/Points';
 import { Image } from 'mui-image';
-
+import { useAuthenticator } from '@aws-amplify/ui-react';
 interface PointPropsInt {
 	point: PointInt;
 	handleDeletePoint: (point: PointInt) => void;
 }
 
 const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
+	const { user } = useAuthenticator((context) => [context.user]);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!point) navigate('/');
+	}, [point, navigate]);
+
 	return (
 		<Container fixed>
 			<Button
@@ -47,6 +56,15 @@ const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 							>
 								{point.name}
 							</Typography>
+
+              {point.image && (
+								<Image
+									src={point.image}
+									alt={`visual aid for ${point.name}`}
+									style={{ width: '100%' }}
+									duration={0}
+								/>
+							)}
 							<Typography
 								gutterBottom
 								variant='body1'
@@ -67,38 +85,32 @@ const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 									<LinkIcon />
 								</IconButton>
 							)}
-							{point.image && (
-								<Image
-									src={point.image}
-									alt={`visual aid for ${point.name}`}
-									style={{ width: '100%' }}
-                  duration={0}
-								/>
+							{user && (
+								<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+									<Box mr={2}>
+										<Button
+											variant='contained'
+											type='button'
+											component={Link}
+											to={`/edit-point/${point.id}`}
+										>
+											Edit
+										</Button>
+									</Box>
+									<Box>
+										<Button
+											variant='contained'
+											type='button'
+											value='Delete'
+											onClick={() => {
+												handleDeletePoint(point);
+											}}
+										>
+											Delete
+										</Button>
+									</Box>
+								</ButtonGroup>
 							)}
-							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
-								<Box mr={2}>
-									<Button
-										variant='contained'
-										type='button'
-										component={Link}
-										to={`/edit-point/${point.id}`}
-									>
-										Edit
-									</Button>
-								</Box>
-								<Box>
-									<Button
-										variant='contained'
-										type='button'
-										value='Delete'
-										onClick={() => {
-											handleDeletePoint(point);
-										}}
-									>
-										Delete
-									</Button>
-								</Box>
-							</ButtonGroup>
 						</CardContent>
 					) : (
 						<CircularProgress />

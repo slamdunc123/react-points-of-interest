@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Points from './components/Points/Points';
-import { Route, Routes, useNavigate, useMatch } from 'react-router-dom';
+import {
+	Route,
+	Routes,
+	useNavigate,
+	useMatch,
+	Navigate,
+} from 'react-router-dom';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
@@ -17,6 +23,9 @@ import {
 } from './features/point/pointSlice';
 import './App.css';
 import { Storage } from 'aws-amplify';
+import { Authenticator } from '@aws-amplify/ui-react';
+import { RequireAuth } from './components/RequireAuth/RequireAuth';
+import { Login } from './components/Login/Login';
 
 function App() {
 	const dispatch = useDispatch();
@@ -28,7 +37,7 @@ function App() {
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
 	const navigate = useNavigate();
-	const matchPoint = useMatch('/:id');
+	const matchPoint = useMatch('/points/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
 
 	const point = matchPoint
@@ -121,41 +130,51 @@ function App() {
 	};
 
 	return (
-		<Routes>
-			<Route
-				path='/'
-				element={
-					<Points
-						points={isFilteringActive ? filteredPoints : points}
-						filterPoints={filterPoints}
-						checkedFilter={checkedFilter}
-						isFilteringActive={isFilteringActive}
-					/>
-				}
-			/>
-			<Route
-				path='/:id'
-				element={
-					<Point
-						point={point}
-						handleDeletePoint={handleDeletePoint}
-					/>
-				}
-			/>
-			<Route
-				path='/add-point'
-				element={<AddPoint handleAddPoint={handleAddPoint} />}
-			/>
-			<Route
-				path='/edit-point/:id'
-				element={
-					<EditPoint
-						editPoint={editPoint}
-						handleEditPoint={handleEditPoint}
-					/>
-				}
-			/>
-		</Routes>
+		<Authenticator.Provider>
+			<Routes>
+				<Route
+					path='/'
+					element={
+						<Points
+							points={isFilteringActive ? filteredPoints : points}
+							filterPoints={filterPoints}
+							checkedFilter={checkedFilter}
+							isFilteringActive={isFilteringActive}
+						/>
+					}
+				/>
+				<Route
+					path='/points/:id'
+					element={
+						<Point
+							point={point}
+							handleDeletePoint={handleDeletePoint}
+						/>
+					}
+				/>
+				<Route
+					path='/add-point'
+					element={
+						<RequireAuth>
+							<AddPoint handleAddPoint={handleAddPoint} />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path='/edit-point/:id'
+					element={
+						<RequireAuth>
+							<EditPoint
+								editPoint={editPoint}
+								handleEditPoint={handleEditPoint}
+							/>
+						</RequireAuth>
+					}
+				/>
+				<Route path='/login' element={<Login />} />
+				<Route path='*' element={<Navigate to='/' />} />
+			</Routes>
+		</Authenticator.Provider>
 	);
 }
 

@@ -39,8 +39,6 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 		navigate(-1);
 	};
 
-	if (!editPoint) return null;
-
 	return (
 		<Container fixed>
 			<Button
