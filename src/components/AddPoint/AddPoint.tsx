@@ -34,6 +34,8 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 	const navigate = useNavigate();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+     // check it out: we get the evt.target.name (which will be either "email" or "password")
+    // and use it to target the key on our `state` object with the same name, using bracket syntax
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 

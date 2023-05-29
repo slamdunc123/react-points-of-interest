@@ -2,16 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
-import {
-	GoogleMap,
-	LoadScript,
-	Marker,
-	InfoWindow,
-} from '@react-google-maps/api';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { Circle } from '@react-google-maps/api';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-
-const MAP_API = process.env.REACT_APP_MAP_API;
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -28,6 +22,20 @@ const center = {
 	lng: -1.695365906570867,
 };
 
+const circleOptions = {
+	strokeColor: '#FFF',
+	strokeOpacity: 0.2,
+	strokeWeight: 2,
+	fillColor: '#FFF',
+	fillOpacity: 0.05,
+	clickable: false,
+	draggable: false,
+	editable: false,
+	visible: true,
+	radius: 100,
+	zIndex: 1,
+};
+
 const zoom = 17;
 
 const Map = ({
@@ -36,28 +44,29 @@ const Map = ({
 	isSidebarOpen,
 	handlePointOnClick,
 	handleSidebarOnClick,
+	isLoaded,
 }) => {
-	return (
+	return isLoaded ? (
 		<div>
 			<Navbar
 				isSidebarOpen={isSidebarOpen}
 				handleSidebarOnClick={handleSidebarOnClick}
 			/>
-			<LoadScript googleMapsApiKey={MAP_API}>
-				<GoogleMap
-					mapContainerStyle={
-						isSidebarOpen
-							? containerStyleSidebarOpen
-							: containerStyleSidebarClosed
-					}
-					center={center}
-					zoom={zoom}
-					mapTypeId='satellite'
-					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
-				>
-					<>
-						{points
-							? points.map((point) => (
+			<GoogleMap
+				mapContainerStyle={
+					isSidebarOpen
+						? containerStyleSidebarOpen
+						: containerStyleSidebarClosed
+				}
+				center={center}
+				zoom={zoom}
+				mapTypeId='satellite'
+				onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
+			>
+				<>
+					{points
+						? points.map((point) => {
+								return (
 									<Marker
 										position={{
 											lat: point.lat,
@@ -68,37 +77,40 @@ const Map = ({
 										}
 										key={point.id}
 									/>
-							  ))
-							: 'Loading...'}
-						{activePoint ? (
-							<InfoWindow
-								position={{
-									lat: activePoint.lat,
-									lng: activePoint.lng,
-								}}
-								onCloseClick={() => handlePointOnClick('')}
-							>
-								<div className='info-container'>
-									<h4>{activePoint.name}</h4>
-									<p>{`Built: ${activePoint.yearBuilt}`}</p>
+								);
+						  })
+						: 'Loading...'}
+					{activePoint ? (
+						<InfoWindow
+							position={{
+								lat: activePoint.lat,
+								lng: activePoint.lng,
+							}}
+							onCloseClick={() => handlePointOnClick('')}
+						>
+							<div className='info-container'>
+								<h4>{activePoint.name}</h4>
+								<p>{`Built: ${activePoint.yearBuilt}`}</p>
 
-									<IconButton
-										component={Link}
-										to={`/points/${activePoint.id}`}
-										color='primary'
-										size='small'
-									>
-										<InfoIcon />
-									</IconButton>
-								</div>
-							</InfoWindow>
-						) : (
-							<></>
-						)}
-					</>
-				</GoogleMap>
-			</LoadScript>
+								<IconButton
+									component={Link}
+									to={`/points/${activePoint.id}`}
+									color='primary'
+									size='small'
+								>
+									<InfoIcon />
+								</IconButton>
+							</div>
+						</InfoWindow>
+					) : (
+						<></>
+					)}
+				</>
+				<Circle center={center} options={circleOptions} />
+			</GoogleMap>
 		</div>
+	) : (
+		<></>
 	);
 };
 

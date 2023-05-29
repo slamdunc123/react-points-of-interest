@@ -26,6 +26,10 @@ import { Storage } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+const libraries = ['geometry'];
+const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
 	const dispatch = useDispatch();
@@ -40,12 +44,35 @@ function App() {
 	const matchPoint = useMatch('/points/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
 
+	const { isLoaded } = useJsApiLoader({
+		id: 'google-map-script',
+		googleMapsApiKey: MAP_API,
+		libraries: libraries,
+	});
+
 	const point = matchPoint
 		? points.find((point) => point.id === matchPoint.params.id)
 		: null;
 	const editPoint = matchEditPoint
 		? points.find((point) => point.id === matchEditPoint.params.id)
 		: null;
+
+	const checkPointIsInCircle = (lat, lng) => {
+		const latLngCenter = new window.google.maps.LatLng(
+			53.19455626366442,
+			-1.695365906570867
+		);
+		const latLngMarker = new window.google.maps.LatLng(
+			Number(lat),
+			Number(lng)
+		);
+		const computeDistance =
+			window.google.maps.geometry.spherical.computeDistanceBetween(
+				latLngCenter,
+				latLngMarker
+			);
+		if (100 > computeDistance) return true;
+	};
 
 	useEffect(() => {
 		if (pointStatus === 'idle') {
@@ -69,6 +96,12 @@ function App() {
 
 	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
+
+		if (!checkPointIsInCircle(data.lat, data.lng)) {
+			console.log('point cannot be added as it is outside circle');
+			return;
+		}
+
 		const form = new FormData(e.target);
 		const image = form.get('image');
 		const dataForStorage = {
@@ -140,6 +173,7 @@ function App() {
 							filterPoints={filterPoints}
 							checkedFilter={checkedFilter}
 							isFilteringActive={isFilteringActive}
+							isLoaded={isLoaded}
 						/>
 					}
 				/>
