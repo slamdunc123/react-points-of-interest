@@ -6,6 +6,9 @@ import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import { mapConfig } from '../../config/MapConfig';
+
+const { center, circleOptions, zoom } = mapConfig;
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -16,27 +19,6 @@ const containerStyleSidebarClosed = {
 	width: '100vw',
 	height: 'calc(100vh - 64px)',
 };
-
-const center = {
-	lat: 53.19455626366442,
-	lng: -1.695365906570867,
-};
-
-const circleOptions = {
-	strokeColor: '#FFF',
-	strokeOpacity: 0.2,
-	strokeWeight: 2,
-	fillColor: '#FFF',
-	fillOpacity: 0.05,
-	clickable: false,
-	draggable: false,
-	editable: false,
-	visible: true,
-	radius: 100,
-	zIndex: 1,
-};
-
-const zoom = 17;
 
 const Map = ({
 	points,

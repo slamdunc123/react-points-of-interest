@@ -27,6 +27,9 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { mapConfig } from './config/MapConfig';
+
+const { radius } = mapConfig.circleOptions;
 
 const libraries = ['geometry'];
 const MAP_API = process.env.REACT_APP_MAP_API;
@@ -71,7 +74,7 @@ function App() {
 				latLngCenter,
 				latLngMarker
 			);
-		if (100 > computeDistance) return true;
+		if (radius > computeDistance) return true;
 	};
 
 	useEffect(() => {
