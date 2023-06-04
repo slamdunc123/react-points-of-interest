@@ -9,15 +9,17 @@ import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import { PointInt } from '../Points/Points';
+import Image from 'mui-image';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
 		e: FormEvent<HTMLFormElement>,
 		formData: Omit<PointInt, 'id'>
 	) => void;
+	imageErrorMessage: string;
 }
 
-const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
+const AddPoint = ({ handleAddPoint, imageErrorMessage }: AddPointPropsInt) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -30,13 +32,20 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
+	const [image, setImage] = useState('');
 
 	const navigate = useNavigate();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-     // check it out: we get the evt.target.name (which will be either "email" or "password")
-    // and use it to target the key on our `state` object with the same name, using bracket syntax
+		// check it out: we get the evt.target.name (which will be either "email" or "password")
+		// and use it to target the key on our `state` object with the same name, using bracket syntax
 		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
+		if (e.target.files) {
+			setImage(URL.createObjectURL(e.target.files[0]));
+		}
 	};
 
 	const handleCancelButtonOnClick = () => {
@@ -75,7 +84,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -88,7 +97,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								multiline
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -100,7 +109,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -112,7 +121,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -124,7 +133,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -136,7 +145,7 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -148,15 +157,21 @@ const AddPoint = ({ handleAddPoint }: AddPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
-                fullWidth
+								fullWidth
 							/>
 							<TextField
 								name='image'
 								type='file'
 								margin='normal'
-                size='small'
-                fullWidth
+								size='small'
+								onChange={handleOnChangeImage}
+								fullWidth
 							/>
+							{image ? (
+								<Image src={image} duration={0} />
+							) : (
+								imageErrorMessage
+							)}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

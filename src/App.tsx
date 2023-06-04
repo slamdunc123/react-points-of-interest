@@ -43,6 +43,8 @@ function App() {
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
+	const [imageErrorMessage, setImageErrorMessage] = useState('');
+
 	const navigate = useNavigate();
 	const matchPoint = useMatch('/points/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
@@ -107,6 +109,10 @@ function App() {
 
 		const form = new FormData(e.target);
 		const image = form.get('image');
+		if (!image.name) {
+			setImageErrorMessage('Please select an image');
+			return;
+		}
 		const dataForStorage = {
 			name: form.get('name'),
 			image: image.name,
@@ -128,6 +134,11 @@ function App() {
 		e.preventDefault();
 		const form = new FormData(e.target);
 		const image = form.get('image');
+		if (!image.name) {
+			setImageErrorMessage('Please select an image');
+			return;
+		}
+
 		const dataForStorage = {
 			id: data.id,
 			name: form.get('name'),
@@ -193,7 +204,10 @@ function App() {
 					path='/add-point'
 					element={
 						<RequireAuth>
-							<AddPoint handleAddPoint={handleAddPoint} />
+							<AddPoint
+								handleAddPoint={handleAddPoint}
+								imageErrorMessage={imageErrorMessage}
+							/>
 						</RequireAuth>
 					}
 				/>
@@ -204,6 +218,7 @@ function App() {
 							<EditPoint
 								editPoint={editPoint}
 								handleEditPoint={handleEditPoint}
+								imageErrorMessage={imageErrorMessage}
 							/>
 						</RequireAuth>
 					}

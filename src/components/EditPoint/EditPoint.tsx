@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import { PointInt } from '../Points/Points';
+import Image from 'mui-image';
 
 interface EditPointPropsInt {
 	editPoint: PointInt;
@@ -21,23 +22,50 @@ interface EditPointPropsInt {
 		e: FormEvent<HTMLFormElement>,
 		formData: PointInt
 	) => void;
+	imageErrorMessage: string;
 }
 
-const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
-	const [formData, setFormData] = useState(editPoint);
-	const navigate = useNavigate();
+const EditPoint = ({
+	editPoint,
+	handleEditPoint,
+	imageErrorMessage,
+}: EditPointPropsInt) => {
+	const initialFormData = {
+		id: '',
+		lat: '',
+		lng: '',
+		name: '',
+		description: '',
+		type: '',
+		yearBuilt: '',
+		url: '',
+		image: '',
+	};
+	
+	const [formData, setFormData] = useState(initialFormData);
+  const [image, setImage] = useState('');
 
-	useEffect(() => {
-		if (!editPoint) navigate(-1);
-	}, [editPoint, navigate]);
+	const navigate = useNavigate();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
+	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
+		if (e.target.files) {
+			setImage(URL.createObjectURL(e.target.files[0]));
+		}
+	};
+
 	const handleCancelButtonOnClick = () => {
 		navigate(-1);
 	};
+
+	useEffect(() => {
+		if (!editPoint) {
+			navigate(-1);
+		} else setFormData(editPoint);
+	}, [editPoint, navigate]);
 
 	return (
 		<Container fixed>
@@ -62,6 +90,10 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								alignItems: 'flex-start',
 							}}
 						>
+							{formData.image ? (
+								<Image src={formData.image} duration={0} />
+							) : null}
+
 							<TextField
 								id='outlined-basic'
 								label='Name'
@@ -72,6 +104,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -84,6 +117,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								size='small'
 								margin='normal'
 								multiline
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -95,6 +129,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -106,6 +141,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -117,6 +153,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -128,6 +165,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								id='outlined-basic'
@@ -139,6 +177,7 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
+								fullWidth
 							/>
 							<TextField
 								name='image'
@@ -146,7 +185,9 @@ const EditPoint = ({ editPoint, handleEditPoint }: EditPointPropsInt) => {
 								margin='normal'
 								size='small'
 								fullWidth
+								onChange={handleOnChangeImage}
 							/>
+							{image ? <Image src={image} duration={0}/> : imageErrorMessage}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button
