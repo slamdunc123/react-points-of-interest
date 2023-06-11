@@ -14,7 +14,7 @@ export const mapConfig = {
 		draggable: false,
 		editable: false,
 		visible: true,
-		radius: 400,
+		radius: 300,
 		zIndex: 1,
 	},
 	zoom: 17,

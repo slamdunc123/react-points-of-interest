@@ -10,16 +10,20 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import { PointInt } from '../Points/Points';
 import Image from 'mui-image';
+import AlertDialog from '../AlertDialog/AlertDialog';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
 		e: FormEvent<HTMLFormElement>,
 		formData: Omit<PointInt, 'id'>
 	) => void;
-	imageErrorMessage: string;
+  alertDialogOpen: boolean;
+  formErrorMessage: string;
+	handleAlertDialogClose: () => void;
+  
 }
 
-const AddPoint = ({ handleAddPoint, imageErrorMessage }: AddPointPropsInt) => {
+const AddPoint = ({ handleAddPoint, alertDialogOpen, handleAlertDialogClose, formErrorMessage }: AddPointPropsInt) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -54,6 +58,11 @@ const AddPoint = ({ handleAddPoint, imageErrorMessage }: AddPointPropsInt) => {
 
 	return (
 		<Container fixed>
+      <AlertDialog
+					description={formErrorMessage}
+					alertDialogOpen={alertDialogOpen}
+					handleAlertDialogClose={handleAlertDialogClose}
+				/>
 			<Button
 				variant='outlined'
 				type='button'
@@ -167,11 +176,10 @@ const AddPoint = ({ handleAddPoint, imageErrorMessage }: AddPointPropsInt) => {
 								onChange={handleOnChangeImage}
 								fullWidth
 							/>
-							{image ? (
+							{image && (
 								<Image src={image} duration={0} />
-							) : (
-								imageErrorMessage
-							)}
+							) 
+							}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

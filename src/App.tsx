@@ -43,7 +43,8 @@ function App() {
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
-	const [imageErrorMessage, setImageErrorMessage] = useState('');
+	const [formErrorMessage, setFormErrorMessage] = useState('');
+	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
 	const matchPoint = useMatch('/points/:id');
@@ -85,6 +86,14 @@ function App() {
 		}
 	}, [pointStatus, dispatch]);
 
+	useEffect(() => {
+		setAlertDialogOpen(false);
+	}, []);
+
+	const handleAlertDialogClose = () => {
+		setAlertDialogOpen(false);
+	};
+
 	const filterPoints = (value) => {
 		setIsFilteringActive(true);
 		if (value === ALL_POINTS) {
@@ -101,16 +110,19 @@ function App() {
 
 	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
+		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
 
-		if (!checkPointIsInCircle(data.lat, data.lng)) {
-			console.log('point cannot be added as it is outside circle');
+		if (!isPointInCirle) {
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Point needs to be within permitted boundary');
 			return;
 		}
 
 		const form = new FormData(e.target);
 		const image = form.get('image');
 		if (!image.name) {
-			setImageErrorMessage('Please select an image');
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Please select an image');
 			return;
 		}
 		const dataForStorage = {
@@ -121,7 +133,7 @@ function App() {
 		data.image = image.name;
 		try {
 			if (!!dataForStorage.image)
-				await Storage.put(dataForStorage.name, image);
+				await Storage.put(dataForStorage.image, image);
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(addPoint(data));
@@ -132,17 +144,25 @@ function App() {
 	};
 	const handleEditPoint = async (e, data) => {
 		e.preventDefault();
-		const form = new FormData(e.target);
-		const image = form.get('image');
-		if (!image.name) {
-			setImageErrorMessage('Please select an image');
+		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
+
+		if (!isPointInCirle) {
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Point needs to be within permitted boundary');
 			return;
 		}
+		const form = new FormData(e.target);
+		const image = form.get('image');
+		// if (!image.name) {
+		// 	setAlertDialogOpen(true);
+		// 	setFormErrorMessage('Please select an image');
+		// 	return;
+		// }
 
 		const dataForStorage = {
 			id: data.id,
 			name: form.get('name'),
-			image: image.name,
+			image: image.name ? image.name : null,
 		};
 
 		const updatedData = { ...data };
@@ -154,7 +174,7 @@ function App() {
 		updatedData.lng = Number(updatedData.lng);
 		try {
 			if (!!dataForStorage.image)
-				await Storage.put(dataForStorage.name, image);
+				await Storage.put(dataForStorage.image, image);
 
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
@@ -206,7 +226,9 @@ function App() {
 						<RequireAuth>
 							<AddPoint
 								handleAddPoint={handleAddPoint}
-								imageErrorMessage={imageErrorMessage}
+								alertDialogOpen={alertDialogOpen}
+								handleAlertDialogClose={handleAlertDialogClose}
+								formErrorMessage={formErrorMessage}
 							/>
 						</RequireAuth>
 					}
@@ -218,7 +240,9 @@ function App() {
 							<EditPoint
 								editPoint={editPoint}
 								handleEditPoint={handleEditPoint}
-								imageErrorMessage={imageErrorMessage}
+								alertDialogOpen={alertDialogOpen}
+								handleAlertDialogClose={handleAlertDialogClose}
+								formErrorMessage={formErrorMessage}
 							/>
 						</RequireAuth>
 					}

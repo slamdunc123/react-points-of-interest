@@ -15,6 +15,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import { PointInt } from '../Points/Points';
 import Image from 'mui-image';
+import AlertDialog from '../AlertDialog/AlertDialog';
 
 interface EditPointPropsInt {
 	editPoint: PointInt;
@@ -22,13 +23,17 @@ interface EditPointPropsInt {
 		e: FormEvent<HTMLFormElement>,
 		formData: PointInt
 	) => void;
-	imageErrorMessage: string;
+  alertDialogOpen: boolean;
+  formErrorMessage: string;
+	handleAlertDialogClose: () => void;
 }
 
 const EditPoint = ({
 	editPoint,
 	handleEditPoint,
-	imageErrorMessage,
+  alertDialogOpen,
+	formErrorMessage,
+  handleAlertDialogClose,
 }: EditPointPropsInt) => {
 	const initialFormData = {
 		id: '',
@@ -63,12 +68,17 @@ const EditPoint = ({
 
 	useEffect(() => {
 		if (!editPoint) {
-			navigate(-1);
+      navigate(-1);
 		} else setFormData(editPoint);
 	}, [editPoint, navigate]);
-
+  
 	return (
-		<Container fixed>
+    <Container fixed>
+      <AlertDialog
+					description={formErrorMessage}
+					alertDialogOpen={alertDialogOpen}
+					handleAlertDialogClose={handleAlertDialogClose}
+				/>
 			<Button
 				variant='outlined'
 				type='button'
@@ -81,7 +91,6 @@ const EditPoint = ({
 			<Card sx={{ marginTop: 2 }} variant='outlined'>
 				<CardContent>
 					<div>Edit Point Contents</div>
-
 					<form onSubmit={(e) => handleEditPoint(e, formData)}>
 						<Box
 							sx={{
@@ -90,6 +99,7 @@ const EditPoint = ({
 								alignItems: 'flex-start',
 							}}
 						>
+
 							{formData.image ? (
 								<Image src={formData.image} duration={0} />
 							) : null}
@@ -187,7 +197,7 @@ const EditPoint = ({
 								fullWidth
 								onChange={handleOnChangeImage}
 							/>
-							{image ? <Image src={image} duration={0}/> : imageErrorMessage}
+							{image && <Image src={image} duration={0}/> }
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

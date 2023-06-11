@@ -15,7 +15,6 @@ const Admin = () => {
 	const handleAdminOnClick = () => {
 		if (user) {
 			try {
-				console.log('sign out');
 				signOut();
 				navigate('/login');
 			} catch (error) {}
