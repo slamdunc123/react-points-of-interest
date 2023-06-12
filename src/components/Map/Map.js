@@ -7,6 +7,7 @@ import { Circle } from '@react-google-maps/api';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import { mapConfig } from '../../config/MapConfig';
+import Image from 'mui-image';
 
 const { center, circleOptions, zoom } = mapConfig;
 
@@ -72,8 +73,14 @@ const Map = ({
 						>
 							<div className='info-container'>
 								<h4>{activePoint.name}</h4>
-								<p>{`Built: ${activePoint.yearBuilt}`}</p>
-
+                {activePoint.image && (
+								<Image
+									src={activePoint.image}
+									alt={`visual aid for ${activePoint.name}`}
+									style={{ width: 100 }}
+									duration={0}
+								/>
+							)}
 								<IconButton
 									component={Link}
 									to={`/points/${activePoint.id}`}

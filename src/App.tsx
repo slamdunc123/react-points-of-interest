@@ -173,8 +173,10 @@ function App() {
 		updatedData.lat = Number(updatedData.lat);
 		updatedData.lng = Number(updatedData.lng);
 		try {
-			if (!!dataForStorage.image)
-				await Storage.put(dataForStorage.image, image);
+			if (!!dataForStorage.image) {
+				await Storage.remove(updatedData.imageName); // remove existing image from storage
+				await Storage.put(dataForStorage.image, image); // add replaced image into storage
+			}
 
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
