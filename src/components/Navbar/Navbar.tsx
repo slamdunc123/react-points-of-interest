@@ -11,11 +11,13 @@ import { useNavigate } from 'react-router-dom';
 interface NavbarProps {
 	isSidebarOpen: boolean;
 	handleSidebarOnClick: (isSidebarOpen: boolean) => void;
+	mapName: string;
 }
 
 export default function Navbar({
 	isSidebarOpen,
 	handleSidebarOnClick,
+	mapName,
 }: NavbarProps) {
 	const navigate = useNavigate();
 	return (
@@ -42,8 +44,14 @@ export default function Navbar({
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant='h6' component='div'>
-						Over Haddon
+					<Typography
+						variant='h6'
+						component='div'
+					>
+            <Box sx={{textTransform: 'uppercase'}}>
+
+						{mapName}
+            </Box>
 					</Typography>
 				</Toolbar>
 			</AppBar>

@@ -11,7 +11,8 @@ interface PointsPropsInt {
 	filterPoints: (value: string) => void;
 	checkedFilter: string;
 	isFilteringActive: boolean;
-  isLoaded: boolean;
+	isLoaded: boolean;
+	mapId: string;
 }
 
 export interface PointInt {
@@ -23,8 +24,8 @@ export interface PointInt {
 	yearBuilt: string;
 	url: string;
 	description: string;
-  image: any;
-  imageName: string;
+	image: any;
+	imageName: string;
 }
 
 const Points = ({
@@ -32,7 +33,8 @@ const Points = ({
 	filterPoints,
 	checkedFilter,
 	isFilteringActive,
-  isLoaded
+	isLoaded,
+	mapId,
 }: PointsPropsInt) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -77,7 +79,8 @@ const Points = ({
 				handlePointOnClick={handlePointOnClick}
 				handleSidebarOnClick={handleSidebarOnClick}
 				isSidebarOpen={isSidebarOpen}
-        isLoaded={isLoaded}
+				isLoaded={isLoaded}
+				mapId={mapId}
 			/>
 		</div>
 	);

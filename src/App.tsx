@@ -30,8 +30,6 @@ import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
 import { mapConfig } from './config/MapConfig';
 
-const { radius } = mapConfig.circleOptions;
-
 const libraries = ['geometry'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
@@ -47,9 +45,8 @@ function App() {
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
-  const [mapId, setMapId] = useState('')
-
-  
+	const [mapId, setMapId] = useState('');
+	const [currentMap, setCurrentMap] = useState();
 
 	const navigate = useNavigate();
 	const matchPoint = useMatch('/point/:id');
@@ -82,8 +79,13 @@ function App() {
 				latLngCenter,
 				latLngMarker
 			);
-		if (radius > computeDistance) return true;
+		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
+
+	useEffect(() => {
+		const mapFound = mapConfig.find((map) => map.id === mapId);
+		if (mapFound) setCurrentMap(mapFound);
+	}, [mapId]);
 
 	useEffect(() => {
 		if (pointStatus === 'idle') {
@@ -95,9 +97,9 @@ function App() {
 		setAlertDialogOpen(false);
 	}, []);
 
-  const handleMapOnChange = (e: SelectChangeEvent) => {
-    setMapId(e.target.value)
-  }
+	const handleMapOnChange = (e: SelectChangeEvent) => {
+		setMapId(e.target.value);
+	};
 
 	const handleAlertDialogClose = () => {
 		setAlertDialogOpen(false);
@@ -210,7 +212,15 @@ function App() {
 	return (
 		<Authenticator.Provider>
 			<Routes>
-        <Route path='/' element={<Home mapId={mapId} handleMapOnChange={handleMapOnChange}/>} />
+				<Route
+					path='/'
+					element={
+						<Home
+							mapId={mapId}
+							handleMapOnChange={handleMapOnChange}
+						/>
+					}
+				/>
 				<Route
 					path='/maps/:Id'
 					element={
@@ -220,6 +230,7 @@ function App() {
 							checkedFilter={checkedFilter}
 							isFilteringActive={isFilteringActive}
 							isLoaded={isLoaded}
+							mapId={mapId}
 						/>
 					}
 				/>
@@ -229,7 +240,7 @@ function App() {
 						<Point
 							point={point}
 							handleDeletePoint={handleDeletePoint}
-              mapId={mapId}
+							mapId={mapId}
 						/>
 					}
 				/>
@@ -242,7 +253,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
-                mapId={mapId}
+								mapId={mapId}
 							/>
 						</RequireAuth>
 					}
@@ -257,7 +268,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
-                mapId={mapId}
+								mapId={mapId}
 							/>
 						</RequireAuth>
 					}
