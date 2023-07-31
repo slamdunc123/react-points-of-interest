@@ -23,17 +23,19 @@ interface EditPointPropsInt {
 		e: FormEvent<HTMLFormElement>,
 		formData: PointInt
 	) => void;
-  alertDialogOpen: boolean;
-  formErrorMessage: string;
+	alertDialogOpen: boolean;
+	formErrorMessage: string;
 	handleAlertDialogClose: () => void;
+	mapId: string;
 }
 
 const EditPoint = ({
 	editPoint,
 	handleEditPoint,
-  alertDialogOpen,
+	alertDialogOpen,
 	formErrorMessage,
-  handleAlertDialogClose,
+	handleAlertDialogClose,
+	mapId,
 }: EditPointPropsInt) => {
 	const initialFormData = {
 		id: '',
@@ -45,10 +47,10 @@ const EditPoint = ({
 		yearBuilt: '',
 		url: '',
 		image: '',
+		imageName: '',
 	};
-	
 	const [formData, setFormData] = useState(initialFormData);
-  const [image, setImage] = useState('');
+	const [image, setImage] = useState('');
 
 	const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ const EditPoint = ({
 	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
 		if (e.target.files) {
 			setImage(URL.createObjectURL(e.target.files[0]));
-		}
+		} else setImage(formData.imageName);
 	};
 
 	const handleCancelButtonOnClick = () => {
@@ -68,25 +70,25 @@ const EditPoint = ({
 
 	useEffect(() => {
 		if (!editPoint) {
-      navigate(-1);
+			navigate(-1);
 		} else setFormData(editPoint);
 	}, [editPoint, navigate]);
-  
+
 	return (
-    <Container fixed>
-      <AlertDialog
-					description={formErrorMessage}
-					alertDialogOpen={alertDialogOpen}
-					handleAlertDialogClose={handleAlertDialogClose}
-				/>
+		<Container fixed>
+			<AlertDialog
+				description={formErrorMessage}
+				alertDialogOpen={alertDialogOpen}
+				handleAlertDialogClose={handleAlertDialogClose}
+			/>
 			<Button
 				variant='outlined'
 				type='button'
 				size='small'
 				component={Link}
-				to='/'
+				to={`/maps/${mapId}`}
 			>
-				Home
+				Map
 			</Button>
 			<Card sx={{ marginTop: 2 }} variant='outlined'>
 				<CardContent>
@@ -99,7 +101,6 @@ const EditPoint = ({
 								alignItems: 'flex-start',
 							}}
 						>
-
 							{formData.image ? (
 								<Image src={formData.image} duration={0} />
 							) : null}
@@ -197,7 +198,7 @@ const EditPoint = ({
 								fullWidth
 								onChange={handleOnChangeImage}
 							/>
-							{image && <Image src={image} duration={0}/> }
+							{image && <Image src={image} duration={0} />}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

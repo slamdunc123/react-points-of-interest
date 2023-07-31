@@ -10,6 +10,7 @@ import {
 	useMatch,
 	Navigate,
 } from 'react-router-dom';
+import Home from './components/Home/Home';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
@@ -46,8 +47,12 @@ function App() {
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
+  const [mapId, setMapId] = useState('')
+
+  
+
 	const navigate = useNavigate();
-	const matchPoint = useMatch('/points/:id');
+	const matchPoint = useMatch('/point/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
 
 	const { isLoaded } = useJsApiLoader({
@@ -89,6 +94,10 @@ function App() {
 	useEffect(() => {
 		setAlertDialogOpen(false);
 	}, []);
+
+  const handleMapOnChange = (e: SelectChangeEvent) => {
+    setMapId(e.target.value)
+  }
 
 	const handleAlertDialogClose = () => {
 		setAlertDialogOpen(false);
@@ -137,7 +146,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(addPoint(data));
-			navigate('/');
+			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
 		}
@@ -181,7 +190,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(updatePoint(updatedData));
-			navigate('/');
+			navigate(-1);
 		} catch (error) {
 			console.log(error);
 		}
@@ -192,7 +201,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(deletePoint(point));
-			navigate('/');
+			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
 		}
@@ -201,8 +210,9 @@ function App() {
 	return (
 		<Authenticator.Provider>
 			<Routes>
+        <Route path='/' element={<Home mapId={mapId} handleMapOnChange={handleMapOnChange}/>} />
 				<Route
-					path='/'
+					path='/maps/:Id'
 					element={
 						<Points
 							points={isFilteringActive ? filteredPoints : points}
@@ -214,11 +224,12 @@ function App() {
 					}
 				/>
 				<Route
-					path='/points/:id'
+					path='/point/:id'
 					element={
 						<Point
 							point={point}
 							handleDeletePoint={handleDeletePoint}
+              mapId={mapId}
 						/>
 					}
 				/>
@@ -231,6 +242,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
+                mapId={mapId}
 							/>
 						</RequireAuth>
 					}
@@ -245,6 +257,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
+                mapId={mapId}
 							/>
 						</RequireAuth>
 					}

@@ -16,9 +16,10 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 interface PointPropsInt {
 	point: PointInt;
 	handleDeletePoint: (point: PointInt) => void;
+  mapId: string;
 }
 
-const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
+const Point = ({ point, handleDeletePoint, mapId }: PointPropsInt) => {
 	const { user } = useAuthenticator((context) => [context.user]);
 
 	const navigate = useNavigate();
@@ -34,9 +35,9 @@ const Point = ({ point, handleDeletePoint }: PointPropsInt) => {
 				type='button'
 				size='small'
 				component={Link}
-				to='/'
+				to={`/maps/${mapId}`}
 			>
-				Home
+				Map
 			</Button>
 
 			<>

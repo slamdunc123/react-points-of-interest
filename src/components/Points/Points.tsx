@@ -24,6 +24,7 @@ export interface PointInt {
 	url: string;
 	description: string;
   image: any;
+  imageName: string;
 }
 
 const Points = ({
