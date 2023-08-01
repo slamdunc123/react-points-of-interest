@@ -6,8 +6,9 @@ import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import { mapConfig } from '../../config/MapConfig';
 import Image from 'mui-image';
+import { API } from 'aws-amplify';
+import { getMap } from '../../graphql/queries';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -31,12 +32,22 @@ const Map = ({
 	const [currentMap, setCurrentMap] = useState();
 	const navigate = useNavigate();
 
+	const fetchMap = async () => {
+		try {
+			const apiData = await API.graphql({
+				query: getMap,
+				variables: { id: mapId },
+			});
+			const mapData = apiData.data.getMap;
+			setCurrentMap(mapData);
+		} catch (error) {
+			navigate('/');
+		}
+	};
+
 	useEffect(() => {
-		const mapFound = mapConfig.find((map) => map.id === mapId);
-		if (mapFound) {
-			setCurrentMap(mapFound);
-		} else navigate('/');
-	}, [mapId, navigate]);
+		fetchMap();
+	});
 
 	return isLoaded ? (
 		<div>

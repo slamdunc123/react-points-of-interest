@@ -22,6 +22,7 @@ export declare type PointUpdateFormInputValues = {
     url?: string;
     description?: string;
     image?: string;
+    imageName?: string;
 };
 export declare type PointUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
@@ -32,6 +33,7 @@ export declare type PointUpdateFormValidationValues = {
     url?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
     image?: ValidationFunction<string>;
+    imageName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PointUpdateFormOverridesProps = {
@@ -44,6 +46,7 @@ export declare type PointUpdateFormOverridesProps = {
     url?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
     image?: PrimitiveOverrideProps<TextFieldProps>;
+    imageName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PointUpdateFormProps = React.PropsWithChildren<{
     overrides?: PointUpdateFormOverridesProps | undefined | null;

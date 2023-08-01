@@ -30,9 +30,9 @@ export default function Navbar({
 						color='inherit'
 						aria-label='menu'
 						sx={{ mr: 2 }}
-						onClick={() => navigate('/')}
+						onClick={() => handleSidebarOnClick(!isSidebarOpen)}
 					>
-						<HomeIcon />
+						<MenuIcon />
 					</IconButton>
 					<IconButton
 						size='large'
@@ -40,15 +40,15 @@ export default function Navbar({
 						color='inherit'
 						aria-label='menu'
 						sx={{ mr: 2 }}
-						onClick={() => handleSidebarOnClick(!isSidebarOpen)}
+						onClick={() => navigate('/')}
 					>
-						<MenuIcon />
+						<HomeIcon />
 					</IconButton>
 					<Typography
 						variant='h6'
 						component='div'
 					>
-            <Box sx={{textTransform: 'uppercase'}}>
+            <Box sx={{textTransform: 'uppercase', m: 1}}>
 
 						{mapName}
             </Box>

@@ -15,3 +15,31 @@ type Point @model @auth(rules: [{ allow: public }]) {
 	image: String
 	imageName: String
 }
+
+type Map @model {
+	id: ID!
+	name: String!
+	description: String
+	center: MapCenter
+	circleOptions: MapCircleOptions
+	zoom: Float!
+}
+
+type MapCenter {
+	lat: Float!
+	lng: Float!
+}
+
+type MapCircleOptions {
+	strokeColor: String
+	strokeOpacity: Float
+	strokeWeight: Float
+	fillColor: String
+	fillOpacity: Float
+	clickable: Boolean
+	draggable: Boolean
+	editable: Boolean
+	visible: Boolean
+	radius: Float
+	zIndex: Float
+}
