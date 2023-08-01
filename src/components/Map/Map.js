@@ -45,9 +45,10 @@ const Map = ({
 		}
 	};
 
+  // TODO: fix dependency issue
 	useEffect(() => {
 		fetchMap();
-	});
+	}, []);
 
 	return isLoaded ? (
 		<div>
