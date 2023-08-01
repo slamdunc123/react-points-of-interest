@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
@@ -32,7 +32,7 @@ const Map = ({
 	const [currentMap, setCurrentMap] = useState();
 	const navigate = useNavigate();
 
-	const fetchMap = async () => {
+	const fetchMap = useCallback(async () => {
 		try {
 			const apiData = await API.graphql({
 				query: getMap,
@@ -43,12 +43,11 @@ const Map = ({
 		} catch (error) {
 			navigate('/');
 		}
-	};
+	}, [mapId, navigate]);
 
-  // TODO: fix dependency issue
 	useEffect(() => {
 		fetchMap();
-	}, []);
+	}, [fetchMap]);
 
 	return isLoaded ? (
 		<div>
