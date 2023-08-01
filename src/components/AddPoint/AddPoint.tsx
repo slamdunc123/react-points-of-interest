@@ -17,13 +17,19 @@ interface AddPointPropsInt {
 		e: FormEvent<HTMLFormElement>,
 		formData: Omit<PointInt, 'id'>
 	) => void;
-  alertDialogOpen: boolean;
-  formErrorMessage: string;
+	alertDialogOpen: boolean;
+	formErrorMessage: string;
 	handleAlertDialogClose: () => void;
-  
+	mapId: string;
 }
 
-const AddPoint = ({ handleAddPoint, alertDialogOpen, handleAlertDialogClose, formErrorMessage }: AddPointPropsInt) => {
+const AddPoint = ({
+	handleAddPoint,
+	alertDialogOpen,
+	handleAlertDialogClose,
+	formErrorMessage,
+	mapId,
+}: AddPointPropsInt) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -33,6 +39,7 @@ const AddPoint = ({ handleAddPoint, alertDialogOpen, handleAlertDialogClose, for
 		yearBuilt: '',
 		url: '',
 		image: '',
+		imageName: '',
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
@@ -58,19 +65,19 @@ const AddPoint = ({ handleAddPoint, alertDialogOpen, handleAlertDialogClose, for
 
 	return (
 		<Container fixed>
-      <AlertDialog
-					description={formErrorMessage}
-					alertDialogOpen={alertDialogOpen}
-					handleAlertDialogClose={handleAlertDialogClose}
-				/>
+			<AlertDialog
+				description={formErrorMessage}
+				alertDialogOpen={alertDialogOpen}
+				handleAlertDialogClose={handleAlertDialogClose}
+			/>
 			<Button
 				variant='outlined'
 				type='button'
 				size='small'
 				component={Link}
-				to='/'
+				to={`/maps/${mapId}`}
 			>
-				Home
+				Map
 			</Button>
 			<Card sx={{ marginTop: 2 }} variant='outlined'>
 				<CardContent>
@@ -176,10 +183,7 @@ const AddPoint = ({ handleAddPoint, alertDialogOpen, handleAlertDialogClose, for
 								onChange={handleOnChangeImage}
 								fullWidth
 							/>
-							{image && (
-								<Image src={image} duration={0} />
-							) 
-							}
+							{image && <Image src={image} duration={0} />}
 							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 								<Box mr={2}>
 									<Button

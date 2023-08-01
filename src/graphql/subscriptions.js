@@ -55,3 +55,90 @@ export const onDeletePoint = /* GraphQL */ `
     }
   }
 `;
+export const onCreateMap = /* GraphQL */ `
+  subscription OnCreateMap($filter: ModelSubscriptionMapFilterInput) {
+    onCreateMap(filter: $filter) {
+      id
+      name
+      description
+      center {
+        lat
+        lng
+      }
+      circleOptions {
+        strokeColor
+        strokeOpacity
+        strokeWeight
+        fillColor
+        fillOpacity
+        clickable
+        draggable
+        editable
+        visible
+        radius
+        zIndex
+      }
+      zoom
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMap = /* GraphQL */ `
+  subscription OnUpdateMap($filter: ModelSubscriptionMapFilterInput) {
+    onUpdateMap(filter: $filter) {
+      id
+      name
+      description
+      center {
+        lat
+        lng
+      }
+      circleOptions {
+        strokeColor
+        strokeOpacity
+        strokeWeight
+        fillColor
+        fillOpacity
+        clickable
+        draggable
+        editable
+        visible
+        radius
+        zIndex
+      }
+      zoom
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMap = /* GraphQL */ `
+  subscription OnDeleteMap($filter: ModelSubscriptionMapFilterInput) {
+    onDeleteMap(filter: $filter) {
+      id
+      name
+      description
+      center {
+        lat
+        lng
+      }
+      circleOptions {
+        strokeColor
+        strokeOpacity
+        strokeWeight
+        fillColor
+        fillOpacity
+        clickable
+        draggable
+        editable
+        visible
+        radius
+        zIndex
+      }
+      zoom
+      createdAt
+      updatedAt
+    }
+  }
+`;

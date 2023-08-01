@@ -44,3 +44,68 @@ export const listPoints = /* GraphQL */ `
     }
   }
 `;
+export const getMap = /* GraphQL */ `
+  query GetMap($id: ID!) {
+    getMap(id: $id) {
+      id
+      name
+      description
+      center {
+        lat
+        lng
+      }
+      circleOptions {
+        strokeColor
+        strokeOpacity
+        strokeWeight
+        fillColor
+        fillOpacity
+        clickable
+        draggable
+        editable
+        visible
+        radius
+        zIndex
+      }
+      zoom
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listMaps = /* GraphQL */ `
+  query ListMaps(
+    $filter: ModelMapFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMaps(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        center {
+          lat
+          lng
+        }
+        circleOptions {
+          strokeColor
+          strokeOpacity
+          strokeWeight
+          fillColor
+          fillOpacity
+          clickable
+          draggable
+          editable
+          visible
+          radius
+          zIndex
+        }
+        zoom
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

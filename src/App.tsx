@@ -10,6 +10,7 @@ import {
 	useMatch,
 	Navigate,
 } from 'react-router-dom';
+import Home from './components/Home/Home';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
@@ -29,8 +30,6 @@ import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
 import { mapConfig } from './config/MapConfig';
 
-const { radius } = mapConfig.circleOptions;
-
 const libraries = ['geometry'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
@@ -46,8 +45,11 @@ function App() {
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
+	const [mapId, setMapId] = useState('');
+	const [currentMap, setCurrentMap] = useState();
+
 	const navigate = useNavigate();
-	const matchPoint = useMatch('/points/:id');
+	const matchPoint = useMatch('/point/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
 
 	const { isLoaded } = useJsApiLoader({
@@ -77,8 +79,13 @@ function App() {
 				latLngCenter,
 				latLngMarker
 			);
-		if (radius > computeDistance) return true;
+		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
+
+	useEffect(() => {
+		const mapFound = mapConfig.find((map) => map.id === mapId);
+		if (mapFound) setCurrentMap(mapFound);
+	}, [mapId]);
 
 	useEffect(() => {
 		if (pointStatus === 'idle') {
@@ -89,6 +96,10 @@ function App() {
 	useEffect(() => {
 		setAlertDialogOpen(false);
 	}, []);
+
+	const handleMapOnChange = (e: SelectChangeEvent) => {
+		setMapId(e.target.value);
+	};
 
 	const handleAlertDialogClose = () => {
 		setAlertDialogOpen(false);
@@ -137,7 +148,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(addPoint(data));
-			navigate('/');
+			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
 		}
@@ -181,7 +192,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(updatePoint(updatedData));
-			navigate('/');
+			navigate(-1);
 		} catch (error) {
 			console.log(error);
 		}
@@ -192,7 +203,7 @@ function App() {
 			setCheckedFilter(ALL_POINTS);
 			setIsFilteringActive(false);
 			dispatch(deletePoint(point));
-			navigate('/');
+			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
 		}
@@ -204,21 +215,32 @@ function App() {
 				<Route
 					path='/'
 					element={
+						<Home
+							mapId={mapId}
+							handleMapOnChange={handleMapOnChange}
+						/>
+					}
+				/>
+				<Route
+					path='/maps/:Id'
+					element={
 						<Points
 							points={isFilteringActive ? filteredPoints : points}
 							filterPoints={filterPoints}
 							checkedFilter={checkedFilter}
 							isFilteringActive={isFilteringActive}
 							isLoaded={isLoaded}
+							mapId={mapId}
 						/>
 					}
 				/>
 				<Route
-					path='/points/:id'
+					path='/point/:id'
 					element={
 						<Point
 							point={point}
 							handleDeletePoint={handleDeletePoint}
+							mapId={mapId}
 						/>
 					}
 				/>
@@ -231,6 +253,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
+								mapId={mapId}
 							/>
 						</RequireAuth>
 					}
@@ -245,6 +268,7 @@ function App() {
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
+								mapId={mapId}
 							/>
 						</RequireAuth>
 					}

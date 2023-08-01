@@ -31,6 +31,7 @@ export default function PointCreateForm(props) {
     url: "",
     description: "",
     image: "",
+    imageName: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [lat, setLat] = React.useState(initialValues.lat);
@@ -42,6 +43,7 @@ export default function PointCreateForm(props) {
     initialValues.description
   );
   const [image, setImage] = React.useState(initialValues.image);
+  const [imageName, setImageName] = React.useState(initialValues.imageName);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
@@ -52,6 +54,7 @@ export default function PointCreateForm(props) {
     setUrl(initialValues.url);
     setDescription(initialValues.description);
     setImage(initialValues.image);
+    setImageName(initialValues.imageName);
     setErrors({});
   };
   const validations = {
@@ -63,6 +66,7 @@ export default function PointCreateForm(props) {
     url: [],
     description: [],
     image: [],
+    imageName: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -98,6 +102,7 @@ export default function PointCreateForm(props) {
           url,
           description,
           image,
+          imageName,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -160,6 +165,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -195,6 +201,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.lat ?? value;
@@ -230,6 +237,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.lng ?? value;
@@ -261,6 +269,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -292,6 +301,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.yearBuilt ?? value;
@@ -323,6 +333,7 @@ export default function PointCreateForm(props) {
               url: value,
               description,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.url ?? value;
@@ -354,6 +365,7 @@ export default function PointCreateForm(props) {
               url,
               description: value,
               image,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -385,6 +397,7 @@ export default function PointCreateForm(props) {
               url,
               description,
               image: value,
+              imageName,
             };
             const result = onChange(modelFields);
             value = result?.image ?? value;
@@ -398,6 +411,38 @@ export default function PointCreateForm(props) {
         errorMessage={errors.image?.errorMessage}
         hasError={errors.image?.hasError}
         {...getOverrideProps(overrides, "image")}
+      ></TextField>
+      <TextField
+        label="Image name"
+        isRequired={false}
+        isReadOnly={false}
+        value={imageName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              lat,
+              lng,
+              type,
+              yearBuilt,
+              url,
+              description,
+              image,
+              imageName: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.imageName ?? value;
+          }
+          if (errors.imageName?.hasError) {
+            runValidationTasks("imageName", value);
+          }
+          setImageName(value);
+        }}
+        onBlur={() => runValidationTasks("imageName", imageName)}
+        errorMessage={errors.imageName?.errorMessage}
+        hasError={errors.imageName?.hasError}
+        {...getOverrideProps(overrides, "imageName")}
       ></TextField>
       <Flex
         justifyContent="space-between"
