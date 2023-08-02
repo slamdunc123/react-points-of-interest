@@ -1,9 +1,12 @@
-import React, { ChangeEvent } from 'react';
+// @ts-nocheck
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { listCategories } from '../../graphql/queries';
+import { API } from 'aws-amplify';
 
 interface PointsFilterProps {
 	checkedFilter: string;
@@ -13,6 +16,18 @@ const PointsFilters = ({
 	checkedFilter,
 	handleFilterOnChange,
 }: PointsFilterProps) => {
+	const [categories, setCategories] = useState();
+
+	const fetchCategories = async () => {
+		const apiData = await API.graphql({ query: listCategories });
+		const catagoriesFromAPI = apiData.data.listCategories.items;
+		setCategories(catagoriesFromAPI);
+	};
+
+	useEffect(() => {
+		fetchCategories();
+	}, []);
+
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>
@@ -25,21 +40,16 @@ const PointsFilters = ({
 				onChange={handleFilterOnChange}
 			>
 				<FormControlLabel value='all' control={<Radio />} label='All' />
-				<FormControlLabel
-					value='religious'
-					control={<Radio />}
-					label='Religious'
-				/>
-				<FormControlLabel
-					value='hospitality'
-					control={<Radio />}
-					label='Hospitality'
-				/>
-				<FormControlLabel
-					value='community'
-					control={<Radio />}
-					label='Community'
-				/>
+
+				{categories &&
+					categories.map((item) => (
+						<FormControlLabel
+							key={item.id}
+							value={item.name}
+							control={<Radio />}
+							label={item.name}
+						/>
+					))}
 			</RadioGroup>
 		</FormControl>
 	);
