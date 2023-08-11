@@ -7,3 +7,5 @@
 export { default as studioTheme } from "./studioTheme";
 export { default as PointCreateForm } from "./PointCreateForm";
 export { default as PointUpdateForm } from "./PointUpdateForm";
+export { default as MapCreateForm } from "./MapCreateForm";
+export { default as MapUpdateForm } from "./MapUpdateForm";
