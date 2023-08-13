@@ -22,13 +22,13 @@ import {
 	addPoint,
 	updatePoint,
 } from './features/point/pointSlice';
+import {allMaps, fetchMaps} from './features/map/mapSlice'
 import './App.css';
 import { Storage } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
-import { mapConfig } from './config/MapConfig';
 
 const libraries = ['geometry'];
 const MAP_API = process.env.REACT_APP_MAP_API;
@@ -36,7 +36,9 @@ const MAP_API = process.env.REACT_APP_MAP_API;
 function App() {
 	const dispatch = useDispatch();
 	const points = useSelector(allPoints);
+	const maps = useSelector(allMaps);
 	const pointStatus = useSelector((state) => state.points.status);
+	const mapStatus = useSelector((state) => state.maps.status);
 
 	const [filteredPoints, setFilteredPoints] = useState(points); // these can change on changing filters
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
@@ -79,13 +81,20 @@ function App() {
 				latLngCenter,
 				latLngMarker
 			);
+
 		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
 
+  useEffect(() => {
+    if (mapStatus === 'idle') {
+			dispatch(fetchMaps());
+		}
+  }, [mapStatus, dispatch])
+
 	useEffect(() => {
-		const mapFound = mapConfig.find((map) => map.id === mapId);
+		const mapFound = maps.find((map) => map.id === mapId);
 		if (mapFound) setCurrentMap(mapFound);
-	}, [mapId]);
+	}, [maps, mapId]);
 
 	useEffect(() => {
 		if (pointStatus === 'idle') {
@@ -140,7 +149,6 @@ function App() {
 			name: form.get('name'),
 			image: image.name,
 		};
-
 		data.image = image.name;
 		try {
 			if (!!dataForStorage.image)
