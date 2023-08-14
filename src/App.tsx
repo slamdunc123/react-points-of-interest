@@ -69,8 +69,8 @@ function App() {
 
 	const checkPointIsInCircle = (lat, lng) => {
 		const latLngCenter = new window.google.maps.LatLng(
-			53.19455626366442,
-			-1.695365906570867
+			currentMap.center.lat,
+			currentMap.center.lng
 		);
 		const latLngMarker = new window.google.maps.LatLng(
 			Number(lat),
