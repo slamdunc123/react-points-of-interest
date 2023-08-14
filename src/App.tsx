@@ -22,7 +22,7 @@ import {
 	addPoint,
 	updatePoint,
 } from './features/point/pointSlice';
-import {allMaps, fetchMaps} from './features/map/mapSlice'
+import { allMaps, fetchMaps } from './features/map/mapSlice';
 import './App.css';
 import { Storage } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -85,11 +85,11 @@ function App() {
 		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
 
-  useEffect(() => {
-    if (mapStatus === 'idle') {
+	useEffect(() => {
+		if (mapStatus === 'idle') {
 			dispatch(fetchMaps());
 		}
-  }, [mapStatus, dispatch])
+	}, [mapStatus, dispatch]);
 
 	useEffect(() => {
 		const mapFound = maps.find((map) => map.id === mapId);
@@ -140,11 +140,7 @@ function App() {
 
 		const form = new FormData(e.target);
 		const image = form.get('image');
-		if (!image.name) {
-			setAlertDialogOpen(true);
-			setFormErrorMessage('Please select an image');
-			return;
-		}
+
 		const dataForStorage = {
 			name: form.get('name'),
 			image: image.name,
@@ -172,11 +168,6 @@ function App() {
 		}
 		const form = new FormData(e.target);
 		const image = form.get('image');
-		// if (!image.name) {
-		// 	setAlertDialogOpen(true);
-		// 	setFormErrorMessage('Please select an image');
-		// 	return;
-		// }
 
 		const dataForStorage = {
 			id: data.id,
@@ -188,12 +179,13 @@ function App() {
 
 		delete updatedData.createdAt;
 		delete updatedData.updatedAt;
-		updatedData.image = image.name;
+		updatedData.image = image.name ? image.name : editPoint.imageName; // needed to not overwrite existing image with nothing if no new image is selected
 		updatedData.lat = Number(updatedData.lat);
 		updatedData.lng = Number(updatedData.lng);
+
 		try {
 			if (!!dataForStorage.image) {
-				await Storage.remove(updatedData.imageName); // remove existing image from storage
+				await Storage.remove(updatedData.imageName); // remove existing image from storage TODO this isn't working
 				await Storage.put(dataForStorage.image, image); // add replaced image into storage
 			}
 
