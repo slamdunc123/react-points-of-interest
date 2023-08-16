@@ -88,7 +88,7 @@ export const deletePoint = createAsyncThunk(
 	}
 );
 export const addPoint = createAsyncThunk('points/addPoint', async (data) => {
-  data.imageName = data.image // grab image name
+	data.imageName = data.image; // grab image name
 	try {
 		const res = await API.graphql({
 			query: createPointMutation,
@@ -103,7 +103,7 @@ export const addPoint = createAsyncThunk('points/addPoint', async (data) => {
 export const updatePoint = createAsyncThunk(
 	'points/updatePoint',
 	async (data) => {
-    data.imageName = data.image // grab image name
+		data.imageName = data.image; // grab image name
 		try {
 			await API.graphql({
 				query: updatePointMutation,

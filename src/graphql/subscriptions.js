@@ -14,6 +14,7 @@ export const onCreatePoint = /* GraphQL */ `
       description
       image
       imageName
+      mapId
       createdAt
       updatedAt
     }
@@ -32,6 +33,7 @@ export const onUpdatePoint = /* GraphQL */ `
       description
       image
       imageName
+      mapId
       createdAt
       updatedAt
     }
@@ -50,6 +52,7 @@ export const onDeletePoint = /* GraphQL */ `
       description
       image
       imageName
+      mapId
       createdAt
       updatedAt
     }
@@ -79,6 +82,24 @@ export const onCreateMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          type
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -108,6 +129,24 @@ export const onUpdateMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          type
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -137,6 +176,24 @@ export const onDeleteMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          type
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }

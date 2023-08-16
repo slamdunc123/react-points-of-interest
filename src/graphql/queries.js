@@ -14,6 +14,7 @@ export const getPoint = /* GraphQL */ `
       description
       image
       imageName
+      mapId
       createdAt
       updatedAt
     }
@@ -37,6 +38,7 @@ export const listPoints = /* GraphQL */ `
         description
         image
         imageName
+        mapId
         createdAt
         updatedAt
       }
@@ -68,6 +70,24 @@ export const getMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          type
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -102,6 +122,9 @@ export const listMaps = /* GraphQL */ `
           zIndex
         }
         zoom
+        points {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -131,6 +154,40 @@ export const listCategories = /* GraphQL */ `
         id
         name
         description
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const pointsByMapId = /* GraphQL */ `
+  query PointsByMapId(
+    $mapId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPointFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pointsByMapId(
+      mapId: $mapId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        lat
+        lng
+        type
+        yearBuilt
+        url
+        description
+        image
+        imageName
+        mapId
         createdAt
         updatedAt
       }

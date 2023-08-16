@@ -146,6 +146,7 @@ function App() {
 			image: image.name,
 		};
 		data.image = image.name;
+    data.mapId = mapId
 		try {
 			if (!!dataForStorage.image)
 				await Storage.put(dataForStorage.image, image);
