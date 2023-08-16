@@ -10,13 +10,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
-import { PointInt } from '../Points/Points';
+import { PointInt } from '../MapContainer/MapContainer';
 import { Image } from 'mui-image';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 interface PointPropsInt {
 	point: PointInt;
 	handleDeletePoint: (point: PointInt) => void;
-  mapId: string;
+	mapId: string;
 }
 
 const Point = ({ point, handleDeletePoint, mapId }: PointPropsInt) => {
@@ -58,7 +58,7 @@ const Point = ({ point, handleDeletePoint, mapId }: PointPropsInt) => {
 								{point.name}
 							</Typography>
 
-              {point.image && (
+							{point.image && (
 								<Image
 									src={point.image}
 									alt={`visual aid for ${point.name}`}

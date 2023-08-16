@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Points from './components/Points/Points';
+import MapContainer from './components/MapContainer/MapContainer';
 import {
 	Route,
 	Routes,
@@ -146,7 +146,7 @@ function App() {
 			image: image.name,
 		};
 		data.image = image.name;
-    data.mapId = mapId
+		data.mapId = mapId;
 		try {
 			if (!!dataForStorage.image)
 				await Storage.put(dataForStorage.image, image);
@@ -225,7 +225,7 @@ function App() {
 				<Route
 					path='/maps/:Id'
 					element={
-						<Points
+						<MapContainer
 							points={isFilteringActive ? filteredPoints : points}
 							filterPoints={filterPoints}
 							checkedFilter={checkedFilter}

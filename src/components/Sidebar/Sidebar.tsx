@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { PointInt } from '../Points/Points';
+import { PointInt } from '../MapContainer/MapContainer';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 

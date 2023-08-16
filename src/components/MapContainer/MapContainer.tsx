@@ -4,9 +4,9 @@ import Map from '../Map/Map';
 import Sidebar from '../Sidebar/Sidebar';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-import styles from './points.module.css';
+import styles from './map-container.module.css';
 
-interface PointsPropsInt {
+interface MapContainerPropsInt {
 	points: PointInt[];
 	filterPoints: (value: string) => void;
 	checkedFilter: string;
@@ -28,14 +28,14 @@ export interface PointInt {
 	imageName: string;
 }
 
-const Points = ({
+const MapContainer = ({
 	points,
 	filterPoints,
 	checkedFilter,
 	isFilteringActive,
 	isLoaded,
 	mapId,
-}: PointsPropsInt) => {
+}: MapContainerPropsInt) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -86,4 +86,4 @@ const Points = ({
 	);
 };
 
-export default Points;
+export default MapContainer;
