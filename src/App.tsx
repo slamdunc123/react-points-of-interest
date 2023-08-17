@@ -19,7 +19,6 @@ import {
 	deletePoint,
 	fetchPoints,
 	allPoints,
-	addPoint,
 	updatePoint,
 } from './features/point/pointSlice';
 import { allMaps, fetchMaps } from './features/map/mapSlice';
@@ -113,37 +112,7 @@ function App() {
 		setAlertDialogOpen(false);
 	};
 
-	const handleAddPoint = async (e, data) => {
-		e.preventDefault();
-		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
-
-		if (!isPointInCirle) {
-			setAlertDialogOpen(true);
-			setFormErrorMessage('Point needs to be within permitted boundary');
-			return;
-		}
-
-		const form = new FormData(e.target);
-		const image = form.get('image');
-
-		const dataForStorage = {
-			name: form.get('name'),
-			image: image.name,
-		};
-		data.image = image.name;
-		data.mapId = mapId;
-		try {
-			if (!!dataForStorage.image)
-				await Storage.put(dataForStorage.image, image);
-			setCheckedFilter(ALL_POINTS);
-			setIsFilteringActive(false);
-			dispatch(addPoint(data));
-			navigate(`/maps/${mapId}`);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	const handleEditPoint = async (e, data) => {
+		const handleEditPoint = async (e, data) => {
 		e.preventDefault();
 		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
 
@@ -231,7 +200,7 @@ function App() {
 					element={
 						<RequireAuth>
 							<AddPoint
-								handleAddPoint={handleAddPoint}
+                checkPointIsInCircle={checkPointIsInCircle}
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
