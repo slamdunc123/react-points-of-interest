@@ -40,7 +40,6 @@ function App() {
 	const pointStatus = useSelector((state) => state.points.status);
 	const mapStatus = useSelector((state) => state.maps.status);
 
-	const [filteredPoints, setFilteredPoints] = useState(points); // these can change on changing filters
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 
@@ -112,20 +111,6 @@ function App() {
 
 	const handleAlertDialogClose = () => {
 		setAlertDialogOpen(false);
-	};
-
-	const filterPoints = (value) => {
-		setIsFilteringActive(true);
-		if (value === ALL_POINTS) {
-			setFilteredPoints(points);
-			setCheckedFilter(ALL_POINTS);
-		} else {
-			const pointsFilteredByValue = points.filter(
-				(point) => point.type === value
-			);
-			setFilteredPoints(pointsFilteredByValue);
-			setCheckedFilter(value);
-		}
 	};
 
 	const handleAddPoint = async (e, data) => {
@@ -226,10 +211,6 @@ function App() {
 					path='/maps/:Id'
 					element={
 						<MapContainer
-							points={isFilteringActive ? filteredPoints : points}
-							filterPoints={filterPoints}
-							checkedFilter={checkedFilter}
-							isFilteringActive={isFilteringActive}
 							isLoaded={isLoaded}
 							mapId={mapId}
 						/>
