@@ -112,7 +112,7 @@ function App() {
 		setAlertDialogOpen(false);
 	};
 
-		const handleEditPoint = async (e, data) => {
+	const handleEditPoint = async (e, data) => {
 		e.preventDefault();
 		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
 
@@ -153,17 +153,6 @@ function App() {
 		}
 	};
 
-	const handleDeletePoint = async (point) => {
-		try {
-			setCheckedFilter(ALL_POINTS);
-			setIsFilteringActive(false);
-			dispatch(deletePoint(point));
-			navigate(`/maps/${mapId}`);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	return (
 		<Authenticator.Provider>
 			<Routes>
@@ -178,29 +167,18 @@ function App() {
 				/>
 				<Route
 					path='/maps/:Id'
-					element={
-						<MapContainer
-							isLoaded={isLoaded}
-							mapId={mapId}
-						/>
-					}
+					element={<MapContainer isLoaded={isLoaded} mapId={mapId} />}
 				/>
 				<Route
 					path='/point/:id'
-					element={
-						<Point
-							point={point}
-							handleDeletePoint={handleDeletePoint}
-							mapId={mapId}
-						/>
-					}
+					element={<Point point={point} mapId={mapId} />}
 				/>
 				<Route
 					path='/add-point'
 					element={
 						<RequireAuth>
 							<AddPoint
-                checkPointIsInCircle={checkPointIsInCircle}
+								checkPointIsInCircle={checkPointIsInCircle}
 								alertDialogOpen={alertDialogOpen}
 								handleAlertDialogClose={handleAlertDialogClose}
 								formErrorMessage={formErrorMessage}
