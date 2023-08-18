@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, {
 	useState,
 	useEffect,
@@ -16,6 +18,9 @@ import Container from '@mui/material/Container';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
+import { Storage } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { updatePoint } from '../../features/point/pointSlice';
 
 interface EditPointPropsInt {
 	editPoint: PointInt;
@@ -23,19 +28,13 @@ interface EditPointPropsInt {
 		e: FormEvent<HTMLFormElement>,
 		formData: PointInt
 	) => void;
-	alertDialogOpen: boolean;
-	formErrorMessage: string;
-	handleAlertDialogClose: () => void;
 	mapId: string;
 }
 
 const EditPoint = ({
 	editPoint,
-	handleEditPoint,
-	alertDialogOpen,
-	formErrorMessage,
-	handleAlertDialogClose,
 	mapId,
+	checkPointIsInCircle,
 }: EditPointPropsInt) => {
 	const initialFormData = {
 		id: '',
@@ -51,8 +50,18 @@ const EditPoint = ({
 	};
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
+	const [formErrorMessage, setFormErrorMessage] = useState('');
+	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!editPoint) {
+			navigate(-1);
+		} else setFormData(editPoint);
+	}, [editPoint, navigate]);
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,15 +73,52 @@ const EditPoint = ({
 		} else setImage(formData.imageName);
 	};
 
+	const handleEditPoint = async (e, data) => {
+		e.preventDefault();
+		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
+
+		if (!isPointInCirle) {
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Point needs to be within permitted boundary');
+			return;
+		}
+		const form = new FormData(e.target);
+		const image = form.get('image');
+
+		const dataForStorage = {
+			id: data.id,
+			name: form.get('name'),
+			image: image.name ? image.name : null,
+		};
+
+		const updatedData = { ...data };
+
+		delete updatedData.createdAt;
+		delete updatedData.updatedAt;
+		updatedData.image = image.name ? image.name : editPoint.imageName; // needed to not overwrite existing image with nothing if no new image is selected
+		updatedData.lat = Number(updatedData.lat);
+		updatedData.lng = Number(updatedData.lng);
+
+		try {
+			if (!!dataForStorage.image) {
+				await Storage.remove(updatedData.imageName); // remove existing image from storage TODO this isn't working
+				await Storage.put(dataForStorage.image, image); // add replaced image into storage
+			}
+
+			dispatch(updatePoint(updatedData));
+			navigate(-1);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleAlertDialogClose = () => {
+		setAlertDialogOpen(false);
+	};
+
 	const handleCancelButtonOnClick = () => {
 		navigate(-1);
 	};
-
-	useEffect(() => {
-		if (!editPoint) {
-			navigate(-1);
-		} else setFormData(editPoint);
-	}, [editPoint, navigate]);
 
 	return (
 		<Container fixed>

@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { API } from 'aws-amplify';
 import { listMaps } from '../../graphql/queries';
@@ -44,29 +45,33 @@ const Home = ({ mapId, handleMapOnChange }: HomePropsInt) => {
 				alignItems: 'center',
 			}}
 		>
-			<FormControl sx={{ m: 1, minWidth: 120 }}>
-				<InputLabel id='demo-simple-select-helper-label'>
-					Maps
-				</InputLabel>
-				<Select
-					labelId='demo-simple-select-helper-label'
-					id='demo-simple-select-helper'
-					value={mapId}
-					label='Maps'
-					onChange={handleMapOnChange}
-				>
-					{maps
-						? maps.map((item) => (
+			{maps.length ? (
+				<>
+					<FormControl sx={{ m: 1, minWidth: 120 }}>
+						<InputLabel id='demo-simple-select-helper-label'>
+							Maps
+						</InputLabel>
+						<Select
+							labelId='demo-simple-select-helper-label'
+							id='demo-simple-select-helper'
+							value={mapId}
+							label='Maps'
+							onChange={handleMapOnChange}
+						>
+							{maps.map((item) => (
 								<MenuItem key={item.id} value={item.id}>
 									{item.name}
 								</MenuItem>
-						  ))
-						: 'loading'}
-				</Select>
-			</FormControl>
-			<Button onClick={handleOnClick} variant='outlined'>
-				Go
-			</Button>
+							))}
+						</Select>
+					</FormControl>
+					<Button onClick={handleOnClick} variant='outlined'>
+						Go
+					</Button>
+				</>
+			) : (
+				<CircularProgress />
+			)}
 		</Box>
 	);
 };

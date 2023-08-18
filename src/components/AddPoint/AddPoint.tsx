@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,25 +12,19 @@ import Container from '@mui/material/Container';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
+import { Storage } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { addPoint } from '../../features/point/pointSlice';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
 		e: FormEvent<HTMLFormElement>,
 		formData: Omit<PointInt, 'id'>
 	) => void;
-	alertDialogOpen: boolean;
-	formErrorMessage: string;
-	handleAlertDialogClose: () => void;
 	mapId: string;
 }
 
-const AddPoint = ({
-	handleAddPoint,
-	alertDialogOpen,
-	handleAlertDialogClose,
-	formErrorMessage,
-	mapId,
-}: AddPointPropsInt) => {
+const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -44,8 +39,12 @@ const AddPoint = ({
 
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
+	const [formErrorMessage, setFormErrorMessage] = useState('');
+	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
@@ -57,6 +56,40 @@ const AddPoint = ({
 		if (e.target.files) {
 			setImage(URL.createObjectURL(e.target.files[0]));
 		}
+	};
+
+	const handleAddPoint = async (e, data) => {
+		e.preventDefault();
+		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
+
+		if (!isPointInCirle) {
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Point needs to be within permitted boundary');
+			return;
+		}
+
+		const form = new FormData(e.target);
+		const image = form.get('image');
+
+		const dataForStorage = {
+			name: form.get('name'),
+			image: image.name,
+		};
+		data.image = image.name;
+		data.mapId = mapId;
+		try {
+			if (!!dataForStorage.image)
+				await Storage.put(dataForStorage.image, image);
+
+			dispatch(addPoint(data));
+			navigate(`/maps/${mapId}`);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleAlertDialogClose = () => {
+		setAlertDialogOpen(false);
 	};
 
 	const handleCancelButtonOnClick = () => {

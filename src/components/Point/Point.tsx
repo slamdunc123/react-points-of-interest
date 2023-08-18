@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
@@ -13,20 +14,31 @@ import LinkIcon from '@mui/icons-material/Link';
 import { PointInt } from '../MapContainer/MapContainer';
 import { Image } from 'mui-image';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useDispatch } from 'react-redux';
+import { deletePoint } from '../../features/point/pointSlice';
 interface PointPropsInt {
 	point: PointInt;
-	handleDeletePoint: (point: PointInt) => void;
 	mapId: string;
 }
 
-const Point = ({ point, handleDeletePoint, mapId }: PointPropsInt) => {
+const Point = ({ point, mapId }: PointPropsInt) => {
 	const { user } = useAuthenticator((context) => [context.user]);
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		if (!point) navigate('/');
 	}, [point, navigate]);
+
+	const handleDeletePoint = async () => {
+		try {
+			dispatch(deletePoint(point));
+			navigate(`/maps/${mapId}`);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<Container fixed>
@@ -103,9 +115,7 @@ const Point = ({ point, handleDeletePoint, mapId }: PointPropsInt) => {
 											variant='contained'
 											type='button'
 											value='Delete'
-											onClick={() => {
-												handleDeletePoint(point);
-											}}
+											onClick={handleDeletePoint}
 										>
 											Delete
 										</Button>
