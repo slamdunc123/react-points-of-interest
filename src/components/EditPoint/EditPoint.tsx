@@ -187,6 +187,7 @@ const EditPoint = ({
 								size='small'
 								margin='normal'
 								fullWidth
+                disabled
 							/>
 							<TextField
 								id='outlined-basic'
@@ -199,6 +200,7 @@ const EditPoint = ({
 								size='small'
 								margin='normal'
 								fullWidth
+                disabled
 							/>
 							<TextField
 								id='outlined-basic'

@@ -101,7 +101,7 @@ const Map = ({
 									drawingControlOptions: {
 										position:
 											window.google.maps.ControlPosition
-												.TOP_CENTER,
+												.RIGHT_BOTTOM,
 										drawingModes: [
 											window.google.maps.drawing
 												.OverlayType.MARKER,
