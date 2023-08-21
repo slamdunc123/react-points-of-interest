@@ -2,13 +2,21 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
-import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import {
+	GoogleMap,
+	Marker,
+	InfoWindow,
+	DrawingManager,
+} from '@react-google-maps/api';
 import { Circle } from '@react-google-maps/api';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Image from 'mui-image';
 import { API } from 'aws-amplify';
 import { getMap } from '../../graphql/queries';
+import { drawMarker } from '../../features/point/pointSlice';
+import { useDispatch } from 'react-redux';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -21,6 +29,7 @@ const containerStyleSidebarClosed = {
 };
 
 const Map = ({
+	drawingManagerOptions,
 	points,
 	activePoint,
 	isSidebarOpen,
@@ -31,6 +40,9 @@ const Map = ({
 }) => {
 	const [currentMap, setCurrentMap] = useState();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const { user } = useAuthenticator((context) => [context.user]);
 
 	const fetchMap = useCallback(async () => {
 		try {
@@ -44,6 +56,19 @@ const Map = ({
 			navigate('/');
 		}
 	}, [mapId, navigate]);
+
+	const handleDrawNewMarker = (marker) => {
+		const markerPosition = marker.getPosition();
+		const markerLat = markerPosition.lat();
+		const markerLng = markerPosition.lng();
+
+		const drawnMarkerPosition = {
+			lat: markerLat,
+			lng: markerLng,
+		};
+		dispatch(drawMarker(drawnMarkerPosition));
+		navigate('/add-point');
+	};
 
 	useEffect(() => {
 		fetchMap();
@@ -69,6 +94,23 @@ const Map = ({
 					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
 				>
 					<>
+						{user && (
+							<DrawingManager
+								options={{
+									drawingControl: true,
+									drawingControlOptions: {
+										position:
+											window.google.maps.ControlPosition
+												.TOP_CENTER,
+										drawingModes: [
+											window.google.maps.drawing
+												.OverlayType.MARKER,
+										],
+									},
+								}}
+								onMarkerComplete={handleDrawNewMarker}
+							/>
+						)}
 						{points
 							? points.map((point) => {
 									return (

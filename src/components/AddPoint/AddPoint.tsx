@@ -13,7 +13,7 @@ import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import { Storage } from 'aws-amplify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addPoint } from '../../features/point/pointSlice';
 
 interface AddPointPropsInt {
@@ -42,6 +42,8 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
+	const drawnMarker = useSelector((state) => state.points.drawnMarker);
+
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
@@ -49,7 +51,10 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
 		// and use it to target the key on our `state` object with the same name, using bracket syntax
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+    const updatedData = { ...formData, [e.target.name]: e.target.value }
+    updatedData.lat = drawnMarker.lat
+    updatedData.lng = drawnMarker.lng
+		setFormData(updatedData);
 	};
 
 	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -134,6 +139,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								fullWidth
+                required
 							/>
 							<TextField
 								id='outlined-basic'
@@ -154,11 +160,12 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								variant='outlined'
 								type='text'
 								name='lat'
-								value={formData.lat}
+								value={drawnMarker.lat}
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
 								fullWidth
+                disabled
 							/>
 							<TextField
 								id='outlined-basic'
@@ -166,11 +173,12 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								variant='outlined'
 								type='text'
 								name='lng'
-								value={formData.lng}
+								value={drawnMarker.lng}
 								onChange={handleOnChange}
 								size='small'
 								margin='normal'
 								fullWidth
+                disabled
 							/>
 							<TextField
 								id='outlined-basic'

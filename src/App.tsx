@@ -16,7 +16,7 @@ import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
 
-const libraries = ['geometry'];
+const libraries = ['geometry', 'drawing'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
