@@ -8,8 +8,8 @@ import Home from './components/Home/Home';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
-import { fetchPoints, allPoints } from './features/point/pointSlice';
-import { allMaps, fetchMaps } from './features/map/mapSlice';
+import { fetchPoints } from './features/point/pointSlice';
+import { fetchMaps } from './features/map/mapSlice';
 import './App.css';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
@@ -21,9 +21,9 @@ const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
 	const dispatch = useDispatch();
-	const points = useSelector(allPoints);
-	const maps = useSelector(allMaps);
+	const points = useSelector((state) => state.points.pointsData);
 	const pointStatus = useSelector((state) => state.points.status);
+	const maps = useSelector((state) => state.maps.mapsData);
 	const mapStatus = useSelector((state) => state.maps.status);
 
 	const [mapId, setMapId] = useState('');

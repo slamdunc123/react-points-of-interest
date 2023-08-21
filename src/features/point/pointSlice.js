@@ -116,6 +116,4 @@ export const updatePoint = createAsyncThunk(
 	}
 );
 
-export const allPoints = (state) => state.points.pointsData;
-
 export default pointsSlice.reducer;
