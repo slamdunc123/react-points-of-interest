@@ -10,12 +10,17 @@ import {
 const initialState = {
 	pointsData: [],
 	status: 'idle',
+	drawnMarker: { lat: null, lng: null },
 };
 
 const pointsSlice = createSlice({
 	name: 'points',
 	initialState,
-	reducers: {},
+	reducers: {
+		drawMarker: (state, action) => {
+			state.drawnMarker = action.payload;
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(fetchPoints.pending, (state, action) => {
@@ -58,7 +63,7 @@ export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
 		const apiData = await API.graphql({ query: listPoints });
 		const pointsFromAPI = apiData.data.listPoints.items;
 		await Promise.all(
-      pointsFromAPI.map(async (point) => {
+			pointsFromAPI.map(async (point) => {
 				if (point.image) {
 					const url = await Storage.get(point.image);
 					point.image = url;
@@ -115,5 +120,6 @@ export const updatePoint = createAsyncThunk(
 		}
 	}
 );
+export const { drawMarker } = pointsSlice.actions;
 
 export default pointsSlice.reducer;

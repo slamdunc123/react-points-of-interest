@@ -3,14 +3,11 @@ import Admin from '../Admin/Admin';
 import PointsFilters from '../PointsFilter/PointsFilter';
 import PointsSelector from '../PointsSelector/PointsSelector';
 import styles from './sidebar.module.css';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { PointInt } from '../MapContainer/MapContainer';
 import { SelectChangeEvent } from '@mui/material/Select';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 
 interface SidebarPropsInt {
 	points: PointInt[];
@@ -29,8 +26,6 @@ const Sidebar = ({
 	checkedFilter,
 	isSidebarOpen,
 }: SidebarPropsInt) => {
-	const { user } = useAuthenticator((context) => [context.user]);
-
 	return (
 		<div
 			className={
@@ -44,21 +39,6 @@ const Sidebar = ({
 							<Admin />
 						</ListItem>
 						<Divider />
-						{user && (
-							<>
-								<ListItem>
-									<Button
-										variant='contained'
-										component={Link}
-										to={'/add-point'}
-										fullWidth
-									>
-										Add
-									</Button>
-								</ListItem>
-								<Divider />
-							</>
-						)}
 						<ListItem>
 							<PointsFilters
 								handleFilterOnChange={handleFilterOnChange}

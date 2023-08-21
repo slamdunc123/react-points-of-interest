@@ -16,7 +16,7 @@ import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
 
-const libraries = ['geometry'];
+const libraries = ['geometry', 'drawing'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
@@ -98,7 +98,9 @@ function App() {
 				/>
 				<Route
 					path='/maps/:Id'
-					element={<MapContainer isLoaded={isLoaded} mapId={mapId} />}
+					element={<MapContainer isLoaded={isLoaded} mapId={mapId} 
+								checkPointIsInCircle={checkPointIsInCircle}
+                />}
 				/>
 				<Route
 					path='/point/:id'
@@ -109,7 +111,6 @@ function App() {
 					element={
 						<RequireAuth>
 							<AddPoint
-								checkPointIsInCircle={checkPointIsInCircle}
 								mapId={mapId}
 							/>
 						</RequireAuth>
