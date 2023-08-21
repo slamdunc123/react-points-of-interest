@@ -17,6 +17,7 @@ import { getMap } from '../../graphql/queries';
 import { drawMarker } from '../../features/point/pointSlice';
 import { useDispatch } from 'react-redux';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import AlertDialog from '../AlertDialog/AlertDialog';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -29,7 +30,6 @@ const containerStyleSidebarClosed = {
 };
 
 const Map = ({
-	drawingManagerOptions,
 	points,
 	activePoint,
 	isSidebarOpen,
@@ -37,8 +37,12 @@ const Map = ({
 	handleSidebarOnClick,
 	isLoaded,
 	mapId,
+	checkPointIsInCircle,
 }) => {
 	const [currentMap, setCurrentMap] = useState();
+	const [formErrorMessage, setFormErrorMessage] = useState('');
+	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -57,8 +61,8 @@ const Map = ({
 		}
 	}, [mapId, navigate]);
 
-	const handleDrawNewMarker = (marker) => {
-		const markerPosition = marker.getPosition();
+	const handleDrawNewMarker = (e) => {
+		const markerPosition = e.getPosition();
 		const markerLat = markerPosition.lat();
 		const markerLng = markerPosition.lng();
 
@@ -66,8 +70,21 @@ const Map = ({
 			lat: markerLat,
 			lng: markerLng,
 		};
+
+		const isPointInCirle = checkPointIsInCircle(markerLat, markerLng);
+
+		if (!isPointInCirle) {
+			e.setMap(null);
+			setAlertDialogOpen(true);
+			setFormErrorMessage('Point needs to be within permitted boundary');
+			return;
+		}
 		dispatch(drawMarker(drawnMarkerPosition));
 		navigate('/add-point');
+	};
+
+	const handleAlertDialogClose = () => {
+		setAlertDialogOpen(false);
 	};
 
 	useEffect(() => {
@@ -93,6 +110,11 @@ const Map = ({
 					mapTypeId='satellite'
 					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
 				>
+					<AlertDialog
+						description={formErrorMessage}
+						alertDialogOpen={alertDialogOpen}
+						handleAlertDialogClose={handleAlertDialogClose}
+					/>
 					<>
 						{user && (
 							<DrawingManager

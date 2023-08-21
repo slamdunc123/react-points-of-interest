@@ -11,7 +11,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
-import AlertDialog from '../AlertDialog/AlertDialog';
 import { Storage } from 'aws-amplify';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPoint } from '../../features/point/pointSlice';
@@ -39,8 +38,6 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
-	const [formErrorMessage, setFormErrorMessage] = useState('');
-	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
 	const drawnMarker = useSelector((state) => state.points.drawnMarker);
 
@@ -51,9 +48,9 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
 		// and use it to target the key on our `state` object with the same name, using bracket syntax
-    const updatedData = { ...formData, [e.target.name]: e.target.value }
-    updatedData.lat = drawnMarker.lat
-    updatedData.lng = drawnMarker.lng
+		const updatedData = { ...formData, [e.target.name]: e.target.value };
+		updatedData.lat = drawnMarker.lat;
+		updatedData.lng = drawnMarker.lng;
 		setFormData(updatedData);
 	};
 
@@ -65,13 +62,6 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 
 	const handleAddPoint = async (e, data) => {
 		e.preventDefault();
-		const isPointInCirle = checkPointIsInCircle(data.lat, data.lng);
-
-		if (!isPointInCirle) {
-			setAlertDialogOpen(true);
-			setFormErrorMessage('Point needs to be within permitted boundary');
-			return;
-		}
 
 		const form = new FormData(e.target);
 		const image = form.get('image');
@@ -93,21 +83,12 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 		}
 	};
 
-	const handleAlertDialogClose = () => {
-		setAlertDialogOpen(false);
-	};
-
 	const handleCancelButtonOnClick = () => {
 		navigate(-1);
 	};
 
 	return (
 		<Container fixed>
-			<AlertDialog
-				description={formErrorMessage}
-				alertDialogOpen={alertDialogOpen}
-				handleAlertDialogClose={handleAlertDialogClose}
-			/>
 			<Button
 				variant='outlined'
 				type='button'
@@ -139,7 +120,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								fullWidth
-                required
+								required
 							/>
 							<TextField
 								id='outlined-basic'
@@ -165,7 +146,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								fullWidth
-                disabled
+								disabled
 							/>
 							<TextField
 								id='outlined-basic'
@@ -178,7 +159,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								size='small'
 								margin='normal'
 								fullWidth
-                disabled
+								disabled
 							/>
 							<TextField
 								id='outlined-basic'

@@ -29,7 +29,7 @@ export interface PointInt {
 	imageName: string;
 }
 
-const MapContainer = ({ isLoaded, mapId }: MapContainerPropsInt) => {
+const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPropsInt) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [filteredPointsByMapId, setFilteredPointsByMapId] = useState();
@@ -104,6 +104,7 @@ const MapContainer = ({ isLoaded, mapId }: MapContainerPropsInt) => {
 				isSidebarOpen={isSidebarOpen}
 				isLoaded={isLoaded}
 				mapId={mapId}
+        checkPointIsInCircle={checkPointIsInCircle}
 			/>
 		</div>
 	);

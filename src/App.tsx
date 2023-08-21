@@ -98,7 +98,9 @@ function App() {
 				/>
 				<Route
 					path='/maps/:Id'
-					element={<MapContainer isLoaded={isLoaded} mapId={mapId} />}
+					element={<MapContainer isLoaded={isLoaded} mapId={mapId} 
+								checkPointIsInCircle={checkPointIsInCircle}
+                />}
 				/>
 				<Route
 					path='/point/:id'
@@ -109,7 +111,6 @@ function App() {
 					element={
 						<RequireAuth>
 							<AddPoint
-								checkPointIsInCircle={checkPointIsInCircle}
 								mapId={mapId}
 							/>
 						</RequireAuth>
