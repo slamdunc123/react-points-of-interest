@@ -120,8 +120,6 @@ export const updatePoint = createAsyncThunk(
 		}
 	}
 );
-
-export const allPoints = (state) => state.points.pointsData;
 export const { drawMarker } = pointsSlice.actions;
 
 export default pointsSlice.reducer;

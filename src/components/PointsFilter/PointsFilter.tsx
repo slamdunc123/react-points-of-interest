@@ -1,12 +1,14 @@
 // @ts-nocheck
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useEffect, ChangeEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { listCategories } from '../../graphql/queries';
-import { API } from 'aws-amplify';
+import {
+	fetchCategories,
+} from '../../features/category/categorySlice';
 
 interface PointsFilterProps {
 	checkedFilter: string;
@@ -16,17 +18,17 @@ const PointsFilters = ({
 	checkedFilter,
 	handleFilterOnChange,
 }: PointsFilterProps) => {
-	const [categories, setCategories] = useState();
 
-	const fetchCategories = async () => {
-		const apiData = await API.graphql({ query: listCategories });
-		const catagoriesFromAPI = apiData.data.listCategories.items;
-		setCategories(catagoriesFromAPI);
-	};
+  const categories = useSelector((state) => state.categories.categoriesData);
+	const categoryStatus = useSelector((state) => state.categories.status);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		fetchCategories();
-	}, []);
+		if (categoryStatus === 'idle') {
+			dispatch(fetchCategories());
+		}
+	}, [categoryStatus, dispatch]);
 
 	return (
 		<FormControl>
@@ -41,7 +43,7 @@ const PointsFilters = ({
 			>
 				<FormControlLabel value='all' control={<Radio />} label='All' />
 
-				{categories &&
+				{categories.length &&
 					categories.map((item) => (
 						<FormControlLabel
 							key={item.id}

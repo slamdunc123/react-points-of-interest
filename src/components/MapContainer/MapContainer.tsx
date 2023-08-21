@@ -8,7 +8,6 @@ import { SelectChangeEvent } from '@mui/material/Select';
 
 import styles from './map-container.module.css';
 import { useSelector } from 'react-redux';
-import { allPoints } from '../../features/point/pointSlice';
 import { ALL_POINTS } from '../../constants/PointTypes';
 
 interface MapContainerPropsInt {
@@ -37,7 +36,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 
-	const points = useSelector(allPoints);
+	const points = useSelector((state) => state.points.pointsData);
 
 	useEffect(() => {
 		const pointsByMapId = points.filter((point) => point.mapId === mapId);
