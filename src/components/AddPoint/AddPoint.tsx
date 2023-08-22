@@ -9,6 +9,10 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import { Storage } from 'aws-amplify';
@@ -38,8 +42,11 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
+	const [category, setCategory] = useState('');
 
 	const drawnMarker = useSelector((state) => state.points.drawnMarker);
+	const categories = useSelector((state) => state.categories.categoriesData);
+	
 
 	const navigate = useNavigate();
 
@@ -52,6 +59,11 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 		updatedData.lat = drawnMarker.lat;
 		updatedData.lng = drawnMarker.lng;
 		setFormData(updatedData);
+	};
+
+	const handleCategoryOnChange = (e: SelectChangeEvent) => {
+		const { value } = e.target;
+		setCategory(value);
 	};
 
 	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -71,6 +83,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 			image: image.name,
 		};
 		data.image = image.name;
+		data.type = category.name;
 		data.mapId = mapId;
 		try {
 			if (!!dataForStorage.image)
@@ -161,18 +174,34 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 								fullWidth
 								disabled
 							/>
-							<TextField
-								id='outlined-basic'
-								label='Type'
-								variant='outlined'
-								type='text'
-								name='type'
-								value={formData.type}
-								onChange={handleOnChange}
-								size='small'
-								margin='normal'
+							<FormControl
 								fullWidth
-							/>
+								size='small'
+								variant='outlined'
+								margin='normal'
+							>
+								<InputLabel id='demo-simple-select-label'>
+									Category
+								</InputLabel>
+								<Select
+									labelId='demo-simple-select-label'
+									id='demo-simple-select'
+									value={category}
+									label='Category'
+									onChange={handleCategoryOnChange}
+									name='type'
+								>
+									{categories.length &&
+										categories.map((item: any) => (
+											<MenuItem
+												value={item}
+												key={item.id}
+											>
+												{item.name}
+											</MenuItem>
+										))}
+								</Select>
+							</FormControl>
 							<TextField
 								id='outlined-basic'
 								label='Year Built'

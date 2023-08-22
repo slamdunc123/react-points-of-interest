@@ -15,11 +15,15 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import { Storage } from 'aws-amplify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updatePoint } from '../../features/point/pointSlice';
 
 interface EditPointPropsInt {
@@ -50,21 +54,37 @@ const EditPoint = ({
 	};
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
+	const [category, setCategory] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+	const categories = useSelector((state) => state.categories.categoriesData);
 
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		const category = categories.find(
+			(item) => item.name === editPoint.type
+		);
+		setCategory(category);
+	}, [categories, editPoint]);
+
+	useEffect(() => {
 		if (!editPoint) {
 			navigate(-1);
-		} else setFormData(editPoint);
+		} else {
+			setFormData(editPoint);
+		}
 	}, [editPoint, navigate]);
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleCategoryOnChange = (e: SelectChangeEvent) => {
+		const { value } = e.target;
+		setCategory(value);
 	};
 
 	const handleOnChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -98,6 +118,7 @@ const EditPoint = ({
 		updatedData.image = image.name ? image.name : editPoint.imageName; // needed to not overwrite existing image with nothing if no new image is selected
 		updatedData.lat = Number(updatedData.lat);
 		updatedData.lng = Number(updatedData.lng);
+		updatedData.type = category.name;
 
 		try {
 			if (!!dataForStorage.image) {
@@ -187,7 +208,7 @@ const EditPoint = ({
 								size='small'
 								margin='normal'
 								fullWidth
-                disabled
+								disabled
 							/>
 							<TextField
 								id='outlined-basic'
@@ -200,20 +221,36 @@ const EditPoint = ({
 								size='small'
 								margin='normal'
 								fullWidth
-                disabled
+								disabled
 							/>
-							<TextField
-								id='outlined-basic'
-								label='Type'
-								variant='outlined'
-								type='text'
-								name='type'
-								value={formData.type}
-								onChange={handleOnChange}
-								size='small'
-								margin='normal'
+							<FormControl
 								fullWidth
-							/>
+								size='small'
+								variant='outlined'
+								margin='normal'
+							>
+								<InputLabel id='demo-simple-select-label'>
+									Category
+								</InputLabel>
+								<Select
+									labelId='demo-simple-select-label'
+									id='demo-simple-select'
+									value={category || ''}
+									label='Category'
+									onChange={handleCategoryOnChange}
+									name='type'
+								>
+									{categories.length &&
+										categories.map((item: any) => (
+											<MenuItem
+												value={item}
+												key={item.id}
+											>
+												{item.name}
+											</MenuItem>
+										))}
+								</Select>
+							</FormControl>
 							<TextField
 								id='outlined-basic'
 								label='Year Built'
@@ -254,7 +291,7 @@ const EditPoint = ({
 										type='submit'
 										value='Submit'
 									>
-										Submit
+										Save
 									</Button>
 								</Box>
 								<Box>

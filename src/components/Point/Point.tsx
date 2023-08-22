@@ -85,6 +85,12 @@ const Point = ({ point, mapId }: PointPropsInt) => {
 							>
 								{point.description}
 							</Typography>
+							<Typography
+								gutterBottom
+								variant='body2' color='text.secondary'
+							>
+								{`Category: ${point.type}`}
+							</Typography>
 							<Typography variant='body2' color='text.secondary'>
 								{`Built: ${point.yearBuilt}`}
 							</Typography>
