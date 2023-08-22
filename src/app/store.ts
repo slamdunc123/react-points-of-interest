@@ -7,6 +7,9 @@ export const store = configureStore({
 	reducer: {
 		points: pointsReducer,
 		maps: mapsReducer,
-    categories: categoryReducer
+		categories: categoryReducer,
 	},
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

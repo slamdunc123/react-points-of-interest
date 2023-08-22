@@ -1,6 +1,5 @@
 //@ts-nocheck
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
-
 import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -16,8 +15,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import { Storage } from 'aws-amplify';
-import { useDispatch, useSelector } from 'react-redux';
 import { addPoint } from '../../features/point/pointSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
@@ -44,13 +43,13 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const [image, setImage] = useState('');
 	const [category, setCategory] = useState('');
 
-	const drawnMarker = useSelector((state) => state.points.drawnMarker);
-	const categories = useSelector((state) => state.categories.categoriesData);
+	const drawnMarker = useAppSelector((state) => state.points.drawnMarker);
+	const categories = useAppSelector((state) => state.categories.categoriesData);
 	
+	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
 
-	const dispatch = useDispatch();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")

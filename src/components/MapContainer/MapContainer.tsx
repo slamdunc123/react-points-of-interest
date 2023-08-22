@@ -7,9 +7,9 @@ import Sidebar from '../Sidebar/Sidebar';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import styles from './map-container.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { ALL_POINTS } from '../../constants/PointTypes';
 import { fetchCategories } from '../../features/category/categorySlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface MapContainerPropsInt {
 	isLoaded: boolean;
@@ -37,10 +37,10 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 
-	const points = useSelector((state) => state.points.pointsData);
-  const categoryStatus = useSelector((state) => state.categories.status);
+	const points = useAppSelector((state) => state.points.pointsData);
+  const categoryStatus = useAppSelector((state) => state.categories.status);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (categoryStatus === 'idle') {

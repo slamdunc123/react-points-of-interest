@@ -23,8 +23,8 @@ import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import { Storage } from 'aws-amplify';
-import { useDispatch, useSelector } from 'react-redux';
 import { updatePoint } from '../../features/point/pointSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface EditPointPropsInt {
 	editPoint: PointInt;
@@ -57,11 +57,13 @@ const EditPoint = ({
 	const [category, setCategory] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
-	const categories = useSelector((state) => state.categories.categoriesData);
+
+	const categories = useAppSelector((state) => state.categories.categoriesData);
+  
+	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
 
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const category = categories.find(
