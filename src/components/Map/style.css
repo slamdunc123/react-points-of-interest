@@ -1,0 +1,7 @@
+button[title="Stop drawing"] {
+  display: none !important;
+}
+
+button[title="Add a marker"] {
+  display: none !important;
+}

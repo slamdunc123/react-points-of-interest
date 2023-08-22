@@ -18,6 +18,7 @@ import { drawMarker } from '../../features/point/pointSlice';
 import { useDispatch } from 'react-redux';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import AlertDialog from '../AlertDialog/AlertDialog';
+import './style.css';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -87,6 +88,10 @@ const Map = ({
 		setAlertDialogOpen(false);
 	};
 
+	const handleDrawMarker = () => {
+		document.querySelector('[title="Add a marker"]').click();
+	};
+
 	useEffect(() => {
 		fetchMap();
 	}, [fetchMap]);
@@ -97,6 +102,7 @@ const Map = ({
 				isSidebarOpen={isSidebarOpen}
 				handleSidebarOnClick={handleSidebarOnClick}
 				mapName={currentMap && currentMap.name}
+				handleDrawMarker={handleDrawMarker}
 			/>
 			{currentMap && (
 				<GoogleMap
