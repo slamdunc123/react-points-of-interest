@@ -12,8 +12,8 @@ import Container from '@mui/material/Container';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import { Storage } from 'aws-amplify';
-import { useDispatch, useSelector } from 'react-redux';
 import { addPoint } from '../../features/point/pointSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
@@ -39,11 +39,11 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 	const [formData, setFormData] = useState(initialFormData);
 	const [image, setImage] = useState('');
 
-	const drawnMarker = useSelector((state) => state.points.drawnMarker);
+	const drawnMarker = useAppSelector((state) => state.points.drawnMarker);
 
 	const navigate = useNavigate();
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")

@@ -7,8 +7,8 @@ import Sidebar from '../Sidebar/Sidebar';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import styles from './map-container.module.css';
-import { useSelector } from 'react-redux';
 import { ALL_POINTS } from '../../constants/PointTypes';
+import { useAppSelector } from '../../app/hooks';
 
 interface MapContainerPropsInt {
 	isLoaded: boolean;
@@ -28,7 +28,11 @@ export interface PointInt {
 	imageName: string;
 }
 
-const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPropsInt) => {
+const MapContainer = ({
+	isLoaded,
+	mapId,
+	checkPointIsInCircle,
+}: MapContainerPropsInt) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [filteredPointsByMapId, setFilteredPointsByMapId] = useState();
@@ -36,7 +40,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 
-	const points = useSelector((state) => state.points.pointsData);
+	const points = useAppSelector((state) => state.points.pointsData);
 
 	useEffect(() => {
 		const pointsByMapId = points.filter((point) => point.mapId === mapId);
@@ -103,7 +107,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 				isSidebarOpen={isSidebarOpen}
 				isLoaded={isLoaded}
 				mapId={mapId}
-        checkPointIsInCircle={checkPointIsInCircle}
+				checkPointIsInCircle={checkPointIsInCircle}
 			/>
 		</div>
 	);

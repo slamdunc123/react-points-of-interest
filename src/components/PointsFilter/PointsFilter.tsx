@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React, { useEffect, ChangeEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,6 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 import {
 	fetchCategories,
 } from '../../features/category/categorySlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface PointsFilterProps {
 	checkedFilter: string;
@@ -19,10 +19,10 @@ const PointsFilters = ({
 	handleFilterOnChange,
 }: PointsFilterProps) => {
 
-  const categories = useSelector((state) => state.categories.categoriesData);
-	const categoryStatus = useSelector((state) => state.categories.status);
+  const categories = useAppSelector((state) => state.categories.categoriesData);
+	const categoryStatus = useAppSelector((state) => state.categories.status);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (categoryStatus === 'idle') {

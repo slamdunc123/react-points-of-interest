@@ -1,7 +1,6 @@
 // @ts-nocheck
 
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import MapContainer from './components/MapContainer/MapContainer';
 import { Route, Routes, useMatch, Navigate } from 'react-router-dom';
 import Home from './components/Home/Home';
@@ -15,16 +14,17 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 const libraries = ['geometry', 'drawing'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
-	const dispatch = useDispatch();
-	const points = useSelector((state) => state.points.pointsData);
-	const pointStatus = useSelector((state) => state.points.status);
-	const maps = useSelector((state) => state.maps.mapsData);
-	const mapStatus = useSelector((state) => state.maps.status);
+	const dispatch = useAppDispatch();
+	const points = useAppSelector((state) => state.points.pointsData);
+	const pointStatus = useAppSelector((state) => state.points.status);
+	const maps = useAppSelector((state) => state.maps.mapsData);
+	const mapStatus = useAppSelector((state) => state.maps.status);
 
 	const [mapId, setMapId] = useState('');
 	const [currentMap, setCurrentMap] = useState();
