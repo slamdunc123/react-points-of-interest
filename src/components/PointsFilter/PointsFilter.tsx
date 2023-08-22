@@ -10,14 +10,14 @@ import {
 } from '../../features/category/categorySlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-interface PointsFilterProps {
+type PointsFilterPropsType = {
 	checkedFilter: string;
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 const PointsFilters = ({
 	checkedFilter,
 	handleFilterOnChange,
-}: PointsFilterProps) => {
+}: PointsFilterPropsType) => {
 
   const categories = useAppSelector((state) => state.categories.categoriesData);
 	const categoryStatus = useAppSelector((state) => state.categories.status);

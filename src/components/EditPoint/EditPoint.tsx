@@ -15,18 +15,18 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import { Storage } from 'aws-amplify';
 import { useDispatch } from 'react-redux';
 import { updatePoint } from '../../features/point/pointSlice';
 
-interface EditPointPropsInt {
-	editPoint: PointInt;
+type EditPointPropsType = {
+	editPoint: PointType;
 	handleEditPoint: (
 		e: FormEvent<HTMLFormElement>,
-		formData: PointInt
+		formData: PointType
 	) => void;
 	mapId: string;
 }
@@ -35,7 +35,7 @@ const EditPoint = ({
 	editPoint,
 	mapId,
 	checkPointIsInCircle,
-}: EditPointPropsInt) => {
+}: EditPointPropsType) => {
 	const initialFormData = {
 		id: '',
 		lat: '',

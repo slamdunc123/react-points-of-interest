@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-interface AlertDialogPropsInt {
+type AlertDialogPropsType = {
 	description: string;
 	alertDialogOpen: boolean;
 	handleAlertDialogClose: () => void;
@@ -15,7 +15,7 @@ export default function AlertDialog({
 	description,
 	alertDialogOpen,
 	handleAlertDialogClose,
-}: AlertDialogPropsInt) {
+}: AlertDialogPropsType) {
 	return (
 		<div>
 			<Dialog

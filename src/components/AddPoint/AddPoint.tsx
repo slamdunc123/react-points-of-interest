@@ -9,21 +9,21 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 import { Storage } from 'aws-amplify';
 import { addPoint } from '../../features/point/pointSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-interface AddPointPropsInt {
+type AddPointPropsType = {
 	handleAddPoint: (
 		e: FormEvent<HTMLFormElement>,
-		formData: Omit<PointInt, 'id'>
+		formData: Omit<PointType, 'id'>
 	) => void;
 	mapId: string;
 }
 
-const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
+const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsType) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',

@@ -11,17 +11,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import { Image } from 'mui-image';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useDispatch } from 'react-redux';
 import { deletePoint } from '../../features/point/pointSlice';
-interface PointPropsInt {
-	point: PointInt;
+type PointPropsType = {
+	point: PointType;
 	mapId: string;
 }
 
-const Point = ({ point, mapId }: PointPropsInt) => {
+const Point = ({ point, mapId }: PointPropsType) => {
 	const { user } = useAuthenticator((context) => [context.user]);
 
 	const navigate = useNavigate();

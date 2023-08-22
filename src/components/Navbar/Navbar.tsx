@@ -12,7 +12,7 @@ import RoomIcon from '@mui/icons-material/Room';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
-interface NavbarProps {
+type NavbarPropsType = {
 	isSidebarOpen: boolean;
 	handleSidebarOnClick: (isSidebarOpen: boolean) => void;
 	mapName: string;
@@ -23,7 +23,7 @@ export default function Navbar({
 	handleSidebarOnClick,
   handleDrawMarker,
 	mapName,
-}: NavbarProps) {
+}: NavbarPropsType) {
 	const navigate = useNavigate();
 	const { user } = useAuthenticator((context) => [context.user]);
 

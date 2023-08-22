@@ -10,12 +10,12 @@ import styles from './map-container.module.css';
 import { ALL_POINTS } from '../../constants/PointTypes';
 import { useAppSelector } from '../../app/hooks';
 
-interface MapContainerPropsInt {
+type MapContainerPropsType = {
 	isLoaded: boolean;
 	mapId: string;
 }
 
-export interface PointInt {
+export type PointType = {
 	id: string;
 	name: string;
 	lat: string;
@@ -32,7 +32,7 @@ const MapContainer = ({
 	isLoaded,
 	mapId,
 	checkPointIsInCircle,
-}: MapContainerPropsInt) => {
+}: MapContainerPropsType) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [filteredPointsByMapId, setFilteredPointsByMapId] = useState();

@@ -6,11 +6,11 @@ import styles from './sidebar.module.css';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-interface SidebarPropsInt {
-	points: PointInt[];
+type SidebarPropsType = {
+	points: PointType[];
 	activePoint: string;
 	checkedFilter: string;
 	isSidebarOpen: boolean;
@@ -25,7 +25,7 @@ const Sidebar = ({
 	handleFilterOnChange,
 	checkedFilter,
 	isSidebarOpen,
-}: SidebarPropsInt) => {
+}: SidebarPropsType) => {
 	return (
 		<div
 			className={
