@@ -22,23 +22,23 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
 
-interface EditPointPropsInt {
-	editPoint: PointInt;
+type EditPointPropsType = {
+	editPoint: PointType;
 	handleEditPoint: (
 		e: FormEvent<HTMLFormElement>,
-		formData: PointInt
+		formData: PointType
 	) => void;
 	mapId: string;
-}
+};
 
 const EditPoint = ({
 	editPoint,
 	mapId,
 	checkPointIsInCircle,
-}: EditPointPropsInt) => {
+}: EditPointPropsType) => {
 	const initialFormData = {
 		id: '',
 		lat: '',

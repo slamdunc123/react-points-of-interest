@@ -4,10 +4,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 
-interface PointsSelectorProps {
-	points: PointInt[];
+type PointsSelectorPropsType = {
+	points: PointType[];
 	activePoint: any;
 	handlePointOnChange: (e: SelectChangeEvent) => void;
 }
@@ -16,7 +16,7 @@ const PointsSelector = ({
 	points,
 	activePoint,
 	handlePointOnChange,
-}: PointsSelectorProps) => {
+}: PointsSelectorPropsType) => {
 	return (
 		<FormControl fullWidth>
 			<InputLabel id='demo-simple-select-label'>Points</InputLabel>

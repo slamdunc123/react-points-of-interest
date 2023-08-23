@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 import { deletePoint } from '../../features/point/pointSlice';
 
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -20,12 +20,12 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 import { Image } from 'mui-image';
-interface PointPropsInt {
-	point: PointInt;
+type PointPropsType = {
+	point: PointType;
 	mapId: string;
-}
+};
 
-const Point = ({ point, mapId }: PointPropsInt) => {
+const Point = ({ point, mapId }: PointPropsType) => {
 	const [category, setCategory] = useState('');
 	const { user } = useAuthenticator((context) => [context.user]);
 

@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useAppSelector } from '../../app/hooks';
 
-interface PointsFilterProps {
+type PointsFilterPropsType = {
 	checkedFilter: string;
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
   filteredPointsByMapId: PointInt[]
@@ -16,7 +16,7 @@ const PointsFilters = ({
 	checkedFilter,
 	handleFilterOnChange,
   filteredPointsByMapId
-}: PointsFilterProps) => {
+}: PointsFilterPropsType) => {
   const categories = useAppSelector((state) => state.categories.categoriesData);
 
   const categoriesById = filteredPointsByMapId.map(item => item.categoryId)

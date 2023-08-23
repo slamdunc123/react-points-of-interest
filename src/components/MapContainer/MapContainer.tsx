@@ -11,12 +11,12 @@ import { ALL_POINTS } from '../../constants/PointTypes';
 import { fetchCategories } from '../../features/category/categorySlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-interface MapContainerPropsInt {
+type MapContainerPropsType = {
 	isLoaded: boolean;
 	mapId: string;
-}
+};
 
-export interface PointInt {
+export type PointType = {
 	id: string;
 	name: string;
 	lat: string;
@@ -27,9 +27,13 @@ export interface PointInt {
 	description: string;
 	image: any;
 	imageName: string;
-}
+};
 
-const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPropsInt) => {
+const MapContainer = ({
+	isLoaded,
+	mapId,
+	checkPointIsInCircle,
+}: MapContainerPropsType) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [filteredPointsByMapId, setFilteredPointsByMapId] = useState();
@@ -38,7 +42,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 
 	const points = useAppSelector((state) => state.points.pointsData);
-  const categoryStatus = useAppSelector((state) => state.categories.status);
+	const categoryStatus = useAppSelector((state) => state.categories.status);
 
 	const dispatch = useAppDispatch();
 
@@ -103,8 +107,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 				handlePointOnChange={handlePointOnChange}
 				checkedFilter={checkedFilter}
 				isSidebarOpen={isSidebarOpen}
-        filteredPointsByMapId={filteredPointsByMapId}
-        
+				filteredPointsByMapId={filteredPointsByMapId}
 			/>
 
 			<Map
@@ -115,7 +118,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 				isSidebarOpen={isSidebarOpen}
 				isLoaded={isLoaded}
 				mapId={mapId}
-        checkPointIsInCircle={checkPointIsInCircle}
+				checkPointIsInCircle={checkPointIsInCircle}
 			/>
 		</div>
 	);

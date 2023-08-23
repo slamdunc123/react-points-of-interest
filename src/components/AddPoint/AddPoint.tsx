@@ -16,17 +16,17 @@ import FormControl from '@mui/material/FormControl';
 import Image from 'mui-image';
 import { addPoint } from '../../features/point/pointSlice';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 
-interface AddPointPropsInt {
+type AddPointPropsType = {
 	handleAddPoint: (
 		e: FormEvent<HTMLFormElement>,
-		formData: Omit<PointInt, 'id'>
+		formData: Omit<PointType, 'id'>
 	) => void;
 	mapId: string;
 }
 
-const AddPoint = ({  mapId }: AddPointPropsInt) => {
+const AddPoint = ({  mapId }: AddPointPropsType) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',

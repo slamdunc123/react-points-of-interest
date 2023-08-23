@@ -6,18 +6,18 @@ import styles from './sidebar.module.css';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { PointInt } from '../MapContainer/MapContainer';
+import { PointType } from '../MapContainer/MapContainer';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-interface SidebarPropsInt {
-	points: PointInt[];
+type SidebarPropsType = {
+	points: PointType[];
 	activePoint: string;
 	checkedFilter: string;
 	isSidebarOpen: boolean;
 	handlePointOnChange: (e: SelectChangeEvent) => void;
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  filteredPointsByMapId: PointInt[]
-}
+	filteredPointsByMapId: PointType[];
+};
 
 const Sidebar = ({
 	points,
@@ -26,8 +26,8 @@ const Sidebar = ({
 	handleFilterOnChange,
 	checkedFilter,
 	isSidebarOpen,
-  filteredPointsByMapId
-}: SidebarPropsInt) => {
+	filteredPointsByMapId,
+}: SidebarPropsType) => {
 	return (
 		<div
 			className={
@@ -45,7 +45,7 @@ const Sidebar = ({
 							<PointsFilters
 								handleFilterOnChange={handleFilterOnChange}
 								checkedFilter={checkedFilter}
-                filteredPointsByMapId={filteredPointsByMapId}
+								filteredPointsByMapId={filteredPointsByMapId}
 							/>
 						</ListItem>
 						<Divider />

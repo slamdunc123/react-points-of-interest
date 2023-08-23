@@ -13,12 +13,12 @@ import { useNavigate } from 'react-router-dom';
 import { API } from 'aws-amplify';
 import { listMaps } from '../../graphql/queries';
 
-interface HomePropsInt {
+type HomePropsType = {
 	mapId: string;
 	handleMapOnChange: () => void;
 }
 
-const Home = ({ mapId, handleMapOnChange }: HomePropsInt) => {
+const Home = ({ mapId, handleMapOnChange }: HomePropsType) => {
 	const [maps, setMaps] = useState([]);
 	const navigate = useNavigate();
 
