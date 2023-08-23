@@ -8,13 +8,13 @@ export const onCreatePoint = /* GraphQL */ `
       name
       lat
       lng
-      type
       yearBuilt
       url
       description
       image
       imageName
       mapId
+      categoryId
       createdAt
       updatedAt
     }
@@ -27,13 +27,13 @@ export const onUpdatePoint = /* GraphQL */ `
       name
       lat
       lng
-      type
       yearBuilt
       url
       description
       image
       imageName
       mapId
+      categoryId
       createdAt
       updatedAt
     }
@@ -46,13 +46,13 @@ export const onDeletePoint = /* GraphQL */ `
       name
       lat
       lng
-      type
       yearBuilt
       url
       description
       image
       imageName
       mapId
+      categoryId
       createdAt
       updatedAt
     }
@@ -88,13 +88,13 @@ export const onCreateMap = /* GraphQL */ `
           name
           lat
           lng
-          type
           yearBuilt
           url
           description
           image
           imageName
           mapId
+          categoryId
           createdAt
           updatedAt
         }
@@ -135,13 +135,13 @@ export const onUpdateMap = /* GraphQL */ `
           name
           lat
           lng
-          type
           yearBuilt
           url
           description
           image
           imageName
           mapId
+          categoryId
           createdAt
           updatedAt
         }
@@ -182,13 +182,13 @@ export const onDeleteMap = /* GraphQL */ `
           name
           lat
           lng
-          type
           yearBuilt
           url
           description
           image
           imageName
           mapId
+          categoryId
           createdAt
           updatedAt
         }
@@ -205,6 +205,24 @@ export const onCreateCategory = /* GraphQL */ `
       id
       name
       description
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          categoryId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -216,6 +234,24 @@ export const onUpdateCategory = /* GraphQL */ `
       id
       name
       description
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          categoryId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -227,6 +263,24 @@ export const onDeleteCategory = /* GraphQL */ `
       id
       name
       description
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          categoryId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }

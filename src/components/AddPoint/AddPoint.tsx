@@ -1,6 +1,8 @@
 //@ts-nocheck
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
+import { Storage } from 'aws-amplify';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -11,12 +13,10 @@ import Container from '@mui/material/Container';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import Image from 'mui-image';
+import { addPoint } from '../../features/point/pointSlice';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointInt } from '../MapContainer/MapContainer';
-import Image from 'mui-image';
-import { Storage } from 'aws-amplify';
-import { addPoint } from '../../features/point/pointSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface AddPointPropsInt {
 	handleAddPoint: (
@@ -26,13 +26,13 @@ interface AddPointPropsInt {
 	mapId: string;
 }
 
-const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
+const AddPoint = ({  mapId }: AddPointPropsInt) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
 		name: '',
 		description: '',
-		type: '',
+		categoryId: '',
 		yearBuilt: '',
 		url: '',
 		image: '',
@@ -82,7 +82,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 			image: image.name,
 		};
 		data.image = image.name;
-		data.type = category.name;
+		data.categoryId = category.id;
 		data.mapId = mapId;
 		try {
 			if (!!dataForStorage.image)
@@ -189,6 +189,7 @@ const AddPoint = ({ checkPointIsInCircle, mapId }: AddPointPropsInt) => {
 									label='Category'
 									onChange={handleCategoryOnChange}
 									name='type'
+                  required
 								>
 									{categories.length &&
 										categories.map((item: any) => (

@@ -8,13 +8,13 @@ type Point @model @auth(rules: [{ allow: public }]) {
 	name: String!
 	lat: Float!
 	lng: Float!
-	type: String
 	yearBuilt: String
 	url: String
 	description: String
 	image: String
 	imageName: String
-  mapId: ID! @index(name: "byMap")
+	mapId: ID! @index(name: "byMap")
+	categoryId: ID! @index(name: "byCategory")
 }
 
 type Map @model {
@@ -24,7 +24,7 @@ type Map @model {
 	center: MapCenter
 	circleOptions: MapCircleOptions
 	zoom: Float!
-  points: [Point] @hasMany(indexName: "byMap", fields: ["id"])
+	points: [Point] @hasMany(indexName: "byMap", fields: ["id"])
 }
 
 type MapCenter {
@@ -50,4 +50,5 @@ type Category @model {
 	id: ID!
 	name: String!
 	description: String
+	points: [Point] @hasMany(indexName: "byCategory", fields: ["id"])
 }

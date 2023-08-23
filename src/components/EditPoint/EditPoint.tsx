@@ -6,8 +6,11 @@ import React, {
 	FormEvent,
 	ChangeEventHandler,
 } from 'react';
-
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
+import { Storage } from 'aws-amplify';
+import { updatePoint } from '../../features/point/pointSlice';
+import AlertDialog from '../AlertDialog/AlertDialog';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -21,10 +24,6 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointInt } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
-import AlertDialog from '../AlertDialog/AlertDialog';
-import { Storage } from 'aws-amplify';
-import { updatePoint } from '../../features/point/pointSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface EditPointPropsInt {
 	editPoint: PointInt;
@@ -58,16 +57,17 @@ const EditPoint = ({
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
-	const categories = useAppSelector((state) => state.categories.categoriesData);
-  
+	const categories = useAppSelector(
+		(state) => state.categories.categoriesData
+	);
+
 	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
 
-
 	useEffect(() => {
 		const category = categories.find(
-			(item) => item.name === editPoint.type
+			(item) => item.id === editPoint.categoryId
 		);
 		setCategory(category);
 	}, [categories, editPoint]);
@@ -120,7 +120,7 @@ const EditPoint = ({
 		updatedData.image = image.name ? image.name : editPoint.imageName; // needed to not overwrite existing image with nothing if no new image is selected
 		updatedData.lat = Number(updatedData.lat);
 		updatedData.lng = Number(updatedData.lng);
-		updatedData.type = category.name;
+		updatedData.categoryId = category.id;
 
 		try {
 			if (!!dataForStorage.image) {

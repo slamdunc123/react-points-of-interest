@@ -83,7 +83,7 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 			setCheckedFilter(ALL_POINTS);
 		} else {
 			const pointsFilteredByValue = filteredPointsByMapId.filter(
-				(point) => point.type === value
+				(point) => point.categoryId === value
 			);
 			setFilteredPointsByCategory(pointsFilteredByValue);
 			setCheckedFilter(value);

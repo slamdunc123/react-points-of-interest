@@ -1,6 +1,14 @@
 //@ts-nocheck
-import { useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+
+import { deletePoint } from '../../features/point/pointSlice';
+
+import { PointInt } from '../MapContainer/MapContainer';
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -11,25 +19,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
-import { PointInt } from '../MapContainer/MapContainer';
 import { Image } from 'mui-image';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useDispatch } from 'react-redux';
-import { deletePoint } from '../../features/point/pointSlice';
 interface PointPropsInt {
 	point: PointInt;
 	mapId: string;
 }
 
 const Point = ({ point, mapId }: PointPropsInt) => {
+	const [category, setCategory] = useState('');
 	const { user } = useAuthenticator((context) => [context.user]);
 
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const categories = useAppSelector(
+		(state) => state.categories.categoriesData
+	);
 
-	useEffect(() => {
-		if (!point) navigate('/');
-	}, [point, navigate]);
+	const dispatch = useAppDispatch();
+
+	const navigate = useNavigate();
+
+	const getCategory = useCallback(() => {
+		const category = categories.find(
+			(item) => item.id === point.categoryId
+		);
+		return category;
+	}, [categories, point]);
 
 	const handleDeletePoint = async () => {
 		try {
@@ -39,6 +52,15 @@ const Point = ({ point, mapId }: PointPropsInt) => {
 			console.log(error);
 		}
 	};
+
+	useEffect(() => {
+		const cat = getCategory();
+		setCategory(cat);
+	}, [getCategory]);
+
+	useEffect(() => {
+		if (!point) navigate('/');
+	}, [point, navigate]);
 
 	return (
 		<Container fixed>
@@ -87,9 +109,10 @@ const Point = ({ point, mapId }: PointPropsInt) => {
 							</Typography>
 							<Typography
 								gutterBottom
-								variant='body2' color='text.secondary'
+								variant='body2'
+								color='text.secondary'
 							>
-								{`Category: ${point.type}`}
+								{`Category: ${category.name}`}
 							</Typography>
 							<Typography variant='body2' color='text.secondary'>
 								{`Built: ${point.yearBuilt}`}

@@ -32,7 +32,7 @@ const PointsFilters = ({
 					categories.map((item) => (
 						<FormControlLabel
 							key={item.id}
-							value={item.name}
+							value={item.id}
 							control={<Radio />}
 							label={item.name}
 						/>

@@ -8,13 +8,13 @@ export const getPoint = /* GraphQL */ `
       name
       lat
       lng
-      type
       yearBuilt
       url
       description
       image
       imageName
       mapId
+      categoryId
       createdAt
       updatedAt
     }
@@ -32,13 +32,13 @@ export const listPoints = /* GraphQL */ `
         name
         lat
         lng
-        type
         yearBuilt
         url
         description
         image
         imageName
         mapId
+        categoryId
         createdAt
         updatedAt
       }
@@ -76,13 +76,13 @@ export const getMap = /* GraphQL */ `
           name
           lat
           lng
-          type
           yearBuilt
           url
           description
           image
           imageName
           mapId
+          categoryId
           createdAt
           updatedAt
         }
@@ -138,6 +138,24 @@ export const getCategory = /* GraphQL */ `
       id
       name
       description
+      points {
+        items {
+          id
+          name
+          lat
+          lng
+          yearBuilt
+          url
+          description
+          image
+          imageName
+          mapId
+          categoryId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -154,6 +172,9 @@ export const listCategories = /* GraphQL */ `
         id
         name
         description
+        points {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -181,13 +202,47 @@ export const pointsByMapId = /* GraphQL */ `
         name
         lat
         lng
-        type
         yearBuilt
         url
         description
         image
         imageName
         mapId
+        categoryId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const pointsByCategoryId = /* GraphQL */ `
+  query PointsByCategoryId(
+    $categoryId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPointFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    pointsByCategoryId(
+      categoryId: $categoryId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        lat
+        lng
+        yearBuilt
+        url
+        description
+        image
+        imageName
+        mapId
+        categoryId
         createdAt
         updatedAt
       }
