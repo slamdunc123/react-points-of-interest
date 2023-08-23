@@ -10,12 +10,18 @@ import { useAppSelector } from '../../app/hooks';
 interface PointsFilterProps {
 	checkedFilter: string;
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  filteredPointsByMapId: PointInt[]
 }
 const PointsFilters = ({
 	checkedFilter,
 	handleFilterOnChange,
+  filteredPointsByMapId
 }: PointsFilterProps) => {
-	const categories = useAppSelector((state) => state.categories.categoriesData);
+  const categories = useAppSelector((state) => state.categories.categoriesData);
+
+  const categoriesById = filteredPointsByMapId.map(item => item.categoryId)
+  const categoriesFilteredByCategoryId = categories.filter(item => categoriesById.includes(item.id))
+  
 	return (
 		<FormControl>
 			<FormLabel id='demo-controlled-radio-buttons-group'>
@@ -28,8 +34,8 @@ const PointsFilters = ({
 				onChange={handleFilterOnChange}
 			>
 				<FormControlLabel value='all' control={<Radio />} label='All' />
-				{categories.length &&
-					categories.map((item) => (
+				{categoriesFilteredByCategoryId.length &&
+					categoriesFilteredByCategoryId.map((item) => (
 						<FormControlLabel
 							key={item.id}
 							value={item.id}

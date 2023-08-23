@@ -103,6 +103,8 @@ const MapContainer = ({ isLoaded, mapId, checkPointIsInCircle }: MapContainerPro
 				handlePointOnChange={handlePointOnChange}
 				checkedFilter={checkedFilter}
 				isSidebarOpen={isSidebarOpen}
+        filteredPointsByMapId={filteredPointsByMapId}
+        
 			/>
 
 			<Map

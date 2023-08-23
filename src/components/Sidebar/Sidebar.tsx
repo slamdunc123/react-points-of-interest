@@ -16,6 +16,7 @@ interface SidebarPropsInt {
 	isSidebarOpen: boolean;
 	handlePointOnChange: (e: SelectChangeEvent) => void;
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  filteredPointsByMapId: PointInt[]
 }
 
 const Sidebar = ({
@@ -25,6 +26,7 @@ const Sidebar = ({
 	handleFilterOnChange,
 	checkedFilter,
 	isSidebarOpen,
+  filteredPointsByMapId
 }: SidebarPropsInt) => {
 	return (
 		<div
@@ -43,6 +45,7 @@ const Sidebar = ({
 							<PointsFilters
 								handleFilterOnChange={handleFilterOnChange}
 								checkedFilter={checkedFilter}
+                filteredPointsByMapId={filteredPointsByMapId}
 							/>
 						</ListItem>
 						<Divider />
