@@ -1,23 +1,27 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
-import {
-	GoogleMap,
-	Marker,
-	InfoWindow,
-	DrawingManager,
-} from '@react-google-maps/api';
-import { Circle } from '@react-google-maps/api';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
-import Image from 'mui-image';
 import { API } from 'aws-amplify';
 import { getMap } from '../../graphql/queries';
 import { drawMarker } from '../../features/point/pointSlice';
-import { useDispatch } from 'react-redux';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+
+import {
+  GoogleMap,
+	Marker,
+	InfoWindow,
+	DrawingManager,
+  Circle
+} from '@react-google-maps/api';
+
+import Navbar from '../Navbar/Navbar';
 import AlertDialog from '../AlertDialog/AlertDialog';
+
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import Image from 'mui-image';
+
 import './style.css';
 
 const containerStyleSidebarOpen = {
@@ -43,6 +47,7 @@ const Map = ({
 	const [currentMap, setCurrentMap] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+	const [isDrawing, setIsDrawing] = useState(false);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -62,7 +67,7 @@ const Map = ({
 		}
 	}, [mapId, navigate]);
 
-	const handleDrawNewMarker = (e) => {
+	const handleOnMarkerComplete = (e) => {
 		const markerPosition = e.getPosition();
 		const markerLat = markerPosition.lat();
 		const markerLng = markerPosition.lng();
@@ -88,8 +93,14 @@ const Map = ({
 		setAlertDialogOpen(false);
 	};
 
-	const handleDrawMarker = () => {
-		document.querySelector('[title="Add a marker"]').click();
+	const handleDrawMarkerOnClick = () => {
+		if (!isDrawing) {
+			document.querySelector('[title="Add a marker"]').click();
+			setIsDrawing(true);
+		} else {
+			document.querySelector('[title="Stop drawing"]').click();
+			setIsDrawing(false);
+		}
 	};
 
 	useEffect(() => {
@@ -102,7 +113,8 @@ const Map = ({
 				isSidebarOpen={isSidebarOpen}
 				handleSidebarOnClick={handleSidebarOnClick}
 				mapName={currentMap && currentMap.name}
-				handleDrawMarker={handleDrawMarker}
+				handleDrawMarkerOnClick={handleDrawMarkerOnClick}
+				isDrawing={isDrawing}
 			/>
 			{currentMap && (
 				<GoogleMap
@@ -136,7 +148,7 @@ const Map = ({
 										],
 									},
 								}}
-								onMarkerComplete={handleDrawNewMarker}
+								onMarkerComplete={handleOnMarkerComplete}
 							/>
 						)}
 						{points

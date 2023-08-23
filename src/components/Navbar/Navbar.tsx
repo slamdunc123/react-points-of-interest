@@ -1,73 +1,85 @@
-//@ts-nocheck
+import { useNavigate } from 'react-router-dom';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import RoomIcon from '@mui/icons-material/Room';
-import { useNavigate } from 'react-router-dom';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import CloseIcon from '@mui/icons-material/Close';
 
-interface NavbarProps {
+type NavbarPropsType = {
 	isSidebarOpen: boolean;
 	handleSidebarOnClick: (isSidebarOpen: boolean) => void;
+	handleDrawMarkerOnClick: () => void;
 	mapName: string;
-}
+	isDrawing: boolean;
+};
 
 export default function Navbar({
 	isSidebarOpen,
 	handleSidebarOnClick,
-  handleDrawMarker,
+	handleDrawMarkerOnClick,
 	mapName,
-}: NavbarProps) {
+	isDrawing,
+}: NavbarPropsType) {
 	const navigate = useNavigate();
 	const { user } = useAuthenticator((context) => [context.user]);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position='static'>
-				<Toolbar>
+				<Toolbar sx={{ width: '100%' }}>
 					<IconButton
 						size='large'
 						edge='start'
 						color='inherit'
 						aria-label='menu'
-						sx={{ mr: 2 }}
 						onClick={() => handleSidebarOnClick(!isSidebarOpen)}
 					>
-						<MenuIcon />
+						{isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
 					</IconButton>
-					<IconButton
-						size='large'
-						edge='start'
-						color='inherit'
-						aria-label='menu'
-						sx={{ mr: 2 }}
-						onClick={() => navigate('/')}
-					>
-						<HomeIcon />
-					</IconButton>
-					{user && (
+					<Tooltip title='Home' arrow>
 						<IconButton
 							size='large'
 							edge='start'
 							color='inherit'
 							aria-label='menu'
-							sx={{ mr: 2 }}
-							onClick={handleDrawMarker}
+							onClick={() => navigate('/')}
 						>
-							<RoomIcon />
+							<HomeIcon />
 						</IconButton>
+					</Tooltip>
+
+					{user && (
+						<Tooltip
+							title={
+								!isDrawing ? 'Marker On' : 'Marker Off'
+							}
+							arrow
+						>
+							<IconButton
+								size='large'
+								edge='start'
+								color={!isDrawing ? 'inherit' : 'default'}
+								aria-label='menu'
+								onClick={handleDrawMarkerOnClick}
+							>
+								<RoomIcon />
+							</IconButton>
+						</Tooltip>
 					)}
-					<Typography variant='h6' component='div'>
-						<Box sx={{ textTransform: 'uppercase', m: 1 }}>
+					<Box
+						sx={{ textTransform: 'uppercase', marginLeft: 'auto' }}
+					>
+						<Typography variant='h6' component='div'>
 							{mapName}
-						</Box>
-					</Typography>
+						</Typography>
+					</Box>
 				</Toolbar>
 			</AppBar>
 		</Box>
