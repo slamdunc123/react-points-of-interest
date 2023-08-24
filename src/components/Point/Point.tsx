@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 import { deletePoint } from '../../features/point/pointSlice';
@@ -23,11 +22,11 @@ import { Image } from 'mui-image';
 type PointPropsType = {
 	point: PointType;
 	mapId: string;
+  isUserAuthenticated: boolean;
 };
 
-const Point = ({ point, mapId }: PointPropsType) => {
+const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 	const [category, setCategory] = useState('');
-	const { user } = useAuthenticator((context) => [context.user]);
 
 	const categories = useAppSelector(
 		(state) => state.categories.categoriesData
@@ -127,7 +126,7 @@ const Point = ({ point, mapId }: PointPropsType) => {
 									<LinkIcon />
 								</IconButton>
 							)}
-							{user && (
+							{isUserAuthenticated && (
 								<ButtonGroup size='small' sx={{ marginTop: 2 }}>
 									<Box mr={2}>
 										<Button

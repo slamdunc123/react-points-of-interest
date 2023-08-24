@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import { API } from 'aws-amplify';
 import { getMap } from '../../graphql/queries';
@@ -44,6 +43,7 @@ const Map = ({
 	isLoaded,
 	mapId,
 	checkPointIsInCircle,
+  isUserAuthenticatedForCurrentMap
 }) => {
 	const [currentMap, setCurrentMap] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -54,7 +54,6 @@ const Map = ({
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const { user } = useAuthenticator((context) => [context.user]);
 
 	const fetchMap = useCallback(async () => {
 		try {
@@ -131,6 +130,8 @@ const Map = ({
 				mapName={currentMap && currentMap.name}
 				handleDrawMarkerOnClick={handleDrawMarkerOnClick}
 				isDrawing={isDrawing}
+        isUserAuthenticatedForCurrentMap={isUserAuthenticatedForCurrentMap}
+        
 			/>
 			{currentMap && (
 				<GoogleMap
@@ -150,7 +151,7 @@ const Map = ({
 						handleAlertDialogClose={handleAlertDialogClose}
 					/>
 					<>
-						{user && (
+						{isUserAuthenticatedForCurrentMap && (
 							<DrawingManager
 								options={{
 									drawingControl: true,

@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,6 +17,7 @@ type NavbarPropsType = {
 	handleDrawMarkerOnClick: () => void;
 	mapName: string;
 	isDrawing: boolean;
+  isUserAuthenticatedForCurrentMap: boolean
 };
 
 export default function Navbar({
@@ -26,9 +26,9 @@ export default function Navbar({
 	handleDrawMarkerOnClick,
 	mapName,
 	isDrawing,
+  isUserAuthenticatedForCurrentMap
 }: NavbarPropsType) {
 	const navigate = useNavigate();
-	const { user } = useAuthenticator((context) => [context.user]);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -55,7 +55,7 @@ export default function Navbar({
 						</IconButton>
 					</Tooltip>
 
-					{user && (
+					{isUserAuthenticatedForCurrentMap && (
 						<Tooltip title='Marker' arrow>
 							<IconButton
 								size='large'

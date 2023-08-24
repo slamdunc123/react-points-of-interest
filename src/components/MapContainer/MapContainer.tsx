@@ -10,6 +10,7 @@ import styles from './map-container.module.css';
 import { ALL_POINTS } from '../../constants/PointTypes';
 import { fetchCategories } from '../../features/category/categorySlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 type MapContainerPropsType = {
 	isLoaded: boolean;
@@ -32,7 +33,8 @@ export type PointType = {
 const MapContainer = ({
 	isLoaded,
 	mapId,
-	checkPointIsInCircle,
+	maps,
+	checkUserIsAuthenticatedForMap,
 }: MapContainerPropsType) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -40,26 +42,26 @@ const MapContainer = ({
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
+	const [currentMap, setCurrentMap] = useState();
 
 	const points = useAppSelector((state) => state.points.pointsData);
 	const categoryStatus = useAppSelector((state) => state.categories.status);
 
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		if (categoryStatus === 'idle') {
-			dispatch(fetchCategories());
-		}
-	}, [categoryStatus, dispatch]);
+	const { user } = useAuthenticator((context) => [context.user]);
 
-	useEffect(() => {
-		const pointsByMapId = points.filter((point) => point.mapId === mapId);
-		setFilteredPointsByMapId(pointsByMapId);
-	}, [points, mapId]);
+	const adminGroupsOfSignedInUser =
+		user?.signInUserSession.accessToken.payload['cognito:groups'] || [];
 
-	useEffect(() => {
-		isFilteringActive && setIsSidebarOpen(true);
-	}, [isFilteringActive]);
+	const currentMapAdminGroup = currentMap?.adminGroup;
+
+	const isUserAuthenticatedForCurrentMap =
+		adminGroupsOfSignedInUser.includes(currentMapAdminGroup);
+
+	const filteredPoints = isFilteringActive
+		? filteredPointsByCategory
+		: filteredPointsByMapId;
 
 	const handlePointOnClick = (point: string) => {
 		setActivePoint(point);
@@ -80,6 +82,24 @@ const MapContainer = ({
 		setIsSidebarOpen(isOpen);
 	};
 
+	const checkPointIsInCircle = (lat, lng) => {
+		const latLngCenter = new window.google.maps.LatLng(
+			currentMap.center.lat,
+			currentMap.center.lng
+		);
+		const latLngMarker = new window.google.maps.LatLng(
+			Number(lat),
+			Number(lng)
+		);
+		const computeDistance =
+			window.google.maps.geometry.spherical.computeDistanceBetween(
+				latLngCenter,
+				latLngMarker
+			);
+
+		if (currentMap.circleOptions.radius > computeDistance) return true;
+	};
+
 	const filterPoints = (value) => {
 		setIsFilteringActive(true);
 		if (value === ALL_POINTS) {
@@ -94,9 +114,29 @@ const MapContainer = ({
 		}
 	};
 
-	const filteredPoints = isFilteringActive
-		? filteredPointsByCategory
-		: filteredPointsByMapId;
+	useEffect(() => {
+		checkUserIsAuthenticatedForMap(isUserAuthenticatedForCurrentMap);
+	}, [checkUserIsAuthenticatedForMap, isUserAuthenticatedForCurrentMap]);
+
+	useEffect(() => {
+		const mapFound = maps.find((map) => map.id === mapId);
+		if (mapFound) setCurrentMap(mapFound);
+	}, [maps, mapId]);
+
+	useEffect(() => {
+		if (categoryStatus === 'idle') {
+			dispatch(fetchCategories());
+		}
+	}, [categoryStatus, dispatch]);
+
+	useEffect(() => {
+		const pointsByMapId = points.filter((point) => point.mapId === mapId);
+		setFilteredPointsByMapId(pointsByMapId);
+	}, [points, mapId]);
+
+	useEffect(() => {
+		isFilteringActive && setIsSidebarOpen(true);
+	}, [isFilteringActive]);
 
 	return (
 		<div className={styles.container}>
@@ -119,6 +159,9 @@ const MapContainer = ({
 				isLoaded={isLoaded}
 				mapId={mapId}
 				checkPointIsInCircle={checkPointIsInCircle}
+				isUserAuthenticatedForCurrentMap={
+					isUserAuthenticatedForCurrentMap
+				}
 			/>
 		</div>
 	);

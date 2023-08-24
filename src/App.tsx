@@ -20,6 +20,7 @@ const libraries = ['geometry', 'drawing'];
 const MAP_API = process.env.REACT_APP_MAP_API;
 
 function App() {
+	const [isUserAuthenticated, setIsUserAuthenticated] = useState();
 	const dispatch = useAppDispatch();
 	const points = useAppSelector((state) => state.points.pointsData);
 	const pointStatus = useAppSelector((state) => state.points.status);
@@ -63,6 +64,14 @@ function App() {
 		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
 
+	const handleMapOnChange = (e: SelectChangeEvent) => {
+		setMapId(e.target.value);
+	};
+
+	const checkUserIsAuthenticatedForMap = (isUserAuth) => {
+		setIsUserAuthenticated(isUserAuth);
+	};
+
 	useEffect(() => {
 		if (mapStatus === 'idle') {
 			dispatch(fetchMaps());
@@ -80,10 +89,6 @@ function App() {
 		}
 	}, [pointStatus, dispatch]);
 
-	const handleMapOnChange = (e: SelectChangeEvent) => {
-		setMapId(e.target.value);
-	};
-
 	return (
 		<Authenticator.Provider>
 			<Routes>
@@ -98,36 +103,53 @@ function App() {
 				/>
 				<Route
 					path='/maps/:Id'
-					element={<MapContainer isLoaded={isLoaded} mapId={mapId} 
-								checkPointIsInCircle={checkPointIsInCircle}
-                />}
+					element={
+						<MapContainer
+							isLoaded={isLoaded}
+							mapId={mapId}
+							checkPointIsInCircle={checkPointIsInCircle}
+							maps={maps}
+							checkUserIsAuthenticatedForMap={
+								checkUserIsAuthenticatedForMap
+							}
+						/>
+					}
 				/>
 				<Route
 					path='/point/:id'
-					element={<Point point={point} mapId={mapId} />}
-				/>
-				<Route
-					path='/add-point'
 					element={
-						<RequireAuth>
-							<AddPoint
-								mapId={mapId}
-							/>
-						</RequireAuth>
+						<Point
+							point={point}
+							mapId={mapId}
+							isUserAuthenticated={isUserAuthenticated}
+						/>
 					}
 				/>
-				<Route
-					path='/edit-point/:id'
-					element={
-						<RequireAuth>
-							<EditPoint
-								editPoint={editPoint}
-								checkPointIsInCircle={checkPointIsInCircle}
-								mapId={mapId}
-							/>
-						</RequireAuth>
-					}
-				/>
+				{isUserAuthenticated && (
+					<Route
+						path='/add-point'
+						element={
+							<RequireAuth>
+								<AddPoint mapId={mapId} />
+							</RequireAuth>
+						}
+					/>
+				)}
+				{isUserAuthenticated && (
+					<Route
+						path='/edit-point/:id'
+						element={
+							<RequireAuth>
+								<EditPoint
+									editPoint={editPoint}
+									checkPointIsInCircle={checkPointIsInCircle}
+									mapId={mapId}
+								/>
+							</RequireAuth>
+						}
+					/>
+				)}
+
 				<Route path='/login' element={<Login />} />
 				<Route path='*' element={<Navigate to='/' />} />
 			</Routes>
