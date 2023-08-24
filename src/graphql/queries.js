@@ -70,6 +70,7 @@ export const getMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      adminGroup
       points {
         items {
           id
@@ -122,6 +123,7 @@ export const listMaps = /* GraphQL */ `
           zIndex
         }
         zoom
+        adminGroup
         points {
           nextToken
         }

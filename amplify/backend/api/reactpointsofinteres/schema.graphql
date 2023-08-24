@@ -24,6 +24,7 @@ type Map @model {
 	center: MapCenter
 	circleOptions: MapCircleOptions
 	zoom: Float!
+  adminGroup: String!
 	points: [Point] @hasMany(indexName: "byMap", fields: ["id"])
 }
 

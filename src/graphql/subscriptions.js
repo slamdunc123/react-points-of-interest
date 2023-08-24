@@ -82,6 +82,7 @@ export const onCreateMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      adminGroup
       points {
         items {
           id
@@ -129,6 +130,7 @@ export const onUpdateMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      adminGroup
       points {
         items {
           id
@@ -176,6 +178,7 @@ export const onDeleteMap = /* GraphQL */ `
         zIndex
       }
       zoom
+      adminGroup
       points {
         items {
           id
