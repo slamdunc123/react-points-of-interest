@@ -8,11 +8,11 @@ import { getMap } from '../../graphql/queries';
 import { drawMarker } from '../../features/point/pointSlice';
 
 import {
-  GoogleMap,
+	GoogleMap,
 	Marker,
 	InfoWindow,
 	DrawingManager,
-  Circle
+	Circle,
 } from '@react-google-maps/api';
 
 import Navbar from '../Navbar/Navbar';
@@ -23,6 +23,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Image from 'mui-image';
 
 import './style.css';
+import { Alert, Snackbar } from '@mui/material';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 270px)',
@@ -48,6 +49,7 @@ const Map = ({
 	const [formErrorMessage, setFormErrorMessage] = useState('');
 	const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 	const [isDrawing, setIsDrawing] = useState(false);
+	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -97,9 +99,11 @@ const Map = ({
 		if (!isDrawing) {
 			document.querySelector('[title="Add a marker"]').click();
 			setIsDrawing(true);
+			setIsSnackbarOpen(true);
 		} else {
 			document.querySelector('[title="Stop drawing"]').click();
 			setIsDrawing(false);
+			setIsSnackbarOpen(true);
 		}
 	};
 
@@ -109,6 +113,18 @@ const Map = ({
 
 	return isLoaded ? (
 		<div>
+			<Snackbar
+				open={isSnackbarOpen}
+				autoHideDuration={4000}
+				onClose={() => setIsSnackbarOpen(false)}
+        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+			>
+				<Alert severity='success' >
+					{isDrawing
+						? 'Add Marker Turned On'
+						: 'Add Marker Turned Off'}
+				</Alert>
+			</Snackbar>
 			<Navbar
 				isSidebarOpen={isSidebarOpen}
 				handleSidebarOnClick={handleSidebarOnClick}

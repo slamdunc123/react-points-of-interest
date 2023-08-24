@@ -56,12 +56,7 @@ export default function Navbar({
 					</Tooltip>
 
 					{user && (
-						<Tooltip
-							title={
-								!isDrawing ? 'Marker On' : 'Marker Off'
-							}
-							arrow
-						>
+						<Tooltip title='Marker' arrow>
 							<IconButton
 								size='large'
 								edge='start'
