@@ -148,6 +148,7 @@ const MapContainer = ({
 				checkedFilter={checkedFilter}
 				isSidebarOpen={isSidebarOpen}
 				filteredPointsByMapId={filteredPointsByMapId}
+				handleSidebarOnClick={handleSidebarOnClick}
 			/>
 
 			<Map

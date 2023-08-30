@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import PersonIcon from '@mui/icons-material/Person';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 
 const Admin = () => {
 	const { user, signOut } = useAuthenticator((context) => [
@@ -24,13 +24,24 @@ const Admin = () => {
 	};
 
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'flex-start' }}>
-			<Button color='primary' size='large' onClick={handleAdminOnClick}>
-
-				<PersonIcon />
-				<Typography variant='body2' color='primary'>{user ? '  sign out' : '  sign in'}</Typography>
-			</Button>
-			<Typography variant='body2' color='primary' sx={{alignSelf: 'flex-end'}}>{user?.username}</Typography>
+		<Box style={{ display: 'flex', flexDirection: 'column' }}>
+			<Box style={{ display: 'flex', alignItems: 'center' }}>
+				<IconButton
+					size='large'
+					edge='start'
+					color='primary'
+					aria-label='admin'
+					onClick={handleAdminOnClick}
+				>
+					<PersonIcon />
+				</IconButton>
+				<Typography variant='body1' color='primary'>
+					{user ? '  Sign out' : '  Sign in'}
+				</Typography>
+			</Box>
+			<Typography variant='body1' color='primary'>
+				{user?.username}
+			</Typography>
 		</Box>
 	);
 };

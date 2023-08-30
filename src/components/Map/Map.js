@@ -21,11 +21,14 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Image from 'mui-image';
 
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import Box from '@mui/material/Box';
+
 import './style.css';
-import { Alert, Snackbar } from '@mui/material';
 
 const containerStyleSidebarOpen = {
-	width: 'calc(100vw - 270px)',
+	width: 'calc(100vw - 350px)',
 	height: 'calc(100vh - 64px)',
 };
 
@@ -43,7 +46,7 @@ const Map = ({
 	isLoaded,
 	mapId,
 	checkPointIsInCircle,
-  isUserAuthenticatedForCurrentMap
+	isUserAuthenticatedForCurrentMap,
 }) => {
 	const [currentMap, setCurrentMap] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -53,7 +56,6 @@ const Map = ({
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
 
 	const fetchMap = useCallback(async () => {
 		try {
@@ -111,14 +113,14 @@ const Map = ({
 	}, [fetchMap]);
 
 	return isLoaded ? (
-		<div>
+		<Box style={{ overflow: 'hidden' }}>
 			<Snackbar
 				open={isSnackbarOpen}
-				autoHideDuration={4000}
+				autoHideDuration={2000}
 				onClose={() => setIsSnackbarOpen(false)}
-        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 			>
-				<Alert severity='success' >
+				<Alert severity='success'>
 					{isDrawing
 						? 'Add Marker Turned On'
 						: 'Add Marker Turned Off'}
@@ -130,8 +132,9 @@ const Map = ({
 				mapName={currentMap && currentMap.name}
 				handleDrawMarkerOnClick={handleDrawMarkerOnClick}
 				isDrawing={isDrawing}
-        isUserAuthenticatedForCurrentMap={isUserAuthenticatedForCurrentMap}
-        
+				isUserAuthenticatedForCurrentMap={
+					isUserAuthenticatedForCurrentMap
+				}
 			/>
 			{currentMap && (
 				<GoogleMap
@@ -222,7 +225,7 @@ const Map = ({
 					/>
 				</GoogleMap>
 			)}
-		</div>
+		</Box>
 	) : (
 		<></>
 	);
