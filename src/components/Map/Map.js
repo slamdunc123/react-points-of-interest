@@ -28,7 +28,7 @@ import Box from '@mui/material/Box';
 import './style.css';
 
 const containerStyleSidebarOpen = {
-	width: 'calc(100vw - 350px)',
+	width: 'calc(100vw - 300px)',
 	height: 'calc(100vh - 64px)',
 };
 
