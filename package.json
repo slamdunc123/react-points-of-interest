@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.13",
+    "@mui/x-data-grid": "^6.12.1",
     "@react-google-maps/api": "^2.12.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",

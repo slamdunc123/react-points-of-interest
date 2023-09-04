@@ -14,6 +14,7 @@ type NavbarPropsType = {
 	mapName: string;
 	isDrawing: boolean;
 	isUserAuthenticatedForCurrentMap: boolean;
+	isMapView: boolean;
 };
 
 export default function Navbar({
@@ -23,7 +24,11 @@ export default function Navbar({
 	mapName,
 	isDrawing,
 	isUserAuthenticatedForCurrentMap,
+	isMapView,
 }: NavbarPropsType) {
+	const isUserAuthenticatedAndMapView =
+		isUserAuthenticatedForCurrentMap && isMapView;
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position='static'>
@@ -41,7 +46,8 @@ export default function Navbar({
 					)}
 
 					<>
-						{isUserAuthenticatedForCurrentMap && (
+						
+						{isUserAuthenticatedAndMapView && (
 							<Tooltip title='Marker' arrow>
 								<IconButton
 									size='large'
@@ -54,18 +60,16 @@ export default function Navbar({
 								</IconButton>
 							</Tooltip>
 						)}
-						{!isSidebarOpen && (
-							<Box
-								sx={{
-									textTransform: 'uppercase',
-									marginLeft: 'auto',
-								}}
-							>
-								<Typography variant='h6' component='div'>
-									{mapName}
-								</Typography>
-							</Box>
-						)}
+            <Box
+							sx={{
+								textTransform: 'uppercase',
+                marginLeft: 'auto'
+							}}
+						>
+							<Typography variant='h6' component='div'>
+								{mapName}
+							</Typography>
+						</Box>
 					</>
 				</Toolbar>
 			</AppBar>

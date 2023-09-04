@@ -26,6 +26,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 
 import './style.css';
+import PointsDataGrid from '../PointsDataGrid/PointsDataGrid';
 
 const containerStyleSidebarOpen = {
 	width: 'calc(100vw - 300px)',
@@ -47,6 +48,7 @@ const Map = ({
 	mapId,
 	checkPointIsInCircle,
 	isUserAuthenticatedForCurrentMap,
+  isMapView
 }) => {
 	const [currentMap, setCurrentMap] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -135,8 +137,9 @@ const Map = ({
 				isUserAuthenticatedForCurrentMap={
 					isUserAuthenticatedForCurrentMap
 				}
+        isMapView={isMapView}
 			/>
-			{currentMap && (
+			{currentMap && isMapView ? (
 				<GoogleMap
 					mapContainerStyle={
 						isSidebarOpen
@@ -224,7 +227,12 @@ const Map = ({
 						options={currentMap.circleOptions}
 					/>
 				</GoogleMap>
-			)}
+			) : <PointsDataGrid mapContainerStyle={
+						isSidebarOpen
+							? containerStyleSidebarOpen
+							: containerStyleSidebarClosed
+					}
+          points={points}/>}
 		</Box>
 	) : (
 		<></>

@@ -16,6 +16,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import MapIcon from '@mui/icons-material/Map';
+import HomeIcon from '@mui/icons-material/Home';
+import DatasetIcon from '@mui/icons-material/Dataset';
 
 import styles from './sidebar.module.css';
 
@@ -28,6 +30,8 @@ type SidebarPropsType = {
 	handleFilterOnChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	filteredPointsByMapId: PointType[];
 	handleSidebarOnClick: (isSidebarOpen: boolean) => void;
+	handleViewOnClick: () => void;
+	isMapView: boolean;
 };
 
 const Sidebar = ({
@@ -39,6 +43,8 @@ const Sidebar = ({
 	isSidebarOpen,
 	filteredPointsByMapId,
 	handleSidebarOnClick,
+	handleViewOnClick,
+	isMapView,
 }: SidebarPropsType) => {
 	const navigate = useNavigate();
 	return (
@@ -66,7 +72,7 @@ const Sidebar = ({
 						</ListItem>
 						<Divider />
 						<ListItem sx={{ alignItems: 'center' }}>
-							<Tooltip title='Maps' arrow>
+							<Tooltip title='Home' arrow>
 								<IconButton
 									size='large'
 									edge='start'
@@ -74,11 +80,28 @@ const Sidebar = ({
 									aria-label='menu'
 									onClick={() => navigate('/')}
 								>
-									<MapIcon />
+									<HomeIcon />
 								</IconButton>
 							</Tooltip>
 							<Typography variant='body1' color='primary'>
-								Maps
+								Home
+							</Typography>
+						</ListItem>
+						<Divider />
+						<ListItem sx={{ alignItems: 'center' }}>
+							<Tooltip title='Change View' arrow>
+								<IconButton
+									size='large'
+									edge='start'
+									color='primary'
+									aria-label='menu'
+									onClick={handleViewOnClick}
+								>
+									{isMapView ? <DatasetIcon /> : <MapIcon />}
+								</IconButton>
+							</Tooltip>
+							<Typography variant='body1' color='primary'>
+								{isMapView ? 'Data Grid' : 'Map'}
 							</Typography>
 						</ListItem>
 						<Divider />

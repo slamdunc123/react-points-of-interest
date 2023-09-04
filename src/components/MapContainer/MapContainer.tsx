@@ -42,6 +42,7 @@ const MapContainer = ({
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
+  const [isMapView, setIsMapView] = useState(true)
 	const [currentMap, setCurrentMap] = useState();
 
 	const points = useAppSelector((state) => state.points.pointsData);
@@ -81,6 +82,10 @@ const MapContainer = ({
 	const handleSidebarOnClick = (isOpen: boolean) => {
 		setIsSidebarOpen(isOpen);
 	};
+
+  const handleViewOnClick = () => {
+    setIsMapView(preIsMapView => !preIsMapView)
+  }
 
 	const checkPointIsInCircle = (lat, lng) => {
 		const latLngCenter = new window.google.maps.LatLng(
@@ -149,6 +154,8 @@ const MapContainer = ({
 				isSidebarOpen={isSidebarOpen}
 				filteredPointsByMapId={filteredPointsByMapId}
 				handleSidebarOnClick={handleSidebarOnClick}
+        handleViewOnClick={handleViewOnClick}
+        isMapView={isMapView}
 			/>
 
 			<Map
@@ -163,6 +170,7 @@ const MapContainer = ({
 				isUserAuthenticatedForCurrentMap={
 					isUserAuthenticatedForCurrentMap
 				}
+        isMapView={isMapView}
 			/>
 		</div>
 	);
