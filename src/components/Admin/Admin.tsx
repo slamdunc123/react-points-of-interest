@@ -35,7 +35,8 @@ const Admin = () => {
 				sx={{
 					justifyContent: 'flex-start',
 					alignItems: 'center',
-					padding: 0,
+					py: 1,
+					px: 0,
 				}}
 			>
 				<Typography
@@ -50,7 +51,8 @@ const Admin = () => {
 			<Typography
 				sx={{
 					lineHeight: 'normal',
-					textAlign: 'right',
+					py: 1,
+					px: 0,
 				}}
 			>
 				{user?.username}

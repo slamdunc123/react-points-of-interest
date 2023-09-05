@@ -48,7 +48,7 @@ export default function Navbar({
 					<>
 						
 						{isUserAuthenticatedAndMapView && (
-							<Tooltip title='Marker' arrow>
+							<Tooltip title='Marker'>
 								<IconButton
 									size='large'
 									edge='start'

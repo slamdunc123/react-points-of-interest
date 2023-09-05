@@ -8,6 +8,7 @@ import PointsSelector from '../PointsSelector/PointsSelector';
 import { PointType } from '../MapContainer/MapContainer';
 import { SelectChangeEvent } from '@mui/material/Select';
 
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -56,51 +57,55 @@ const Sidebar = ({
 		>
 			{isSidebarOpen && (
 				<>
-					<IconButton
-						size='large'
-						edge='start'
-						color='primary'
-						aria-label='menu'
-						onClick={() => handleSidebarOnClick(!isSidebarOpen)}
-						sx={{ ml: 'auto', mt: 1 }}
-					>
-						<CloseIcon />
-					</IconButton>
+					<Box sx={{ display: 'flex', width: '100%', mt: 1 }}>
+						<Tooltip title='Home' placement='bottom-start'>
+							<Button
+								startIcon={<HomeIcon />}
+								size='large'
+								color='primary'
+								aria-label='menu'
+								onClick={() => navigate('/')}
+								fullWidth
+								sx={{
+									justifyContent: 'flex-start',
+									alignItems: 'center',
+									pl: 2,
+								}}
+							>
+								<Typography
+									sx={{
+										typography: 'subtitle1',
+										textTransform: 'capitalize',
+										lineHeight: 'normal',
+									}}
+								>
+									Home
+								</Typography>
+							</Button>
+						</Tooltip>
+						<IconButton
+							size='large'
+							edge='start'
+							color='primary'
+							aria-label='menu'
+							onClick={() => handleSidebarOnClick(!isSidebarOpen)}
+							sx={{ ml: 'auto' }}
+						>
+							<CloseIcon />
+						</IconButton>
+					</Box>
 					<List sx={{ width: 1 }}>
+						<Divider />
 						<ListItem>
 							<Admin />
 						</ListItem>
 
 						<Divider />
-						<ListItem>
-							<Tooltip title='Home' arrow>
-								<Button
-									startIcon={<HomeIcon />}
-									size='large'
-									color='primary'
-									aria-label='menu'
-									onClick={() => navigate('/')}
-									fullWidth
-									sx={{
-										justifyContent: 'flex-start',
-										alignItems: 'center',
-										p: 0,
-									}}
-								>
-									<Typography
-										sx={{
-											typography: 'subtitle1',
-											textTransform: 'capitalize',
-											lineHeight: 'normal',
-										}}
-									>
-										Home
-									</Typography>
-								</Button>
-							</Tooltip>
-						</ListItem>
-						<ListItem sx={{ alignItems: 'center' }}>
-							<Tooltip title='Change View' arrow>
+						<ListItem sx={{ alignItems: 'center', py:2, px: 1  }}>
+							<Tooltip
+								title='Change View'
+								placement='bottom-start'
+							>
 								<Button
 									startIcon={
 										isMapView ? (
@@ -117,7 +122,6 @@ const Sidebar = ({
 									sx={{
 										justifyContent: 'flex-start',
 										alignItems: 'center',
-										p: 0,
 									}}
 								>
 									<Typography
