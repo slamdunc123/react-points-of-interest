@@ -11,6 +11,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -61,50 +62,77 @@ const Sidebar = ({
 						color='primary'
 						aria-label='menu'
 						onClick={() => handleSidebarOnClick(!isSidebarOpen)}
-						sx={{ alignSelf: 'flex-end' }}
+						sx={{ ml: 'auto', mt: 1 }}
 					>
 						<CloseIcon />
 					</IconButton>
 					<List sx={{ width: 1 }}>
-						<Divider />
 						<ListItem>
 							<Admin />
 						</ListItem>
+
 						<Divider />
-						<ListItem sx={{ alignItems: 'center' }}>
+						<ListItem>
 							<Tooltip title='Home' arrow>
-								<IconButton
+								<Button
+									startIcon={<HomeIcon />}
 									size='large'
-									edge='start'
 									color='primary'
 									aria-label='menu'
 									onClick={() => navigate('/')}
+									fullWidth
+									sx={{
+										justifyContent: 'flex-start',
+										alignItems: 'center',
+										p: 0,
+									}}
 								>
-									<HomeIcon />
-								</IconButton>
+									<Typography
+										sx={{
+											typography: 'subtitle1',
+											textTransform: 'capitalize',
+											lineHeight: 'normal',
+										}}
+									>
+										Home
+									</Typography>
+								</Button>
 							</Tooltip>
-							<Typography variant='body1' color='primary'>
-								Home
-							</Typography>
 						</ListItem>
-						<Divider />
 						<ListItem sx={{ alignItems: 'center' }}>
 							<Tooltip title='Change View' arrow>
-								<IconButton
+								<Button
+									startIcon={
+										isMapView ? (
+											<DatasetIcon />
+										) : (
+											<MapIcon />
+										)
+									}
 									size='large'
-									edge='start'
 									color='primary'
 									aria-label='menu'
 									onClick={handleViewOnClick}
+									fullWidth
+									sx={{
+										justifyContent: 'flex-start',
+										alignItems: 'center',
+										p: 0,
+									}}
 								>
-									{isMapView ? <DatasetIcon /> : <MapIcon />}
-								</IconButton>
+									<Typography
+										sx={{
+											textTransform: 'capitalize',
+											lineHeight: 'normal',
+										}}
+									>
+										{isMapView ? 'Data Grid' : 'Map'}
+									</Typography>
+								</Button>
 							</Tooltip>
-							<Typography variant='body1' color='primary'>
-								{isMapView ? 'Data Grid' : 'Map'}
-							</Typography>
 						</ListItem>
 						<Divider />
+
 						<ListItem>
 							<PointsFilters
 								handleFilterOnChange={handleFilterOnChange}
@@ -112,14 +140,20 @@ const Sidebar = ({
 								filteredPointsByMapId={filteredPointsByMapId}
 							/>
 						</ListItem>
-						<Divider />
-						<ListItem>
-							<PointsSelector
-								points={points}
-								activePoint={activePoint}
-								handlePointOnChange={handlePointOnChange}
-							/>
-						</ListItem>
+						{isMapView && (
+							<>
+								<Divider />
+								<ListItem>
+									<PointsSelector
+										points={points}
+										activePoint={activePoint}
+										handlePointOnChange={
+											handlePointOnChange
+										}
+									/>
+								</ListItem>
+							</>
+						)}
 					</List>
 				</>
 			)}

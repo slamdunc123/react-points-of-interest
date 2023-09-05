@@ -48,7 +48,7 @@ const Map = ({
 	mapId,
 	checkPointIsInCircle,
 	isUserAuthenticatedForCurrentMap,
-  isMapView
+	isMapView,
 }) => {
 	const [currentMap, setCurrentMap] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -137,102 +137,111 @@ const Map = ({
 				isUserAuthenticatedForCurrentMap={
 					isUserAuthenticatedForCurrentMap
 				}
-        isMapView={isMapView}
+				isMapView={isMapView}
 			/>
-			{currentMap && isMapView ? (
-				<GoogleMap
-					mapContainerStyle={
-						isSidebarOpen
-							? containerStyleSidebarOpen
-							: containerStyleSidebarClosed
-					}
-					center={currentMap.center}
-					zoom={currentMap.zoom}
-					mapTypeId='satellite'
-					onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
-				>
-					<AlertDialog
-						description={formErrorMessage}
-						alertDialogOpen={alertDialogOpen}
-						handleAlertDialogClose={handleAlertDialogClose}
-					/>
-					<>
-						{isUserAuthenticatedForCurrentMap && (
-							<DrawingManager
-								options={{
-									drawingControl: true,
-									drawingControlOptions: {
-										position:
-											window.google.maps.ControlPosition
-												.RIGHT_BOTTOM,
-										drawingModes: [
-											window.google.maps.drawing
-												.OverlayType.MARKER,
-										],
-									},
-								}}
-								onMarkerComplete={handleOnMarkerComplete}
-							/>
-						)}
-						{points
-							? points.map((point) => {
-									return (
-										<Marker
-											position={{
-												lat: point.lat,
-												lng: point.lng,
-											}}
-											onClick={() =>
-												handlePointOnClick(point)
-											}
-											key={point.id}
-										/>
-									);
-							  })
-							: 'Loading...'}
-						{activePoint ? (
-							<InfoWindow
-								position={{
-									lat: activePoint.lat,
-									lng: activePoint.lng,
-								}}
-								onCloseClick={() => handlePointOnClick('')}
-							>
-								<div className='info-container'>
-									<h4>{activePoint.name}</h4>
-									{activePoint.image && (
-										<Image
-											src={activePoint.image}
-											alt={`visual aid for ${activePoint.name}`}
-											style={{ width: 100 }}
-											duration={0}
-										/>
-									)}
-									<IconButton
-										component={Link}
-										to={`/point/${activePoint.id}`}
-										color='primary'
-										size='small'
-									>
-										<InfoIcon />
-									</IconButton>
-								</div>
-							</InfoWindow>
-						) : (
-							<></>
-						)}
-					</>
-					<Circle
+			{currentMap ? (
+				isMapView ? (
+					<GoogleMap
+						mapContainerStyle={
+							isSidebarOpen
+								? containerStyleSidebarOpen
+								: containerStyleSidebarClosed
+						}
 						center={currentMap.center}
-						options={currentMap.circleOptions}
+						zoom={currentMap.zoom}
+						mapTypeId='satellite'
+						onClick={() => handlePointOnClick('')} // set to an empty string to avoid object and uncontrolled component warnings
+					>
+						<AlertDialog
+							description={formErrorMessage}
+							alertDialogOpen={alertDialogOpen}
+							handleAlertDialogClose={handleAlertDialogClose}
+						/>
+						<>
+							{isUserAuthenticatedForCurrentMap && (
+								<DrawingManager
+									options={{
+										drawingControl: true,
+										drawingControlOptions: {
+											position:
+												window.google.maps
+													.ControlPosition
+													.RIGHT_BOTTOM,
+											drawingModes: [
+												window.google.maps.drawing
+													.OverlayType.MARKER,
+											],
+										},
+									}}
+									onMarkerComplete={handleOnMarkerComplete}
+								/>
+							)}
+							{points
+								? points.map((point) => {
+										return (
+											<Marker
+												position={{
+													lat: point.lat,
+													lng: point.lng,
+												}}
+												onClick={() =>
+													handlePointOnClick(point)
+												}
+												key={point.id}
+											/>
+										);
+								  })
+								: 'Loading...'}
+							{activePoint ? (
+								<InfoWindow
+									position={{
+										lat: activePoint.lat,
+										lng: activePoint.lng,
+									}}
+									onCloseClick={() => handlePointOnClick('')}
+								>
+									<div className='info-container'>
+										<h4>{activePoint.name}</h4>
+										{activePoint.image && (
+											<Image
+												src={activePoint.image}
+												alt={`visual aid for ${activePoint.name}`}
+												style={{ width: 100 }}
+												duration={0}
+											/>
+										)}
+										<IconButton
+											component={Link}
+											to={`/point/${activePoint.id}`}
+											color='primary'
+											size='small'
+										>
+											<InfoIcon />
+										</IconButton>
+									</div>
+								</InfoWindow>
+							) : (
+								<></>
+							)}
+						</>
+						<Circle
+							center={currentMap.center}
+							options={currentMap.circleOptions}
+						/>
+					</GoogleMap>
+				) : (
+					<PointsDataGrid
+						mapContainerStyle={
+							isSidebarOpen
+								? containerStyleSidebarOpen
+								: containerStyleSidebarClosed
+						}
+						points={points}
 					/>
-				</GoogleMap>
-			) : <PointsDataGrid mapContainerStyle={
-						isSidebarOpen
-							? containerStyleSidebarOpen
-							: containerStyleSidebarClosed
-					}
-          points={points}/>}
+				)
+			) : (
+				'Loading'
+			)}
 		</Box>
 	) : (
 		<></>

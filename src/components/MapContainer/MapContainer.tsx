@@ -28,6 +28,7 @@ export type PointType = {
 	description: string;
 	image: any;
 	imageName: string;
+  categoryId: string
 };
 
 const MapContainer = ({
