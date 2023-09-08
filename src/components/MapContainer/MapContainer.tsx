@@ -28,6 +28,7 @@ export type PointType = {
 	description: string;
 	image: any;
 	imageName: string;
+	categoryId: string;
 };
 
 const MapContainer = ({
@@ -42,6 +43,7 @@ const MapContainer = ({
 	const [checkedFilter, setCheckedFilter] = useState(ALL_POINTS);
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
+	const [isMapView, setIsMapView] = useState(true);
 	const [currentMap, setCurrentMap] = useState();
 
 	const points = useAppSelector((state) => state.points.pointsData);
@@ -72,6 +74,12 @@ const MapContainer = ({
 		setActivePoint(value);
 	};
 
+	const handleGridRowOnClick = (e) => {
+		const point = points.find((item) => item.id === e.id);
+		setActivePoint(point);
+    setIsMapView(true);
+	};
+
 	const handleFilterOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setActivePoint('');
@@ -80,6 +88,10 @@ const MapContainer = ({
 
 	const handleSidebarOnClick = (isOpen: boolean) => {
 		setIsSidebarOpen(isOpen);
+	};
+
+	const handleViewOnClick = () => {
+		setIsMapView((preIsMapView) => !preIsMapView);
 	};
 
 	const checkPointIsInCircle = (lat, lng) => {
@@ -149,12 +161,15 @@ const MapContainer = ({
 				isSidebarOpen={isSidebarOpen}
 				filteredPointsByMapId={filteredPointsByMapId}
 				handleSidebarOnClick={handleSidebarOnClick}
+				handleViewOnClick={handleViewOnClick}
+				isMapView={isMapView}
 			/>
 
 			<Map
 				points={filteredPoints}
 				activePoint={activePoint}
 				handlePointOnClick={handlePointOnClick}
+				handleGridRowOnClick={handleGridRowOnClick}
 				handleSidebarOnClick={handleSidebarOnClick}
 				isSidebarOpen={isSidebarOpen}
 				isLoaded={isLoaded}
@@ -163,6 +178,7 @@ const MapContainer = ({
 				isUserAuthenticatedForCurrentMap={
 					isUserAuthenticatedForCurrentMap
 				}
+				isMapView={isMapView}
 			/>
 		</div>
 	);
