@@ -1,17 +1,19 @@
 import React from 'react';
 import { PointType } from '../MapContainer/MapContainer';
 import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridRowParams } from '@mui/x-data-grid';
 import { useAppSelector } from '../../app/hooks';
 import { columns } from './columns';
 
 type PointsDataGridPropsType = {
 	mapContainerStyle: any;
 	points: PointType[];
+	handleGridRowOnClick: (e: GridRowParams<any>) => void;
 };
 const PointsDataGrid = ({
 	mapContainerStyle,
 	points,
+	handleGridRowOnClick,
 }: PointsDataGridPropsType) => {
 	const categories: any[] = useAppSelector(
 		(state) => state.categories.categoriesData
@@ -34,16 +36,17 @@ const PointsDataGrid = ({
 					rows={points ? pointsWithCategoryName : []}
 					columns={columns}
 					initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
+						pagination: {
+							paginationModel: {
+								pageSize: 10,
 							},
 						},
 					}}
 					pageSizeOptions={[10]}
-					disableRowSelectionOnClick
-          disableColumnFilter
-          disableColumnSelector
+					// disableRowSelectionOnClick
+					disableColumnFilter
+					disableColumnSelector
+					onRowClick={(e) => handleGridRowOnClick(e)}
 				/>
 			</Box>
 		</div>

@@ -45,7 +45,7 @@ const Admin = () => {
 						lineHeight: 'normal',
 					}}
 				>
-					{user ? '  Sign out' : '  Sign in'}
+					{user ? 'Sign out' : 'Sign in'}
 				</Typography>
 			</Button>
 			<Typography

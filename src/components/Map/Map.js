@@ -44,6 +44,7 @@ const Map = ({
 	isSidebarOpen,
 	handlePointOnClick,
 	handleSidebarOnClick,
+  handleGridRowOnClick,
 	isLoaded,
 	mapId,
 	checkPointIsInCircle,
@@ -237,6 +238,7 @@ const Map = ({
 								: containerStyleSidebarClosed
 						}
 						points={points}
+            handleGridRowOnClick={handleGridRowOnClick}
 					/>
 				)
 			) : (
