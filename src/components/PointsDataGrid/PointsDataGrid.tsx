@@ -43,7 +43,6 @@ const PointsDataGrid = ({
 						},
 					}}
 					pageSizeOptions={[10]}
-					// disableRowSelectionOnClick
 					disableColumnFilter
 					disableColumnSelector
 					onRowClick={(e) => handleGridRowOnClick(e)}
