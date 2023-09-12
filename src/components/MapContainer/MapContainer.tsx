@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 
 import { ChangeEvent, useEffect, useState } from 'react';
 
@@ -12,25 +12,13 @@ import { fetchCategories } from '../../features/category/categorySlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import { MapType, PointType } from '../../App';
 
 type MapContainerPropsType = {
 	isLoaded: boolean;
 	checkPointIsInCircle: boolean;
 	checkUserIsAuthenticatedForMap: boolean;
-};
-
-export type PointType = {
-	id: string;
-	name: string;
-	lat: string;
-	lng: string;
-	type: string;
-	yearBuilt: string;
-	url: string;
-	description: string;
-	image: any;
-	imageName: string;
-	categoryId: string;
+	currentMap: MapType;
 };
 
 const MapContainer = ({
@@ -47,7 +35,9 @@ const MapContainer = ({
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 	const [isMapView, setIsMapView] = useState(true);
 
-	const points = useAppSelector((state) => state.points.pointsData);
+	const points = useAppSelector<PointType[]>(
+		(state) => state.points.pointsData
+	);
 	const categoryStatus = useAppSelector((state) => state.categories.status);
 
 	const dispatch = useAppDispatch();

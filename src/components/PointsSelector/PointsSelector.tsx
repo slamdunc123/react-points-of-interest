@@ -1,10 +1,9 @@
-import React from 'react';
+import { PointType } from '../../types';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PointType } from '../MapContainer/MapContainer';
 
 type PointsSelectorPropsType = {
 	points: PointType[];

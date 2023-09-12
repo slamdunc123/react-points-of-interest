@@ -1,8 +1,9 @@
-import React from 'react';
-import { PointType } from '../MapContainer/MapContainer';
+import { useAppSelector } from '../../app/hooks';
+
+import { PointType } from '../../types';
+
 import Box from '@mui/material/Box';
 import { DataGrid, GridRowParams } from '@mui/x-data-grid';
-import { useAppSelector } from '../../app/hooks';
 import { columns } from './columns';
 
 type PointsDataGridPropsType = {

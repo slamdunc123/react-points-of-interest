@@ -1,20 +1,25 @@
 // @ts-nocheck
 
 import { useEffect, useState } from 'react';
-import MapContainer from './components/MapContainer/MapContainer';
 import { Route, Routes, useMatch, Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+import { MapType, PointType } from './types';
+import { Authenticator } from '@aws-amplify/ui-react';
+
+import { fetchPoints } from './features/point/pointSlice';
+import { fetchMaps } from './features/map/mapSlice';
+
+import MapContainer from './components/MapContainer/MapContainer';
 import Home from './components/Home/Home';
 import Point from './components/Point/Point';
 import AddPoint from './components/AddPoint/AddPoint';
 import EditPoint from './components/EditPoint/EditPoint';
-import { fetchPoints } from './features/point/pointSlice';
-import { fetchMaps } from './features/map/mapSlice';
-import './App.css';
-import { Authenticator } from '@aws-amplify/ui-react';
 import { RequireAuth } from './components/RequireAuth/RequireAuth';
 import { Login } from './components/Login/Login';
-import { useJsApiLoader } from '@react-google-maps/api';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+
+import './App.css';
 
 const libraries = ['geometry', 'drawing'];
 const MAP_API = process.env.REACT_APP_MAP_API;
@@ -22,9 +27,9 @@ const MAP_API = process.env.REACT_APP_MAP_API;
 function App() {
 	const [isUserAuthenticated, setIsUserAuthenticated] = useState();
 	const dispatch = useAppDispatch();
-	const points = useAppSelector((state) => state.points.pointsData);
+	const points = useAppSelector<PointType[]>((state) => state.points.pointsData);
 	const pointStatus = useAppSelector((state) => state.points.status);
-	const maps = useAppSelector((state) => state.maps.mapsData);
+	const maps = useAppSelector<MapType[]>((state) => state.maps.mapsData);
 	const mapStatus = useAppSelector((state) => state.maps.status);
 
 	const [mapId, setMapId] = useState('');

@@ -5,7 +5,7 @@ import Admin from '../Admin/Admin';
 import PointsFilters from '../PointsFilter/PointsFilter';
 import PointsSelector from '../PointsSelector/PointsSelector';
 
-import { PointType } from '../MapContainer/MapContainer';
+import { PointType } from '../../types';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import Box from '@mui/material/Box';

@@ -3,7 +3,6 @@
 import React, {
 	useState,
 	useEffect,
-	FormEvent,
 	ChangeEventHandler,
 } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -22,16 +21,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { PointType } from '../MapContainer/MapContainer';
 import Image from 'mui-image';
+import { PointType } from '../../types';
 
 type EditPointPropsType = {
 	editPoint: PointType;
-	handleEditPoint: (
-		e: FormEvent<HTMLFormElement>,
-		formData: PointType
-	) => void;
 	mapId: string;
+  checkPointIsInCircle: () => void;
 };
 
 const EditPoint = ({
