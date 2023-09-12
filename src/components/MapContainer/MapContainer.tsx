@@ -11,10 +11,10 @@ import { ALL_POINTS } from '../../constants/PointTypes';
 import { fetchCategories } from '../../features/category/categorySlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
 
 type MapContainerPropsType = {
 	isLoaded: boolean;
-	mapId: string;
 };
 
 export type PointType = {
@@ -33,9 +33,8 @@ export type PointType = {
 
 const MapContainer = ({
 	isLoaded,
-	mapId,
-	maps,
 	checkUserIsAuthenticatedForMap,
+  currentMap
 }: MapContainerPropsType) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -44,12 +43,12 @@ const MapContainer = ({
 	const [isFilteringActive, setIsFilteringActive] = useState(false);
 	const [filteredPointsByCategory, setFilteredPointsByCategory] = useState(); // these can change on changing filters
 	const [isMapView, setIsMapView] = useState(true);
-	const [currentMap, setCurrentMap] = useState();
 
 	const points = useAppSelector((state) => state.points.pointsData);
 	const categoryStatus = useAppSelector((state) => state.categories.status);
 
 	const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
 	const { user } = useAuthenticator((context) => [context.user]);
 
@@ -130,10 +129,9 @@ const MapContainer = ({
 		checkUserIsAuthenticatedForMap(isUserAuthenticatedForCurrentMap);
 	}, [checkUserIsAuthenticatedForMap, isUserAuthenticatedForCurrentMap]);
 
-	useEffect(() => {
-		const mapFound = maps.find((map) => map.id === mapId);
-		if (mapFound) setCurrentMap(mapFound);
-	}, [maps, mapId]);
+  useEffect(() => {
+   if(!currentMap) navigate('/')
+  }, [currentMap, navigate])
 
 	useEffect(() => {
 		if (categoryStatus === 'idle') {
@@ -142,9 +140,9 @@ const MapContainer = ({
 	}, [categoryStatus, dispatch]);
 
 	useEffect(() => {
-		const pointsByMapId = points.filter((point) => point.mapId === mapId);
+		const pointsByMapId = points.filter((point) => point.mapId === currentMap.id);
 		setFilteredPointsByMapId(pointsByMapId);
-	}, [points, mapId]);
+	}, [points, currentMap]);
 
 	useEffect(() => {
 		isFilteringActive && setIsSidebarOpen(true);
@@ -173,12 +171,12 @@ const MapContainer = ({
 				handleSidebarOnClick={handleSidebarOnClick}
 				isSidebarOpen={isSidebarOpen}
 				isLoaded={isLoaded}
-				mapId={mapId}
 				checkPointIsInCircle={checkPointIsInCircle}
 				isUserAuthenticatedForCurrentMap={
 					isUserAuthenticatedForCurrentMap
 				}
 				isMapView={isMapView}
+        currentMap={currentMap}
 			/>
 		</div>
 	);

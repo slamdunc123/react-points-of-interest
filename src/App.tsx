@@ -106,12 +106,11 @@ function App() {
 					element={
 						<MapContainer
 							isLoaded={isLoaded}
-							mapId={mapId}
 							checkPointIsInCircle={checkPointIsInCircle}
-							maps={maps}
 							checkUserIsAuthenticatedForMap={
 								checkUserIsAuthenticatedForMap
 							}
+              currentMap={currentMap}
 						/>
 					}
 				/>
