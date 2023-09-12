@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 
 type MapContainerPropsType = {
 	isLoaded: boolean;
+	checkPointIsInCircle: boolean;
+	checkUserIsAuthenticatedForMap: boolean;
 };
 
 export type PointType = {
@@ -33,8 +35,9 @@ export type PointType = {
 
 const MapContainer = ({
 	isLoaded,
+	checkPointIsInCircle,
 	checkUserIsAuthenticatedForMap,
-  currentMap
+	currentMap,
 }: MapContainerPropsType) => {
 	const [activePoint, setActivePoint] = useState(''); // initalise with an empty string to avoid object and uncontrolled component warnings
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -48,7 +51,7 @@ const MapContainer = ({
 	const categoryStatus = useAppSelector((state) => state.categories.status);
 
 	const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const { user } = useAuthenticator((context) => [context.user]);
 
@@ -76,7 +79,7 @@ const MapContainer = ({
 	const handleGridRowOnClick = (e) => {
 		const point = points.find((item) => item.id === e.id);
 		setActivePoint(point);
-    setIsMapView(true);
+		setIsMapView(true);
 	};
 
 	const handleFilterOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,24 +94,6 @@ const MapContainer = ({
 
 	const handleViewOnClick = () => {
 		setIsMapView((preIsMapView) => !preIsMapView);
-	};
-
-	const checkPointIsInCircle = (lat, lng) => {
-		const latLngCenter = new window.google.maps.LatLng(
-			currentMap.center.lat,
-			currentMap.center.lng
-		);
-		const latLngMarker = new window.google.maps.LatLng(
-			Number(lat),
-			Number(lng)
-		);
-		const computeDistance =
-			window.google.maps.geometry.spherical.computeDistanceBetween(
-				latLngCenter,
-				latLngMarker
-			);
-
-		if (currentMap.circleOptions.radius > computeDistance) return true;
 	};
 
 	const filterPoints = (value) => {
@@ -129,9 +114,9 @@ const MapContainer = ({
 		checkUserIsAuthenticatedForMap(isUserAuthenticatedForCurrentMap);
 	}, [checkUserIsAuthenticatedForMap, isUserAuthenticatedForCurrentMap]);
 
-  useEffect(() => {
-   if(!currentMap) navigate('/')
-  }, [currentMap, navigate])
+	useEffect(() => {
+		if (!currentMap) navigate('/');
+	}, [currentMap, navigate]);
 
 	useEffect(() => {
 		if (categoryStatus === 'idle') {
@@ -140,7 +125,9 @@ const MapContainer = ({
 	}, [categoryStatus, dispatch]);
 
 	useEffect(() => {
-		const pointsByMapId = points.filter((point) => point.mapId === currentMap.id);
+		const pointsByMapId = points.filter(
+			(point) => point.mapId === currentMap.id
+		);
 		setFilteredPointsByMapId(pointsByMapId);
 	}, [points, currentMap]);
 
@@ -176,7 +163,7 @@ const MapContainer = ({
 					isUserAuthenticatedForCurrentMap
 				}
 				isMapView={isMapView}
-        currentMap={currentMap}
+				currentMap={currentMap}
 			/>
 		</div>
 	);
