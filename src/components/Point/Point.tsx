@@ -1,12 +1,13 @@
-//@ts-nocheck
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
+import PointHistory from '../PointHistory/PointHistory';
+
 import { deletePoint } from '../../features/point/pointSlice';
 
-import { PointType } from '../MapContainer/MapContainer';
+import { PointType, CategoryType } from '../../types';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -19,17 +20,22 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 import { Image } from 'mui-image';
+
 type PointPropsType = {
 	point: PointType;
 	mapId: string;
-  isUserAuthenticated: boolean;
+	isUserAuthenticated: boolean;
 };
 
 const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
-	const [category, setCategory] = useState('');
+	const [category, setCategory] = useState<CategoryType>();
 
-	const categories = useAppSelector(
+	const categories = useAppSelector<CategoryType[]>(
 		(state) => state.categories.categoriesData
+	);
+	console.log(
+		'slamdunc ~ file: Point.tsx:35 ~ Point ~ categories:',
+		categories
 	);
 
 	const dispatch = useAppDispatch();
@@ -45,7 +51,8 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 
 	const handleDeletePoint = async () => {
 		try {
-			dispatch(deletePoint(point));
+			//@ts-ignore
+			dispatch(deletePoint(point)); // TODO: figure out how typing works here
 			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
@@ -72,7 +79,6 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 			>
 				Map
 			</Button>
-
 			<>
 				<Card sx={{ marginTop: 2 }} variant='outlined'>
 					{point ? (
@@ -111,7 +117,7 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 								variant='body2'
 								color='text.secondary'
 							>
-								{`Category: ${category.name}`}
+								{`Category: ${category?.name}`}
 							</Typography>
 							<Typography variant='body2' color='text.secondary'>
 								{`Built: ${point.yearBuilt}`}
@@ -122,12 +128,14 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 									target='_blank'
 									size='small'
 									color='primary'
+                  sx={{padding: 0}}
 								>
 									<LinkIcon />
 								</IconButton>
 							)}
+							<PointHistory />
 							{isUserAuthenticated && (
-								<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+								<ButtonGroup size='small' sx={{ marginTop: 2, alignSelf: 'flex-end' }}>
 									<Box mr={2}>
 										<Button
 											variant='contained'

@@ -79,7 +79,8 @@ export const fetchPoints = createAsyncThunk('points/fetchPoints', async () => {
 
 export const deletePoint = createAsyncThunk(
 	'points/deletePoint',
-	async ({ id, imageName }) => {
+	async (point) => {
+		const { id, imageName } = point;
 		try {
 			await Storage.remove(imageName);
 			await API.graphql({

@@ -28,6 +28,13 @@ type MapCircleOptions = {
 	zIndex: number;
 }
 
+export type CategoryType = {
+  id: string;
+  name: string;
+  description: string;
+  points: PointType[];
+}
+
 export type PointType = {
 	id: string;
 	name: string;
@@ -41,3 +48,10 @@ export type PointType = {
 	imageName: string;
 	categoryId: string;
 };
+
+export type HistoryType = {
+  id: string;
+  date: string;
+  name: string;
+  description: string;
+}
