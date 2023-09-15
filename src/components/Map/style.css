@@ -5,3 +5,7 @@ button[title="Stop drawing"] {
 button[title="Add a marker"] {
   display: none !important;
 }
+
+button[title="Drag Pegman onto the map to open Street View"] {
+  display: none !important;
+}
