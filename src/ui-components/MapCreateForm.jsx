@@ -26,23 +26,27 @@ export default function MapCreateForm(props) {
     name: "",
     description: "",
     zoom: "",
+    adminGroup: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
   const [zoom, setZoom] = React.useState(initialValues.zoom);
+  const [adminGroup, setAdminGroup] = React.useState(initialValues.adminGroup);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setDescription(initialValues.description);
     setZoom(initialValues.zoom);
+    setAdminGroup(initialValues.adminGroup);
     setErrors({});
   };
   const validations = {
     name: [{ type: "Required" }],
     description: [],
     zoom: [{ type: "Required" }],
+    adminGroup: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -73,6 +77,7 @@ export default function MapCreateForm(props) {
           name,
           description,
           zoom,
+          adminGroup,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -130,6 +135,7 @@ export default function MapCreateForm(props) {
               name: value,
               description,
               zoom,
+              adminGroup,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -156,6 +162,7 @@ export default function MapCreateForm(props) {
               name,
               description: value,
               zoom,
+              adminGroup,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -186,6 +193,7 @@ export default function MapCreateForm(props) {
               name,
               description,
               zoom: value,
+              adminGroup,
             };
             const result = onChange(modelFields);
             value = result?.zoom ?? value;
@@ -199,6 +207,33 @@ export default function MapCreateForm(props) {
         errorMessage={errors.zoom?.errorMessage}
         hasError={errors.zoom?.hasError}
         {...getOverrideProps(overrides, "zoom")}
+      ></TextField>
+      <TextField
+        label="Admin group"
+        isRequired={true}
+        isReadOnly={false}
+        value={adminGroup}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              zoom,
+              adminGroup: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.adminGroup ?? value;
+          }
+          if (errors.adminGroup?.hasError) {
+            runValidationTasks("adminGroup", value);
+          }
+          setAdminGroup(value);
+        }}
+        onBlur={() => runValidationTasks("adminGroup", adminGroup)}
+        errorMessage={errors.adminGroup?.errorMessage}
+        hasError={errors.adminGroup?.hasError}
+        {...getOverrideProps(overrides, "adminGroup")}
       ></TextField>
       <Flex
         justifyContent="space-between"

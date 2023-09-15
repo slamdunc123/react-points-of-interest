@@ -15,6 +15,18 @@ export const getPoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -39,6 +51,9 @@ export const listPoints = /* GraphQL */ `
         imageName
         mapId
         categoryId
+        history {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -184,6 +199,39 @@ export const listCategories = /* GraphQL */ `
     }
   }
 `;
+export const getHistory = /* GraphQL */ `
+  query GetHistory($id: ID!) {
+    getHistory(id: $id) {
+      id
+      date
+      name
+      description
+      pointId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listHistories = /* GraphQL */ `
+  query ListHistories(
+    $filter: ModelHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listHistories(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        date
+        name
+        description
+        pointId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const pointsByMapId = /* GraphQL */ `
   query PointsByMapId(
     $mapId: ID!
@@ -211,6 +259,9 @@ export const pointsByMapId = /* GraphQL */ `
         imageName
         mapId
         categoryId
+        history {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -245,6 +296,37 @@ export const pointsByCategoryId = /* GraphQL */ `
         imageName
         mapId
         categoryId
+        history {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const historiesByPointId = /* GraphQL */ `
+  query HistoriesByPointId(
+    $pointId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    historiesByPointId(
+      pointId: $pointId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        date
+        name
+        description
+        pointId
         createdAt
         updatedAt
       }

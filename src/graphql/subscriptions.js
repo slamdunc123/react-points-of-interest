@@ -15,6 +15,18 @@ export const onCreatePoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -34,6 +46,18 @@ export const onUpdatePoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -53,6 +77,18 @@ export const onDeletePoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -284,6 +320,45 @@ export const onDeleteCategory = /* GraphQL */ `
         }
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateHistory = /* GraphQL */ `
+  subscription OnCreateHistory($filter: ModelSubscriptionHistoryFilterInput) {
+    onCreateHistory(filter: $filter) {
+      id
+      date
+      name
+      description
+      pointId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateHistory = /* GraphQL */ `
+  subscription OnUpdateHistory($filter: ModelSubscriptionHistoryFilterInput) {
+    onUpdateHistory(filter: $filter) {
+      id
+      date
+      name
+      description
+      pointId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteHistory = /* GraphQL */ `
+  subscription OnDeleteHistory($filter: ModelSubscriptionHistoryFilterInput) {
+    onDeleteHistory(filter: $filter) {
+      id
+      date
+      name
+      description
+      pointId
       createdAt
       updatedAt
     }
