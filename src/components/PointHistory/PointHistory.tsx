@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { HistoryType } from '../../types';
+
 import HistoryStepper from './HistoryStepper';
 
 import Checkbox from '@mui/material/Checkbox';
@@ -7,7 +9,11 @@ import HistoryIcon from '@mui/icons-material/History';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import Tooltip from '@mui/material/Tooltip';
 
-const PointHistory = () => {
+type PointHistoryPropsType = {
+	history: HistoryType[];
+};
+
+const PointHistory = ({ history }: PointHistoryPropsType) => {
 	const [isHistoryDisplayed, setIsHistoryDisplayed] = useState(false);
 
 	const handleCheckboxOnChange = () => {
@@ -22,10 +28,10 @@ const PointHistory = () => {
 					icon={<HistoryOutlinedIcon />}
 					checkedIcon={<HistoryIcon />}
 					onChange={handleCheckboxOnChange}
-          sx={{padding: 0}}
+					sx={{ padding: 0 }}
 				/>
 			</Tooltip>
-			{isHistoryDisplayed ? <HistoryStepper /> : null}
+			{isHistoryDisplayed ? <HistoryStepper history={history}/> : null}
 		</div>
 	);
 };

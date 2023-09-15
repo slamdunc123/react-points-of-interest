@@ -33,10 +33,6 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 	const categories = useAppSelector<CategoryType[]>(
 		(state) => state.categories.categoriesData
 	);
-	console.log(
-		'slamdunc ~ file: Point.tsx:35 ~ Point ~ categories:',
-		categories
-	);
 
 	const dispatch = useAppDispatch();
 
@@ -128,14 +124,19 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 									target='_blank'
 									size='small'
 									color='primary'
-                  sx={{padding: 0}}
+									sx={{ padding: 0 }}
 								>
 									<LinkIcon />
 								</IconButton>
 							)}
-							<PointHistory />
+							{point.history.items.length ? (
+								<PointHistory history={point.history.items} />
+							) : null}
 							{isUserAuthenticated && (
-								<ButtonGroup size='small' sx={{ marginTop: 2, alignSelf: 'flex-end' }}>
+								<ButtonGroup
+									size='small'
+									sx={{ marginTop: 2, alignSelf: 'flex-end' }}
+								>
 									<Box mr={2}>
 										<Button
 											variant='contained'

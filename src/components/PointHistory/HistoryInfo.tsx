@@ -2,11 +2,11 @@ import { HistoryType } from '../../types';
 
 import Typography from '@mui/material/Typography';
 
-type HistoryInfoProps = {
+type HistoryInfoPropsType = {
 	historicalInfo: HistoryType;
 };
 
-const HistoryInfo = ({ historicalInfo }: HistoryInfoProps) => {
+const HistoryInfo = ({ historicalInfo }: HistoryInfoPropsType) => {
 	return (
 		<>
 			<Typography sx={{ mt: 2, mb: 1, py: 1 }}>
