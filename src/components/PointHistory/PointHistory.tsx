@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 import HistoryIcon from '@mui/icons-material/History';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
 
 type PointHistoryPropsType = {
 	history: HistoryType[];
@@ -22,7 +23,7 @@ const PointHistory = ({ history }: PointHistoryPropsType) => {
 		);
 	};
 	return (
-		<div>
+		<Box sx={{ mt: 1 }}>
 			<Tooltip title='History'>
 				<Checkbox
 					icon={<HistoryOutlinedIcon />}
@@ -31,8 +32,8 @@ const PointHistory = ({ history }: PointHistoryPropsType) => {
 					sx={{ padding: 0 }}
 				/>
 			</Tooltip>
-			{isHistoryDisplayed ? <HistoryStepper history={history}/> : null}
-		</div>
+			{isHistoryDisplayed ? <HistoryStepper history={history} /> : null}
+		</Box>
 	);
 };
 

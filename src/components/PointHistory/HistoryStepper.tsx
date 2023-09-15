@@ -35,7 +35,7 @@ const HistoryStepper = ({ history }: HistoryStepperPropsType) => {
 	}, [sortHistoryByDate]);
 
 	return (
-		<Box sx={{ width: '100%' }}>
+		<Box sx={{ width: '100%', mt: 1 }}>
 			<Stepper nonLinear activeStep={activeStep} orientation='vertical'>
 				{historySortedByDateAsc?.map((item, index) => (
 					<Step key={item.id}>

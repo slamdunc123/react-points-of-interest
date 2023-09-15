@@ -9,13 +9,13 @@ type HistoryInfoPropsType = {
 const HistoryInfo = ({ historicalInfo }: HistoryInfoPropsType) => {
 	return (
 		<>
-			<Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+			<Typography color='text.secondary' sx={{ mt: 2, mb: 1, py: 1 }}>
 				{historicalInfo.date}
 			</Typography>
-			<Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+			<Typography color='text.secondary' sx={{ mb: 1, py: 1 }}>
 				{historicalInfo.name}
 			</Typography>
-			<Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+			<Typography color='text.secondary' sx={{ mb: 1, py: 1 }}>
 				{historicalInfo.description}
 			</Typography>
 		</>
