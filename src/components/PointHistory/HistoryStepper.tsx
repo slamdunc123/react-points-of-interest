@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { HistoryType } from '../../types';
 
@@ -15,15 +15,29 @@ type HistoryStepperPropsType = {
 
 const HistoryStepper = ({ history }: HistoryStepperPropsType) => {
 	const [activeStep, setActiveStep] = useState(0);
+	const [historySortedByDateAsc, setHistorySortedByDateAsc] =
+		useState<HistoryType[]>();
 
 	const handleStep = (step: number) => () => {
 		setActiveStep(step);
 	};
 
+	const sortHistoryByDate = useCallback(() => {
+		const historyToSort = [...history];
+		const historySorted = historyToSort.sort(
+			(a: any, b: any) => a.date - b.date
+		);
+		setHistorySortedByDateAsc(historySorted);
+	}, [history]);
+
+	useEffect(() => {
+		sortHistoryByDate();
+	}, [sortHistoryByDate]);
+
 	return (
 		<Box sx={{ width: '100%' }}>
 			<Stepper nonLinear activeStep={activeStep} orientation='vertical'>
-				{history.map((item, index) => (
+				{historySortedByDateAsc?.map((item, index) => (
 					<Step key={item.id}>
 						<StepButton color='inherit' onClick={handleStep(index)}>
 							{item.date}
@@ -31,7 +45,11 @@ const HistoryStepper = ({ history }: HistoryStepperPropsType) => {
 					</Step>
 				))}
 			</Stepper>
-			<HistoryInfo historicalInfo={history[activeStep]} />
+			{historySortedByDateAsc && (
+				<HistoryInfo
+					historicalInfo={historySortedByDateAsc[activeStep]}
+				/>
+			)}
 		</Box>
 	);
 };
