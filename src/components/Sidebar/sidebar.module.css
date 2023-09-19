@@ -1,10 +1,10 @@
 .container-open {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 300px;
-    height: 400px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 300px;
+	height: 400px;
 }
 .container-closed {
-    display: none;
+	display: none;
 }

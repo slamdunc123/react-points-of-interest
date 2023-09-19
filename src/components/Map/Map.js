@@ -25,13 +25,8 @@ import Box from '@mui/material/Box';
 import './style.css';
 import PointsDataGrid from '../PointsDataGrid/PointsDataGrid';
 
-const containerStyleSidebarOpen = {
-	width: 'calc(100vw - 300px)',
-	height: 'calc(100vh - 64px)',
-};
-
-const containerStyleSidebarClosed = {
-	width: '100vw',
+const containerStyles = {
+	width: '100%',
 	height: 'calc(100vh - 64px)',
 };
 
@@ -95,7 +90,12 @@ const Map = ({
 	};
 
 	return isLoaded ? (
-		<Box style={{ overflow: 'hidden' }}>
+		<Box
+			style={{
+				overflow: 'hidden',
+				width: isSidebarOpen ? 'calc(100vw - 300px)' : '100vw',
+			}}
+		>
 			<Snackbar
 				open={isSnackbarOpen}
 				autoHideDuration={2000}
@@ -121,11 +121,7 @@ const Map = ({
 			/>
 			{isMapView ? (
 				<GoogleMap
-					mapContainerStyle={
-						isSidebarOpen
-							? containerStyleSidebarOpen
-							: containerStyleSidebarClosed
-					}
+					mapContainerStyle={containerStyles}
 					center={currentMap.center}
 					zoom={currentMap.zoom}
 					mapTypeId='satellite'
@@ -209,11 +205,7 @@ const Map = ({
 				</GoogleMap>
 			) : (
 				<PointsDataGrid
-					mapContainerStyle={
-						isSidebarOpen
-							? containerStyleSidebarOpen
-							: containerStyleSidebarClosed
-					}
+					containerStyle={containerStyles}
 					points={points}
 					handleGridRowOnClick={handleGridRowOnClick}
 				/>
