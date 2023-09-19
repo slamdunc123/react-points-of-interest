@@ -9,7 +9,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Container from '@mui/material/Container';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -24,9 +23,9 @@ type AddPointPropsType = {
 		formData: Omit<PointType, 'id'>
 	) => void;
 	mapId: string;
-}
+};
 
-const AddPoint = ({  mapId }: AddPointPropsType) => {
+const AddPoint = ({ mapId }: AddPointPropsType) => {
 	const initialFormData = {
 		lat: '',
 		lng: '',
@@ -44,12 +43,13 @@ const AddPoint = ({  mapId }: AddPointPropsType) => {
 	const [category, setCategory] = useState('');
 
 	const drawnMarker = useAppSelector((state) => state.points.drawnMarker);
-	const categories = useAppSelector((state) => state.categories.categoriesData);
-	
+	const categories = useAppSelector(
+		(state) => state.categories.categoriesData
+	);
+
 	const dispatch = useAppDispatch();
 
 	const navigate = useNavigate();
-
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
@@ -100,13 +100,21 @@ const AddPoint = ({  mapId }: AddPointPropsType) => {
 	};
 
 	return (
-		<Container fixed>
+		<Box
+			sx={{
+				maxWidth: 768,
+				display: 'flex',
+				flexDirection: 'column',
+				margin: 'auto',
+			}}
+		>
 			<Button
 				variant='outlined'
 				type='button'
 				size='small'
 				component={Link}
 				to={`/maps/${mapId}`}
+				sx={{ mt: 2, alignSelf: 'flex-start' }}
 			>
 				Map
 			</Button>
@@ -189,7 +197,7 @@ const AddPoint = ({  mapId }: AddPointPropsType) => {
 									label='Category'
 									onChange={handleCategoryOnChange}
 									name='type'
-                  required
+									required
 								>
 									{categories.length &&
 										categories.map((item: any) => (
@@ -234,8 +242,13 @@ const AddPoint = ({  mapId }: AddPointPropsType) => {
 								onChange={handleOnChangeImage}
 								fullWidth
 							/>
-							{image && <Image src={image} duration={0} />}
-							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+							{image && (
+								<Image src={image} duration={0} width={200} />
+							)}
+							<ButtonGroup
+								size='small'
+								sx={{ marginTop: 2, alignSelf: 'flex-end' }}
+							>
 								<Box mr={2}>
 									<Button
 										variant='contained'
@@ -260,7 +273,7 @@ const AddPoint = ({  mapId }: AddPointPropsType) => {
 					</form>
 				</CardContent>
 			</Card>
-		</Container>
+		</Box>
 	);
 };
 export default AddPoint;

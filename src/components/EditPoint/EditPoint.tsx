@@ -1,10 +1,6 @@
 //@ts-nocheck
 
-import React, {
-	useState,
-	useEffect,
-	ChangeEventHandler,
-} from 'react';
+import React, { useState, useEffect, ChangeEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import { Storage } from 'aws-amplify';
@@ -16,7 +12,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Container from '@mui/material/Container';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -27,7 +22,7 @@ import { PointType } from '../../types';
 type EditPointPropsType = {
 	editPoint: PointType;
 	mapId: string;
-  checkPointIsInCircle: () => void;
+	checkPointIsInCircle: () => void;
 };
 
 const EditPoint = ({
@@ -140,7 +135,14 @@ const EditPoint = ({
 	};
 
 	return (
-		<Container fixed>
+		<Box
+			sx={{
+				maxWidth: 768,
+				display: 'flex',
+				flexDirection: 'column',
+				margin: 'auto',
+			}}
+		>
 			<AlertDialog
 				description={formErrorMessage}
 				alertDialogOpen={alertDialogOpen}
@@ -152,6 +154,7 @@ const EditPoint = ({
 				size='small'
 				component={Link}
 				to={`/maps/${mapId}`}
+				sx={{ mt: 2, alignSelf: 'flex-start' }}
 			>
 				Map
 			</Button>
@@ -281,8 +284,13 @@ const EditPoint = ({
 								fullWidth
 								onChange={handleOnChangeImage}
 							/>
-							{image && <Image src={image} duration={0} />}
-							<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+							{image && (
+								<Image src={image} duration={0} width={200} />
+							)}
+							<ButtonGroup
+								size='small'
+								sx={{ marginTop: 2, alignSelf: 'flex-end' }}
+							>
 								<Box mr={2}>
 									<Button
 										variant='contained'
@@ -307,7 +315,7 @@ const EditPoint = ({
 					</form>
 				</CardContent>
 			</Card>
-		</Container>
+		</Box>
 	);
 };
 export default EditPoint;

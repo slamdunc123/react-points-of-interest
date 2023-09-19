@@ -1,12 +1,13 @@
-//@ts-nocheck
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
+
+import PointHistory from '../PointHistory/PointHistory';
 
 import { deletePoint } from '../../features/point/pointSlice';
 
-import { PointType } from '../MapContainer/MapContainer';
+import { PointType } from '../../types';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -15,37 +16,25 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CircularProgress from '@mui/material/CircularProgress';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
-import { Image } from 'mui-image';
+import Tooltip from '@mui/material/Tooltip';
+import Image from 'mui-image';
+
 type PointPropsType = {
 	point: PointType;
 	mapId: string;
-  isUserAuthenticated: boolean;
+	isUserAuthenticated: boolean;
 };
 
 const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
-	const [category, setCategory] = useState('');
-
-	const categories = useAppSelector(
-		(state) => state.categories.categoriesData
-	);
-
 	const dispatch = useAppDispatch();
-
 	const navigate = useNavigate();
-
-	const getCategory = useCallback(() => {
-		const category = categories.find(
-			(item) => item.id === point.categoryId
-		);
-		return category;
-	}, [categories, point]);
 
 	const handleDeletePoint = async () => {
 		try {
-			dispatch(deletePoint(point));
+			//@ts-ignore
+			dispatch(deletePoint(point)); // TODO: figure out how typing works here
 			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
@@ -53,28 +42,30 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 	};
 
 	useEffect(() => {
-		const cat = getCategory();
-		setCategory(cat);
-	}, [getCategory]);
-
-	useEffect(() => {
 		if (!point) navigate('/');
 	}, [point, navigate]);
 
 	return (
-		<Container fixed>
+		<Box
+			sx={{
+				maxWidth: 768,
+				display: 'flex',
+				flexDirection: 'column',
+        margin: 'auto'
+			}}
+		>
 			<Button
 				variant='outlined'
 				type='button'
 				size='small'
 				component={Link}
 				to={`/maps/${mapId}`}
+				sx={{ mt: 2, alignSelf: 'flex-start' }}
 			>
 				Map
 			</Button>
-
 			<>
-				<Card sx={{ marginTop: 2 }} variant='outlined'>
+				<Card sx={{ mt: 2 }} variant='outlined'>
 					{point ? (
 						<CardContent
 							sx={{
@@ -95,39 +86,41 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 								<Image
 									src={point.image}
 									alt={`visual aid for ${point.name}`}
-									style={{ width: '100%' }}
 									duration={0}
 								/>
 							)}
 							<Typography
 								gutterBottom
 								variant='body1'
-								component='div'
+								color='text.secondary'
+								sx={{ mt: 1 }}
 							>
 								{point.description}
 							</Typography>
-							<Typography
-								gutterBottom
-								variant='body2'
-								color='text.secondary'
-							>
-								{`Category: ${category.name}`}
-							</Typography>
-							<Typography variant='body2' color='text.secondary'>
+							<Typography variant='body1' color='text.secondary'>
 								{`Built: ${point.yearBuilt}`}
 							</Typography>
 							{point.url && (
-								<IconButton
-									href={`${point.url}`}
-									target='_blank'
-									size='small'
-									color='primary'
-								>
-									<LinkIcon />
-								</IconButton>
+								<Tooltip title='Website'>
+									<IconButton
+										href={`${point.url}`}
+										target='_blank'
+										size='small'
+										color='primary'
+										sx={{ mt: 1, p: 0 }}
+									>
+										<LinkIcon />
+									</IconButton>
+								</Tooltip>
 							)}
+							{point.history.items.length ? (
+								<PointHistory history={point.history.items} />
+							) : null}
 							{isUserAuthenticated && (
-								<ButtonGroup size='small' sx={{ marginTop: 2 }}>
+                <ButtonGroup
+                size='small'
+                sx={{ marginTop: 2, alignSelf: 'flex-end' }}
+								>
 									<Box mr={2}>
 										<Button
 											variant='contained'
@@ -156,7 +149,7 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 					)}
 				</Card>
 			</>
-		</Container>
+		</Box>
 	);
 };
 

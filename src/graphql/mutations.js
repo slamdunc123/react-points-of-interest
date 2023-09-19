@@ -18,6 +18,18 @@ export const createPoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -40,6 +52,18 @@ export const updatePoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -62,6 +86,18 @@ export const deletePoint = /* GraphQL */ `
       imageName
       mapId
       categoryId
+      history {
+        items {
+          id
+          date
+          name
+          description
+          pointId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -311,6 +347,54 @@ export const deleteCategory = /* GraphQL */ `
         }
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createHistory = /* GraphQL */ `
+  mutation CreateHistory(
+    $input: CreateHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    createHistory(input: $input, condition: $condition) {
+      id
+      date
+      name
+      description
+      pointId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateHistory = /* GraphQL */ `
+  mutation UpdateHistory(
+    $input: UpdateHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    updateHistory(input: $input, condition: $condition) {
+      id
+      date
+      name
+      description
+      pointId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteHistory = /* GraphQL */ `
+  mutation DeleteHistory(
+    $input: DeleteHistoryInput!
+    $condition: ModelHistoryConditionInput
+  ) {
+    deleteHistory(input: $input, condition: $condition) {
+      id
+      date
+      name
+      description
+      pointId
       createdAt
       updatedAt
     }

@@ -15,6 +15,7 @@ type Point @model @auth(rules: [{ allow: public }]) {
 	imageName: String
 	mapId: ID! @index(name: "byMap")
 	categoryId: ID! @index(name: "byCategory")
+  history: [History] @hasMany(indexName: "byPoint", fields: ["id"])
 }
 
 type Map @model {
@@ -52,4 +53,12 @@ type Category @model {
 	name: String!
 	description: String
 	points: [Point] @hasMany(indexName: "byCategory", fields: ["id"])
+}
+
+type History @model {
+  id: ID!
+  date: String!
+  name: String!
+  description: String
+  pointId: ID! @index(name: "byPoint")
 }

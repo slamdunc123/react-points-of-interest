@@ -17,11 +17,13 @@ export declare type MapUpdateFormInputValues = {
     name?: string;
     description?: string;
     zoom?: number;
+    adminGroup?: string;
 };
 export declare type MapUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
     zoom?: ValidationFunction<number>;
+    adminGroup?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MapUpdateFormOverridesProps = {
@@ -29,6 +31,7 @@ export declare type MapUpdateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
     zoom?: PrimitiveOverrideProps<TextFieldProps>;
+    adminGroup?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MapUpdateFormProps = React.PropsWithChildren<{
     overrides?: MapUpdateFormOverridesProps | undefined | null;
