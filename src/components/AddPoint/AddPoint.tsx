@@ -118,8 +118,6 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		data.image = image.name;
 		data.categoryId = category.id;
 		data.mapId = mapId;
-		console.log({ data });
-		console.log({ historyFormData });
 		try {
 			if (!!dataForStorage.image)
 				await Storage.put(dataForStorage.image, image);
@@ -286,45 +284,41 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 							<button onClick={handleAddHistory}>
 								Add History
 							</button>
-							{historyFormData.map((item, index) => {
-								return (
-									<>
-										<div key={index}>
-											<TextField
-												id={index}
-												label='Date'
-												variant='outlined'
-												type='text'
-												name='date'
-												value={item.date}
-												onChange={handleHistoryOnChange}
-												size='small'
-												margin='normal'
-												fullWidth
-											/>
-											<TextField
-												id={index}
-												label='Name'
-												variant='outlined'
-												type='text'
-												name='name'
-												value={item.name}
-												onChange={handleHistoryOnChange}
-												size='small'
-												margin='normal'
-												fullWidth
-											/>
-										</div>
-										<button
-											onClick={(index) =>
-												handleRemoveHistory(index)
-											}
-										>
-											Remove History
-										</button>
-									</>
-								);
-							})}
+							{historyFormData.map((item, index) => (
+								<div key={index}>
+									<TextField
+										id={index.toString()}
+										label='Date'
+										variant='outlined'
+										type='text'
+										name='date'
+										value={item.date}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+									/>
+									<TextField
+										id={index.toString()}
+										label='Name'
+										variant='outlined'
+										type='text'
+										name='name'
+										value={item.name}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+									/>
+									<button
+										onClick={(index) =>
+											handleRemoveHistory(index)
+										}
+									>
+										Remove History
+									</button>
+								</div>
+							))}
 							<TextField
 								name='image'
 								type='file'
