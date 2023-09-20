@@ -2,7 +2,7 @@
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { Storage } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -16,6 +16,7 @@ import Image from 'mui-image';
 import { addPoint } from '../../features/point/pointSlice';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointType } from '../MapContainer/MapContainer';
+import { createHistory } from '../../graphql/mutations';
 
 type AddPointPropsType = {
 	handleAddPoint: (
@@ -38,7 +39,17 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		imageName: '',
 	};
 
+	const initialHistoryFormData = [
+		{
+			date: '',
+			name: '',
+		},
+	];
+
 	const [formData, setFormData] = useState(initialFormData);
+	const [historyFormData, setHistoryFormData] = useState(
+		initialHistoryFormData
+	);
 	const [image, setImage] = useState('');
 	const [category, setCategory] = useState('');
 
@@ -54,10 +65,23 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
 		// and use it to target the key on our `state` object with the same name, using bracket syntax
-		const updatedData = { ...formData, [e.target.name]: e.target.value };
+
+		const updatedData = {
+			...formData,
+			[e.target.name]: e.target.value,
+		};
 		updatedData.lat = drawnMarker.lat;
 		updatedData.lng = drawnMarker.lng;
 		setFormData(updatedData);
+	};
+	const handleHistoryOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+		// check it out: we get the evt.target.name (which will be either "email" or "password")
+		// and use it to target the key on our `state` object with the same name, using bracket syntax
+
+		let history = [...historyFormData];
+		history[e.target.id][e.target.name] = e.target.value;
+
+		setHistoryFormData(history);
 	};
 
 	const handleCategoryOnChange = (e: SelectChangeEvent) => {
@@ -69,6 +93,16 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		if (e.target.files) {
 			setImage(URL.createObjectURL(e.target.files[0]));
 		}
+	};
+
+	const handleAddHistory = (e) => {
+		e.preventDefault();
+		setHistoryFormData([...historyFormData, { date: '', name: '' }]);
+	};
+
+	const handleRemoveHistory = (index) => {
+		historyFormData.splice(index, 1);
+		setHistoryFormData(historyFormData);
 	};
 
 	const handleAddPoint = async (e, data) => {
@@ -84,11 +118,26 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		data.image = image.name;
 		data.categoryId = category.id;
 		data.mapId = mapId;
+		console.log({ data });
+		console.log({ historyFormData });
 		try {
 			if (!!dataForStorage.image)
 				await Storage.put(dataForStorage.image, image);
+			const pointData = await dispatch(addPoint(data));
+			const pointId = pointData.payload.createPoint.id;
+			historyFormData.map(async (item) => {
+				await API.graphql({
+					query: createHistory,
+					variables: {
+						input: {
+							pointId: pointId,
+							date: item.date,
+							name: item.name,
+						},
+					},
+				});
+			});
 
-			dispatch(addPoint(data));
 			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
@@ -234,6 +283,48 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 								margin='normal'
 								fullWidth
 							/>
+							<button onClick={handleAddHistory}>
+								Add History
+							</button>
+							{historyFormData.map((item, index) => {
+								return (
+									<>
+										<div key={index}>
+											<TextField
+												id={index}
+												label='Date'
+												variant='outlined'
+												type='text'
+												name='date'
+												value={item.date}
+												onChange={handleHistoryOnChange}
+												size='small'
+												margin='normal'
+												fullWidth
+											/>
+											<TextField
+												id={index}
+												label='Name'
+												variant='outlined'
+												type='text'
+												name='name'
+												value={item.name}
+												onChange={handleHistoryOnChange}
+												size='small'
+												margin='normal'
+												fullWidth
+											/>
+										</div>
+										<button
+											onClick={(index) =>
+												handleRemoveHistory(index)
+											}
+										>
+											Remove History
+										</button>
+									</>
+								);
+							})}
 							<TextField
 								name='image'
 								type='file'
