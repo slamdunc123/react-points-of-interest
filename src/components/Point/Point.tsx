@@ -20,6 +20,8 @@ import IconButton from '@mui/material/IconButton';
 import LinkIcon from '@mui/icons-material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Image from 'mui-image';
+import { deleteHistory } from '../../graphql/mutations';
+import { API } from 'aws-amplify';
 
 type PointPropsType = {
 	point: PointType;
@@ -34,7 +36,14 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 	const handleDeletePoint = async () => {
 		try {
 			//@ts-ignore
-			dispatch(deletePoint(point)); // TODO: figure out how typing works here
+			point.history.items.map(async (item) => {
+				await API.graphql({
+					query: deleteHistory,
+					variables: { input: { id: item.id } },
+				});
+			});
+			//@ts-ignore
+			await dispatch(deletePoint(point)); // TODO: figure out how typing works here
 			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
@@ -51,7 +60,7 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 				maxWidth: 768,
 				display: 'flex',
 				flexDirection: 'column',
-        margin: 'auto'
+				margin: 'auto',
 			}}
 		>
 			<Button
@@ -117,9 +126,9 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 								<PointHistory history={point.history.items} />
 							) : null}
 							{isUserAuthenticated && (
-                <ButtonGroup
-                size='small'
-                sx={{ marginTop: 2, alignSelf: 'flex-end' }}
+								<ButtonGroup
+									size='small'
+									sx={{ marginTop: 2, alignSelf: 'flex-end' }}
 								>
 									<Box mr={2}>
 										<Button
