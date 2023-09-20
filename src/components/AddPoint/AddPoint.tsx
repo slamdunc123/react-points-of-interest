@@ -39,17 +39,8 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		imageName: '',
 	};
 
-	const initialHistoryFormData = [
-		{
-			date: '',
-			name: '',
-		},
-	];
-
 	const [formData, setFormData] = useState(initialFormData);
-	const [historyFormData, setHistoryFormData] = useState(
-		initialHistoryFormData
-	);
+	const [historyFormData, setHistoryFormData] = useState([]);
 	const [image, setImage] = useState('');
 	const [category, setCategory] = useState('');
 
@@ -100,9 +91,12 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		setHistoryFormData([...historyFormData, { date: '', name: '' }]);
 	};
 
-	const handleRemoveHistory = (index) => {
-		historyFormData.splice(index, 1);
-		setHistoryFormData(historyFormData);
+	const handleRemoveHistory = (e, index) => {
+		e.preventDefault();
+		const historyFormDataWithHistoryRemoved = historyFormData.filter(
+			(item, i) => i !== index
+		);
+		setHistoryFormData(historyFormDataWithHistoryRemoved);
 	};
 
 	const handleAddPoint = async (e, data) => {
@@ -311,8 +305,8 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 										fullWidth
 									/>
 									<button
-										onClick={(index) =>
-											handleRemoveHistory(index)
+										onClick={(e) =>
+											handleRemoveHistory(e, index)
 										}
 									>
 										Remove History
