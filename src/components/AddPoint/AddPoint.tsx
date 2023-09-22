@@ -88,7 +88,10 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 
 	const handleAddHistory = (e) => {
 		e.preventDefault();
-		setHistoryFormData([...historyFormData, { date: '', name: '' }]);
+		setHistoryFormData([
+			...historyFormData,
+			{ date: '', name: '', description: '' },
+		]);
 	};
 
 	const handleRemoveHistory = (e, index) => {
@@ -125,6 +128,7 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 							pointId: pointId,
 							date: item.date,
 							name: item.name,
+							description: item.description,
 						},
 					},
 				});
@@ -275,11 +279,23 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 								margin='normal'
 								fullWidth
 							/>
-							<button onClick={handleAddHistory}>
+							<Button onClick={handleAddHistory}>
 								Add History
-							</button>
+							</Button>
 							{historyFormData.map((item, index) => (
-								<div key={index}>
+								<Box
+									key={index}
+									sx={{
+										border: 1,
+										borderColor: '#c0c0c0',
+										boxShadow: 5,
+										width: '100%',
+										mb: 1,
+										p: 1,
+                    display: 'flex',
+                    flexDirection: 'column'
+									}}
+								>
 									<TextField
 										id={index.toString()}
 										label='Date'
@@ -291,6 +307,7 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 										size='small'
 										margin='normal'
 										fullWidth
+										required
 									/>
 									<TextField
 										id={index.toString()}
@@ -303,15 +320,30 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 										size='small'
 										margin='normal'
 										fullWidth
+										required
 									/>
-									<button
-										onClick={(e) =>
-											handleRemoveHistory(e, index)
-										}
-									>
-										Remove History
-									</button>
-								</div>
+									<TextField
+										id={index.toString()}
+										label='Description'
+										variant='outlined'
+										type='text'
+										name='description'
+										value={item.description}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+									/>
+									<Box sx={{ alignSelf: 'flex-end' }}>
+										<Button
+											onClick={(e) =>
+												handleRemoveHistory(e, index)
+											}
+										>
+											Remove History
+										</Button>
+									</Box>
+								</Box>
 							))}
 							<TextField
 								name='image'
