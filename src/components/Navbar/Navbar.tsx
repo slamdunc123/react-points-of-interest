@@ -45,9 +45,8 @@ export default function Navbar({
 						</IconButton>
 					)}
 
-					<>
-						
-						{isUserAuthenticatedAndMapView && (
+					{!isSidebarOpen && isUserAuthenticatedAndMapView && (
+						<>
 							<Tooltip title='Marker'>
 								<IconButton
 									size='large'
@@ -59,18 +58,18 @@ export default function Navbar({
 									<RoomIcon />
 								</IconButton>
 							</Tooltip>
-						)}
-            <Box
-							sx={{
-								textTransform: 'uppercase',
-                marginLeft: 'auto'
-							}}
-						>
-							<Typography variant='h6' component='div'>
-								{mapName}
-							</Typography>
-						</Box>
-					</>
+							<Box
+								sx={{
+									textTransform: 'uppercase',
+									marginLeft: 'auto',
+								}}
+							>
+								<Typography variant='h6' component='div'>
+									{mapName}
+								</Typography>
+							</Box>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 		</Box>
