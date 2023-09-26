@@ -198,6 +198,7 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 								size='small'
 								margin='normal'
 								multiline
+								rows={4}
 								fullWidth
 							/>
 							<TextField
@@ -292,8 +293,8 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 										width: '100%',
 										mb: 1,
 										p: 1,
-                    display: 'flex',
-                    flexDirection: 'column'
+										display: 'flex',
+										flexDirection: 'column',
 									}}
 								>
 									<TextField
@@ -332,6 +333,8 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 										onChange={handleHistoryOnChange}
 										size='small'
 										margin='normal'
+										multiline
+										rows={4}
 										fullWidth
 									/>
 									<Box sx={{ alignSelf: 'flex-end' }}>
