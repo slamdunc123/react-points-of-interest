@@ -80,7 +80,9 @@ const EditPoint = ({
 
 	useEffect(() => {
 		const { history } = editPoint;
-		setHistoryFormData(history.items);
+    const historyToBeSorted = [...history.items]
+    const historySorted = historyToBeSorted.sort((a, b) => a.date - b.date)
+		setHistoryFormData(historySorted);
 	}, [editPoint]);
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -116,8 +118,8 @@ const EditPoint = ({
 	const handleAddHistory = (e) => {
 		e.preventDefault();
 		setHistoryFormData([
-			...historyFormData,
 			{ date: '', name: '', description: '' },
+			...historyFormData,
 		]);
 	};
 
