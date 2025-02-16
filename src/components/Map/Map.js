@@ -9,6 +9,7 @@ import {
 	InfoWindow,
 	DrawingManager,
 	Circle,
+	Polygon,
 } from '@react-google-maps/api';
 
 import Navbar from '../Navbar/Navbar';
@@ -87,6 +88,45 @@ const Map = ({
 			setIsDrawing(false);
 			setIsSnackbarOpen(true);
 		}
+	};
+
+	const polygonOptions = {
+		paths: [
+			{ lat: 53.19548324574248, lng: -1.703326734860213 },
+			{ lat: 53.196183280091034, lng: -1.700554889120726 },
+			{ lat: 53.19655352383373, lng: -1.6985634708146748 },
+			{ lat: 53.196561751436136, lng: -1.697746302613226 },
+			{ lat: 53.19796042092766, lng: -1.6942166852826885 },
+			{ lat: 53.19798098925566, lng: -1.6926098167184955 },
+			{ lat: 53.19669133600033, lng: -1.6889222593724624 },
+			{ lat: 53.19637868694384, lng: -1.6872879229695652 },
+			{ lat: 53.19570820778826, lng: -1.6872334808891056 },
+			{ lat: 53.19398617075371, lng: -1.6895448701560243 },
+			{ lat: 53.19395801993666, lng: -1.6915496870941886 },
+			{ lat: 53.19322609217482, lng: -1.6951442612371943 },
+			{ lat: 53.191846655945845, lng: -1.6970629336975467 },
+			{ lat: 53.19183031434909, lng: -1.6990761354261117 },
+			{ lat: 53.19317448141444, lng: -1.6991617264296872 },
+			{ lat: 53.19480060243176, lng: -1.7032961470115195 },
+			{ lat: 53.19548324574248, lng: -1.703326734860213 },
+		],
+		strokeColor: '#FF0000',
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: '#FF0000',
+		fillOpacity: 0.35,
+	};
+
+	const checkPointIsInPolygon = (e) => {
+		const bermudaTriangle = new window.google.maps.Polygon({
+			paths: polygonOptions.paths,
+		});
+
+		const isInPolyon = window.google.maps.geometry.poly.containsLocation(
+			e.latLng,
+			bermudaTriangle
+		);
+		isInPolyon ? console.log('yes') : console.log('no');
 	};
 
 	return isLoaded ? (
@@ -201,6 +241,16 @@ const Map = ({
 					<Circle
 						center={currentMap.center}
 						options={currentMap.circleOptions}
+					/>
+					<Polygon
+						center={{
+							lat: 53.195191701761956,
+							lng: -1.6946127139894789,
+						}}
+						options={polygonOptions}
+						onClick={(e) =>
+							checkPointIsInPolygon(e)
+						}
 					/>
 				</GoogleMap>
 			) : (
