@@ -7,14 +7,14 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Category } from "../models";
-import { fetchByPath, validateField } from "./utils";
-import { DataStore } from "aws-amplify";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
+import { API } from "aws-amplify";
+import { getCategory } from "../graphql/queries";
+import { updateCategory } from "../graphql/mutations";
 export default function CategoryUpdateForm(props) {
   const {
     id: idProp,
-    category,
+    category: categoryModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -40,16 +40,21 @@ export default function CategoryUpdateForm(props) {
     setDescription(cleanValues.description);
     setErrors({});
   };
-  const [categoryRecord, setCategoryRecord] = React.useState(category);
+  const [categoryRecord, setCategoryRecord] = React.useState(categoryModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? await DataStore.query(Category, idProp)
-        : category;
+        ? (
+            await API.graphql({
+              query: getCategory.replaceAll("__typename", ""),
+              variables: { id: idProp },
+            })
+          )?.data?.getCategory
+        : categoryModelProp;
       setCategoryRecord(record);
     };
     queryData();
-  }, [idProp, category]);
+  }, [idProp, categoryModelProp]);
   React.useEffect(resetStateValues, [categoryRecord]);
   const validations = {
     name: [{ type: "Required" }],
@@ -82,7 +87,7 @@ export default function CategoryUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
-          description,
+          description: description ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -108,21 +113,26 @@ export default function CategoryUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
-          await DataStore.save(
-            Category.copyOf(categoryRecord, (updated) => {
-              Object.assign(updated, modelFields);
-            })
-          );
+          await API.graphql({
+            query: updateCategory.replaceAll("__typename", ""),
+            variables: {
+              input: {
+                id: categoryRecord.id,
+                ...modelFields,
+              },
+            },
+          });
           if (onSuccess) {
             onSuccess(modelFields);
           }
         } catch (err) {
           if (onError) {
-            onError(modelFields, err.message);
+            const messages = err.errors.map((e) => e.message).join("\n");
+            onError(modelFields, messages);
           }
         }
       }}
@@ -190,7 +200,7 @@ export default function CategoryUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || category)}
+          isDisabled={!(idProp || categoryModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -202,7 +212,7 @@ export default function CategoryUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || category) ||
+              !(idProp || categoryModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

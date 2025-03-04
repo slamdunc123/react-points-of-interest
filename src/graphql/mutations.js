@@ -19,19 +19,12 @@ export const createPoint = /* GraphQL */ `
       mapId
       categoryId
       history {
-        items {
-          id
-          date
-          name
-          description
-          pointId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -53,19 +46,12 @@ export const updatePoint = /* GraphQL */ `
       mapId
       categoryId
       history {
-        items {
-          id
-          date
-          name
-          description
-          pointId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -87,19 +73,12 @@ export const deletePoint = /* GraphQL */ `
       mapId
       categoryId
       history {
-        items {
-          id
-          date
-          name
-          description
-          pointId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -115,6 +94,7 @@ export const createMap = /* GraphQL */ `
       center {
         lat
         lng
+        __typename
       }
       circleOptions {
         strokeColor
@@ -128,29 +108,17 @@ export const createMap = /* GraphQL */ `
         visible
         radius
         zIndex
+        __typename
       }
       zoom
       adminGroup
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -166,6 +134,7 @@ export const updateMap = /* GraphQL */ `
       center {
         lat
         lng
+        __typename
       }
       circleOptions {
         strokeColor
@@ -179,29 +148,17 @@ export const updateMap = /* GraphQL */ `
         visible
         radius
         zIndex
+        __typename
       }
       zoom
       adminGroup
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -217,6 +174,7 @@ export const deleteMap = /* GraphQL */ `
       center {
         lat
         lng
+        __typename
       }
       circleOptions {
         strokeColor
@@ -230,29 +188,17 @@ export const deleteMap = /* GraphQL */ `
         visible
         radius
         zIndex
+        __typename
       }
       zoom
       adminGroup
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -266,25 +212,12 @@ export const createCategory = /* GraphQL */ `
       name
       description
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -298,25 +231,12 @@ export const updateCategory = /* GraphQL */ `
       name
       description
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -330,25 +250,12 @@ export const deleteCategory = /* GraphQL */ `
       name
       description
       points {
-        items {
-          id
-          name
-          lat
-          lng
-          yearBuilt
-          url
-          description
-          image
-          imageName
-          mapId
-          categoryId
-          createdAt
-          updatedAt
-        }
         nextToken
+        __typename
       }
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -365,6 +272,7 @@ export const createHistory = /* GraphQL */ `
       pointId
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -381,6 +289,7 @@ export const updateHistory = /* GraphQL */ `
       pointId
       createdAt
       updatedAt
+      __typename
     }
   }
 `;
@@ -397,6 +306,7 @@ export const deleteHistory = /* GraphQL */ `
       pointId
       createdAt
       updatedAt
+      __typename
     }
   }
 `;

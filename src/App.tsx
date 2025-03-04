@@ -34,6 +34,7 @@ function App() {
 
 	const [mapId, setMapId] = useState('');
 	const [currentMap, setCurrentMap] = useState();
+	console.log('slamdunc ~ App ~ currentMap:', currentMap)
 
 	const matchPoint = useMatch('/point/:id');
 	const matchEditPoint = useMatch('/edit-point/:id');
