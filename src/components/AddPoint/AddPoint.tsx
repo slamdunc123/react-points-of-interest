@@ -2,7 +2,7 @@
 import React, { ChangeEventHandler, FormEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { Storage } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -16,6 +16,7 @@ import Image from 'mui-image';
 import { addPoint } from '../../features/point/pointSlice';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { PointType } from '../MapContainer/MapContainer';
+import { createHistory } from '../../graphql/mutations';
 
 type AddPointPropsType = {
 	handleAddPoint: (
@@ -39,6 +40,7 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
+	const [historyFormData, setHistoryFormData] = useState([]);
 	const [image, setImage] = useState('');
 	const [category, setCategory] = useState('');
 
@@ -54,10 +56,23 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		// check it out: we get the evt.target.name (which will be either "email" or "password")
 		// and use it to target the key on our `state` object with the same name, using bracket syntax
-		const updatedData = { ...formData, [e.target.name]: e.target.value };
+
+		const updatedData = {
+			...formData,
+			[e.target.name]: e.target.value,
+		};
 		updatedData.lat = drawnMarker.lat;
 		updatedData.lng = drawnMarker.lng;
 		setFormData(updatedData);
+	};
+	const handleHistoryOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+		// check it out: we get the evt.target.name (which will be either "email" or "password")
+		// and use it to target the key on our `state` object with the same name, using bracket syntax
+
+		let history = [...historyFormData];
+		history[e.target.id][e.target.name] = e.target.value;
+
+		setHistoryFormData(history);
 	};
 
 	const handleCategoryOnChange = (e: SelectChangeEvent) => {
@@ -69,6 +84,22 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		if (e.target.files) {
 			setImage(URL.createObjectURL(e.target.files[0]));
 		}
+	};
+
+	const handleAddHistory = (e) => {
+		e.preventDefault();
+		setHistoryFormData([
+			...historyFormData,
+			{ date: '', name: '', description: '' },
+		]);
+	};
+
+	const handleRemoveHistory = (e, index) => {
+		e.preventDefault();
+		const historyFormDataWithHistoryRemoved = historyFormData.filter(
+			(item, i) => i !== index
+		);
+		setHistoryFormData(historyFormDataWithHistoryRemoved);
 	};
 
 	const handleAddPoint = async (e, data) => {
@@ -87,8 +118,22 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 		try {
 			if (!!dataForStorage.image)
 				await Storage.put(dataForStorage.image, image);
+			const pointData = await dispatch(addPoint(data));
+			const pointId = pointData.payload.createPoint.id;
+			historyFormData.map(async (item) => {
+				await API.graphql({
+					query: createHistory,
+					variables: {
+						input: {
+							pointId: pointId,
+							date: item.date,
+							name: item.name,
+							description: item.description,
+						},
+					},
+				});
+			});
 
-			dispatch(addPoint(data));
 			navigate(`/maps/${mapId}`);
 		} catch (error) {
 			console.log(error);
@@ -153,6 +198,7 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 								size='small'
 								margin='normal'
 								multiline
+								rows={4}
 								fullWidth
 							/>
 							<TextField
@@ -234,6 +280,74 @@ const AddPoint = ({ mapId }: AddPointPropsType) => {
 								margin='normal'
 								fullWidth
 							/>
+							<Button onClick={handleAddHistory}>
+								Add History
+							</Button>
+							{historyFormData.map((item, index) => (
+								<Box
+									key={index}
+									sx={{
+										border: 1,
+										borderColor: '#c0c0c0',
+										boxShadow: 5,
+										width: '100%',
+										mb: 1,
+										p: 1,
+										display: 'flex',
+										flexDirection: 'column',
+									}}
+								>
+									<TextField
+										id={index.toString()}
+										label='Date'
+										variant='outlined'
+										type='text'
+										name='date'
+										value={item.date}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+										required
+									/>
+									<TextField
+										id={index.toString()}
+										label='Name'
+										variant='outlined'
+										type='text'
+										name='name'
+										value={item.name}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+										required
+									/>
+									<TextField
+										id={index.toString()}
+										label='Description'
+										variant='outlined'
+										type='text'
+										name='description'
+										value={item.description}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										multiline
+										rows={4}
+										fullWidth
+									/>
+									<Box sx={{ alignSelf: 'flex-end' }}>
+										<Button
+											onClick={(e) =>
+												handleRemoveHistory(e, index)
+											}
+										>
+											Remove History
+										</Button>
+									</Box>
+								</Box>
+							))}
 							<TextField
 								name='image'
 								type='file'

@@ -122,33 +122,6 @@ export const listMaps = /* GraphQL */ `
 				zoom
 				adminGroup
 				points {
-					items {
-						id
-						name
-						lat
-						lng
-						yearBuilt
-						url
-						description
-						image
-						imageName
-						mapId
-						categoryId
-						history {
-							items {
-								id
-								date
-								name
-								description
-								pointId
-								createdAt
-								updatedAt
-							}
-							nextToken
-						}
-						createdAt
-						updatedAt
-					}
 					nextToken
 				}
 				createdAt
@@ -209,33 +182,6 @@ export const listCategories = /* GraphQL */ `
 				name
 				description
 				points {
-					items {
-						id
-						name
-						lat
-						lng
-						yearBuilt
-						url
-						description
-						image
-						imageName
-						mapId
-						categoryId
-						history {
-							items {
-								id
-								date
-								name
-								description
-								pointId
-								createdAt
-								updatedAt
-							}
-							nextToken
-						}
-						createdAt
-						updatedAt
-					}
 					nextToken
 				}
 				createdAt

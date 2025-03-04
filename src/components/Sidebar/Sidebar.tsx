@@ -101,7 +101,7 @@ const Sidebar = ({
 						</ListItem>
 
 						<Divider />
-						<ListItem sx={{ alignItems: 'center', py:2, px: 1  }}>
+						<ListItem sx={{ alignItems: 'center', py: 2, px: 1 }}>
 							<Tooltip
 								title='Change View'
 								placement='bottom-start'
@@ -130,7 +130,7 @@ const Sidebar = ({
 											lineHeight: 'normal',
 										}}
 									>
-										{isMapView ? 'Data Grid' : 'Map'}
+										{isMapView ? 'Table' : 'Map'}
 									</Typography>
 								</Button>
 							</Tooltip>

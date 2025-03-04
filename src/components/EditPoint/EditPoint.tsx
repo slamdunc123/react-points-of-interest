@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link, useNavigate } from 'react-router-dom';
-import { Storage } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import { updatePoint } from '../../features/point/pointSlice';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,11 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Image from 'mui-image';
 import { PointType } from '../../types';
+import {
+	createHistory,
+	deleteHistory,
+	updateHistory,
+} from '../../graphql/mutations';
 
 type EditPointPropsType = {
 	editPoint: PointType;
@@ -43,6 +48,8 @@ const EditPoint = ({
 		imageName: '',
 	};
 	const [formData, setFormData] = useState(initialFormData);
+	const [historyFormData, setHistoryFormData] = useState([]);
+	const [historyDataToBeDeleted, setHistoryDataToBeDeleted] = useState([]);
 	const [image, setImage] = useState('');
 	const [category, setCategory] = useState();
 	const [formErrorMessage, setFormErrorMessage] = useState('');
@@ -71,8 +78,28 @@ const EditPoint = ({
 		}
 	}, [editPoint, navigate]);
 
+	useEffect(() => {
+		const { history } = editPoint;
+		setHistoryFormData(history.items);
+	}, [editPoint]);
+
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const handleHistoryOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+		// check it out: we get the evt.target.name (which will be either "email" or "password")
+		// and use it to target the key on our `state` object with the same name, using bracket syntax
+
+		let history = [...historyFormData];
+
+		let historyData = { ...history[e.target.id] };
+
+		historyData[e.target.name] = e.target.value;
+
+		history[e.target.id] = historyData;
+
+		setHistoryFormData(history);
 	};
 
 	const handleCategoryOnChange = (e: SelectChangeEvent) => {
@@ -84,6 +111,31 @@ const EditPoint = ({
 		if (e.target.files) {
 			setImage(URL.createObjectURL(e.target.files[0]));
 		} else setImage(formData.imageName);
+	};
+
+	const handleAddHistory = (e) => {
+		e.preventDefault();
+		setHistoryFormData([
+			...historyFormData,
+			{ date: '', name: '', description: '' },
+		]);
+	};
+
+	const handleRemoveHistory = (e, index) => {
+		e.preventDefault();
+		const historyFormDataWithHistoryRemoved = historyFormData.filter(
+			(item, i) => i !== index
+		);
+		setHistoryFormData(historyFormDataWithHistoryRemoved);
+
+		const historyFormDataItemToDelete = historyFormData.find(
+			(item, i) => i === index
+		);
+
+		setHistoryDataToBeDeleted([
+			...historyDataToBeDeleted,
+			historyFormDataItemToDelete,
+		]);
 	};
 
 	const handleEditPoint = async (e, data) => {
@@ -108,10 +160,20 @@ const EditPoint = ({
 
 		delete updatedData.createdAt;
 		delete updatedData.updatedAt;
+		delete updatedData.history;
+
 		updatedData.image = image.name ? image.name : editPoint.imageName; // needed to not overwrite existing image with nothing if no new image is selected
 		updatedData.lat = Number(updatedData.lat);
 		updatedData.lng = Number(updatedData.lng);
 		updatedData.categoryId = category.id;
+
+		// new history doesn't have an id
+		const historyDataToBeAdded = historyFormData.filter((item) => !item.id);
+
+		// existing history has an id
+		const historyDataToBeUpdated = historyFormData.filter(
+			(item) => item.id
+		);
 
 		try {
 			if (!!dataForStorage.image) {
@@ -119,6 +181,49 @@ const EditPoint = ({
 				await Storage.put(dataForStorage.image, image); // add replaced image into storage
 			}
 
+			historyDataToBeAdded.length &&
+				historyDataToBeAdded.map(async (item) => {
+					await API.graphql({
+						query: createHistory,
+						variables: {
+							input: {
+								pointId: editPoint.id,
+								date: item.date,
+								name: item.name,
+								description: item.description,
+							},
+						},
+					});
+				});
+
+			historyDataToBeUpdated.length &&
+				historyDataToBeUpdated.map(async (item) => {
+					await API.graphql({
+						query: updateHistory,
+						variables: {
+							input: {
+								id: item.id,
+								date: item.date,
+								name: item.name,
+								description: item.description,
+							},
+						},
+					});
+				});
+
+			historyDataToBeDeleted.length &&
+				historyDataToBeDeleted.map(async (item) => {
+					if (item.id) {
+						await API.graphql({
+							query: deleteHistory,
+							variables: {
+								input: {
+									id: item.id,
+								},
+							},
+						});
+					}
+				});
 			dispatch(updatePoint(updatedData));
 			navigate(-1);
 		} catch (error) {
@@ -276,6 +381,74 @@ const EditPoint = ({
 								margin='normal'
 								fullWidth
 							/>
+							<Button onClick={handleAddHistory}>
+								Add History
+							</Button>
+							{historyFormData.map((item, index) => (
+								<Box
+									key={index}
+									sx={{
+										border: 1,
+										borderColor: '#c0c0c0',
+										boxShadow: 5,
+										width: '100%',
+										mb: 1,
+										p: 1,
+										display: 'flex',
+										flexDirection: 'column',
+									}}
+								>
+									<TextField
+										id={index.toString()}
+										label='Date'
+										variant='outlined'
+										type='text'
+										name='date'
+										value={item.date}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+										required
+									/>
+									<TextField
+										id={index.toString()}
+										label='Name'
+										variant='outlined'
+										type='text'
+										name='name'
+										value={item.name}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										fullWidth
+										required
+									/>
+									<TextField
+										id={index.toString()}
+										label='Description'
+										variant='outlined'
+										type='text'
+										name='description'
+										value={item.description}
+										onChange={handleHistoryOnChange}
+										size='small'
+										margin='normal'
+										multiline
+										rows={4}
+										fullWidth
+									/>
+									<Box sx={{ alignSelf: 'flex-end' }}>
+										<Button
+											onClick={(e) =>
+												handleRemoveHistory(e, index)
+											}
+										>
+											Remove History
+										</Button>
+									</Box>
+								</Box>
+							))}
 							<TextField
 								name='image'
 								type='file'

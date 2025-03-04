@@ -15,7 +15,7 @@ type Point @model @auth(rules: [{ allow: public }]) {
 	imageName: String
 	mapId: ID! @index(name: "byMap")
 	categoryId: ID! @index(name: "byCategory")
-  history: [History] @hasMany(indexName: "byPoint", fields: ["id"])
+	history: [History] @hasMany(indexName: "byPoint", fields: ["id"])
 }
 
 type Map @model {
@@ -25,7 +25,7 @@ type Map @model {
 	center: MapCenter
 	circleOptions: MapCircleOptions
 	zoom: Float!
-  adminGroup: String!
+	adminGroup: String!
 	points: [Point] @hasMany(indexName: "byMap", fields: ["id"])
 }
 
@@ -56,9 +56,9 @@ type Category @model {
 }
 
 type History @model {
-  id: ID!
-  date: String!
-  name: String!
-  description: String
-  pointId: ID! @index(name: "byPoint")
+	id: ID!
+	date: String!
+	name: String!
+	description: String
+	pointId: ID! @index(name: "byPoint")
 }
