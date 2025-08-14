@@ -122,7 +122,7 @@ const Point = ({ point, mapId, isUserAuthenticated }: PointPropsType) => {
 									</IconButton>
 								</Tooltip>
 							)}
-							{point.history.items.length ? (
+							{point.history?.items.length ? (
 								<PointHistory history={point.history.items} />
 							) : null}
 							{isUserAuthenticated && (
